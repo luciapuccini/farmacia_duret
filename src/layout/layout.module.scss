@@ -1,3 +1,5 @@
+@use '../globals.module' as g;
+
 .page {
     display: flex;
     flex-direction: column;
@@ -8,21 +10,23 @@
 .footer {
     border: 1px solid #cfcfcf;
     padding: 0.75rem 1rem;
-    background: #fafafa;
+    /* mobile color */
+    background: #f8fafc;
 }
 
 .container {
     flex: 1 0 auto;
     width: 100%;
-    max-width: 1100px;
+    max-width: 100%;
     margin: 1rem auto;
     padding: 1rem;
     border: 1px solid #cfcfcf;
     box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
+@include g.respond-to(md) {
     .container {
+        max-width: 1100px;
         padding: 2rem;
         margin: 2rem auto;
     }
@@ -30,5 +34,7 @@
     .navbar,
     .footer {
         padding: 1rem 2rem;
+        /* desktop color */
+        background: #eef6ff;
     }
 }
