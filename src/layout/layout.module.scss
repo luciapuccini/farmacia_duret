@@ -10,17 +10,38 @@
 .footer {
     border: 1px solid #cfcfcf;
     padding: 0.75rem 1rem;
-    /* mobile color */
-    background: #6ed76e;
-
+    /* use theme dust grey */
+    background: var(--dust-grey);
 
     @include g.up(md) {
         padding: 1rem 2rem;
-        /* desktop color */
-        background: #eef6ff;
     }
 
+}
 
+.navbar {
+    display: flex;
+    align-items: center;
+    font-weight: var(--font-weight-medium);
+}
+
+.navLeft {
+    flex: 1 1 auto;
+}
+
+.navRight {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navButton {
+    background: var(--almond-cream);
+    color: var(--text-color);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .container {
@@ -31,6 +52,7 @@
     padding: 1rem;
     border: 1px solid #cfcfcf;
     box-sizing: border-box;
+    background: var(--floral-white);
 
     @include g.up(md) {
         max-width: 1100px;

@@ -7,6 +7,16 @@
     --screen-lg: 1024px;
     --screen-xl: 1280px;
     --screen-2xl: 1536px;
+
+    /* Theme colors */
+    --text-color: #0A0A0A;
+    --dust-grey: #dce0d9;
+    --floral-white: #fbf6ef;
+    --almond-cream: #ead7c3;
+    /* typography */
+    --font-weight-base: 300;
+    --font-weight-medium: 400;
+    --font-weight-strong: 500;
 }
 
 $screens: (
@@ -64,12 +74,20 @@ $screens: (
 
     body {
         margin: 0;
-        font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+        font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
+        font-weight: var(--font-weight-base);
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        color: inherit;
-        background: transparent;
+        color: var(--text-color);
+        background: var(--floral-white);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: var(--font-weight-strong);
     }
 
     img,
