@@ -17,11 +17,27 @@ $screens: (
     '2xl': 1536px,
 );
 
-@mixin respond-to($size) {
+@mixin up($size) {
     $val: map.get($screens, $size);
 
     @if $val {
         @media (min-width: $val) {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "No screen size `#{$size}` found in $screens map.";
+    }
+}
+
+@mixin down($size) {
+    $val: map.get($screens, $size);
+
+    @if $val {
+        $max: $val - 0.02px;
+
+        @media (max-width: $max) {
             @content;
         }
     }
