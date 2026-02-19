@@ -27,6 +27,26 @@ $screens: (
     '2xl': 1536px,
 );
 
+/* Color palette map for Sass consumption */
+$palette: (
+    black: var(--text-color),
+    white: var(--floral-white),
+    primary: var(--dust-grey),
+    almond: var(--almond-cream),
+);
+
+@function palette($key) {
+    $val: map.get($palette, $key);
+
+    @if $val {
+        @return $val;
+    }
+
+    @else {
+        @error "Unknown palette key `#{$key}`. Available: #{map.keys($palette)}";
+    }
+}
+
 @mixin up($size) {
     $val: map.get($screens, $size);
 
