@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { NavLink } from 'react-router'
 import styles from './drawer.module.scss'
 import categories from '@/data/categories.json'
+import { categoryNameToPath } from '@/helpers/routes'
 
 type Category = {
   nombre: string
@@ -12,30 +14,66 @@ interface DrawerProps {
   onClose: () => void
 }
 
-function DrawerNavItem({ 
-  category, 
-  depth = 0 
-}: { 
+function DrawerNavItem({
+  category,
+  depth = 0,
+  onNavigate,
+}: {
   category: Category
-  depth?: number 
+  depth?: number
+  onNavigate: () => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
+  const categoryPath = categoryNameToPath(category.nombre)
+  const isTopLevel = depth === 0
 
   return (
     <div className={styles.drawerItem} data-depth={depth}>
-      <button
-        className={styles.drawerItemButton}
-        onClick={() => hasSubcategories && setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-      >
-        <span>{category.nombre}</span>
-        {hasSubcategories && (
-          <span className={styles.arrow} data-open={isOpen}>
-            ‹
-          </span>
-        )}
-      </button>
+      {isTopLevel ? (
+        <div className={styles.drawerItemHeader}>
+          <NavLink
+            to={categoryPath}
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
+                : styles.drawerItemButton
+            }
+            onClick={onNavigate}
+          >
+            <span>{category.nombre}</span>
+          </NavLink>
+
+          {hasSubcategories && (
+            <button
+              type="button"
+              className={styles.drawerToggle}
+              data-open={isOpen}
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={`Mostrar ${category.nombre}`}
+              aria-expanded={isOpen}
+            >
+              <span className={styles.arrow} data-open={isOpen}>
+                ‹
+              </span>
+            </button>
+          )}
+        </div>
+      ) : (
+        <button
+          type="button"
+          className={styles.drawerItemButton}
+          onClick={() => hasSubcategories && setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+        >
+          <span>{category.nombre}</span>
+          {hasSubcategories && (
+            <span className={styles.arrow} data-open={isOpen}>
+              ‹
+            </span>
+          )}
+        </button>
+      )}
 
       {hasSubcategories && isOpen && (
         <div className={styles.drawerSubmenu}>
@@ -44,6 +82,7 @@ function DrawerNavItem({
               key={subcategory.nombre}
               category={subcategory}
               depth={depth + 1}
+              onNavigate={onNavigate}
             />
           ))}
         </div>
@@ -74,7 +113,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
 
         <nav className={styles.drawerNav}>
           {categories.map((category: Category) => (
-            <DrawerNavItem key={category.nombre} category={category} />
+            <DrawerNavItem key={category.nombre} category={category} onNavigate={onClose} />
           ))}
         </nav>
       </div>

@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { NavLink } from 'react-router'
 import styles from './navbar.module.scss'
 import Drawer from './components/drawer'
 import categories from '@/data/categories.json'
 import { useMediaQuery } from '@/helpers/hooks'
+import { categoryNameToPath } from '@/helpers/routes'
 
 type Category = {
   nombre: string
@@ -12,6 +14,7 @@ type Category = {
 function NavItem({ category, depth = 0 }: { category: Category; depth?: number }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
+  const categoryPath = categoryNameToPath(category.nombre)
 
   return (
     <div
@@ -20,14 +23,29 @@ function NavItem({ category, depth = 0 }: { category: Category; depth?: number }
       onMouseEnter={() => hasSubcategories && setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      <button
-        className={styles.navItemButton}
-        onClick={() => hasSubcategories && setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-      >
-        <span>{category.nombre}</span>
-        {hasSubcategories && <span className={styles.chevron}>›</span>}
-      </button>
+      {depth === 0 ? (
+        <NavLink
+          to={categoryPath}
+          className={({ isActive }) =>
+            isActive
+              ? `${styles.navItemButton} ${styles.navItemButtonActive}`
+              : styles.navItemButton
+          }
+          aria-expanded={isOpen}
+        >
+          <span>{category.nombre}</span>
+          {hasSubcategories && <span className={styles.chevron}>›</span>}
+        </NavLink>
+      ) : (
+        <button
+          className={styles.navItemButton}
+          onClick={() => hasSubcategories && setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+        >
+          <span>{category.nombre}</span>
+          {hasSubcategories && <span className={styles.chevron}>›</span>}
+        </button>
+      )}
 
       {hasSubcategories && isOpen && (
         <div className={styles.submenu} data-depth={depth}>
