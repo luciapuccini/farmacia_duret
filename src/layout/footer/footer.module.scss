@@ -1,0 +1,11 @@
+@use '../../globals.module' as g;
+
+.footer {
+  border: 1px solid #cfcfcf;
+  padding: 0.75rem 1rem;
+  background: g.palette(primary);
+
+  @include g.up(md) {
+    padding: 1rem 2rem;
+  }
+}

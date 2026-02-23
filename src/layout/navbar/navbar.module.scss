@@ -1,0 +1,30 @@
+@use '../../globals.module' as g;
+
+.navbar {
+  border: 1px solid #cfcfcf;
+  padding: 0.75rem 1rem;
+  background: g.palette(primary);
+
+  @include g.up(md) {
+    padding: 1rem 2rem;
+  }
+}
+
+.navLeft {
+  flex: 1 1 auto;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navButton {
+  background: g.palette(primary);
+  color: var(--text-color);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+}

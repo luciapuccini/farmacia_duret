@@ -1,22 +1,9 @@
 import React from 'react'
+import Navbar from './navbar'
+import Footer from './footer'
 import styles from './layout.module.scss'
 
 type Props = { children?: React.ReactNode }
-
-export function Navbar({ children }: Props) {
-  return (
-    <div className={styles.navbar}>
-      <div className={styles.navLeft}>{children}</div>
-      <div className={styles.navRight}>
-        <button className={styles.navButton}>Action</button>
-      </div>
-    </div>
-  )
-}
-
-export function Footer({ children }: Props) {
-  return <div className={styles.footer}>{children}</div>
-}
 
 export function Container({ children }: Props) {
   return <div className={styles.container}>{children}</div>
