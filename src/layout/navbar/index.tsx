@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styles from './navbar.module.scss'
-import categories from '../../data/categories.json'
+import Drawer from './components/drawer'
+import categories from '@/data/categories.json'
+import { useMediaQuery } from '@/helpers/hooks'
 
 type Category = {
   nombre: string
   subcategorias?: Category[]
 }
-
-type Props = { children?: React.ReactNode }
 
 function NavItem({ category, depth = 0 }: { category: Category; depth?: number }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -31,7 +31,7 @@ function NavItem({ category, depth = 0 }: { category: Category; depth?: number }
 
       {hasSubcategories && isOpen && (
         <div className={styles.submenu} data-depth={depth}>
-          {category.subcategorias.map((subcategory) => (
+          {category.subcategorias?.map((subcategory) => (
             <NavItem key={subcategory.nombre} category={subcategory} depth={depth + 1} />
           ))}
         </div>
@@ -40,19 +40,39 @@ function NavItem({ category, depth = 0 }: { category: Category; depth?: number }
   )
 }
 
-export default function Navbar({ children }: Props) {
+export default function Navbar() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const isMobile = useMediaQuery('(max-width: 767px)')
+
   return (
-    <div className={styles.navbar}>
-      <div className={styles.navContent}>
-        <nav className={styles.navCategories}>
-          {categories.map((category) => (
-            <NavItem key={category.nombre} category={category} />
-          ))}
-        </nav>
-        <div className={styles.navRight}>
-          <button className={styles.navButton}>Action</button>
+    <>
+      <div className={styles.navbar}>
+        <div className={styles.navContent}>
+          {isMobile && (
+            <button
+              className={styles.menuButton}
+              onClick={() => setIsDrawerOpen(true)}
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
+          )}
+
+          <nav className={styles.navCategories}>
+            {categories.map((category) => (
+              <NavItem key={category.nombre} category={category} />
+            ))}
+          </nav>
+
+          <div className={styles.navRight}>
+            <button className={styles.navButton}>Action</button>
+          </div>
         </div>
       </div>
-    </div>
+
+      {isMobile && (
+        <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      )}
+    </>
   )
 }

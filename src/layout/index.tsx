@@ -12,7 +12,7 @@ export function Container({ children }: Props) {
 export default function Layout({ children }: Props) {
   return (
     <div className={styles.page}>
-      <Navbar>Navbar</Navbar>
+      <Navbar />
       <Container>{children}</Container>
       <Footer>Footer</Footer>
     </div>
