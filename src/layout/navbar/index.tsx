@@ -5,6 +5,7 @@ import Drawer from './components/drawer'
 import categories from '@/data/categories.json'
 import { useMediaQuery } from '@/helpers/hooks'
 import { categoryNameToPath } from '@/helpers/routes'
+import CtaButton from '@/components/CtaButton'
 
 type Category = {
   nombre: string
@@ -80,11 +81,12 @@ export default function Navbar() {
             {categories.map((category) => (
               <NavItem key={category.nombre} category={category} />
             ))}
+            <CtaButton  className={styles.navCta}>
+              Reservas
+            </CtaButton>
           </nav>
 
-          <div className={styles.navRight}>
-            <a href="/reservas" className="btn-almond">Reservas</a>
-          </div>
+          
         </div>
       </div>
 

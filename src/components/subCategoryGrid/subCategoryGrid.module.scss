@@ -1,0 +1,69 @@
+@use "@/globals.module" as g;
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+
+    @include g.up(md) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include g.up(lg) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.imageWrapper {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--dust-grey);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+
+    .card:hover & {
+        transform: scale(1.05);
+    }
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 1rem 1rem 0.5rem;
+    color: var(--text-color);
+}
+
+.list {
+    list-style: none;
+    padding: 0 1rem;
+    margin: 0;
+}
+
+.listItem {
+    font-size: 0.875rem;
+    color: #666;
+    padding: 0.375rem 0;
+}
