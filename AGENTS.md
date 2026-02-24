@@ -93,3 +93,15 @@ Example `g.down`:
   }
 }
 ```
+
+## SEO Guidelines
+
+Structured data (JSON-LD) should be implemented for improved search engine visibility:
+
+- **Breadcrumbs**: Always include BreadcrumbList structured data when implementing breadcrumb navigation. See `src/layout/breadcrumb/index.tsx` for reference implementation.
+- **Product pages**: Include Product schema when displaying products
+- **Organization**: Include Organization schema in the footer or main layout
+- **FAQ**: Include FAQPage schema for FAQ sections
+- **LocalBusiness**: Include LocalBusiness schema with pharmacy location data
+
+When creating new pages that would benefit from structured data, proactively suggest implementing JSON-LD schemas.
