@@ -12,7 +12,7 @@ type Category = {
   subcategorias?: Category[]
 }
 
-function NavItem({ category, depth = 0 }: { category: Category; depth?: number }) {
+function NavItem({ category, depth = 0, parentPath = '' }: { category: Category; depth?: number; parentPath?: string }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
   const categoryPath = categoryNameToPath(category.nombre)
@@ -37,6 +37,18 @@ function NavItem({ category, depth = 0 }: { category: Category; depth?: number }
           <span>{category.nombre}</span>
           {hasSubcategories && <span className={styles.chevron}>›</span>}
         </NavLink>
+      ) : depth === 1 ? (
+        <NavLink
+          to={`${parentPath}/${categoryPath}`}
+          className={({ isActive }) =>
+            isActive
+              ? `${styles.navItemButton} ${styles.navItemButtonActive}`
+              : styles.navItemButton
+          }
+        >
+          <span>{category.nombre}</span>
+          {hasSubcategories && <span className={styles.chevron}>›</span>}
+        </NavLink>
       ) : (
         <button
           className={styles.navItemButton}
@@ -51,7 +63,12 @@ function NavItem({ category, depth = 0 }: { category: Category; depth?: number }
       {hasSubcategories && isOpen && (
         <div className={styles.submenu} data-depth={depth}>
           {category.subcategorias?.map((subcategory) => (
-            <NavItem key={subcategory.nombre} category={subcategory} depth={depth + 1} />
+            <NavItem 
+              key={subcategory.nombre} 
+              category={subcategory} 
+              depth={depth + 1} 
+              parentPath={depth === 0 ? categoryPath : parentPath}
+            />
           ))}
         </div>
       )}

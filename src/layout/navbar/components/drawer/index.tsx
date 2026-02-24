@@ -18,10 +18,12 @@ function DrawerNavItem({
   category,
   depth = 0,
   onNavigate,
+  parentPath = '',
 }: {
   category: Category
   depth?: number
   onNavigate: () => void
+  parentPath?: string
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
@@ -59,6 +61,23 @@ function DrawerNavItem({
             </button>
           )}
         </div>
+      ) : depth === 1 ? (
+        <NavLink
+          to={`${parentPath}/${categoryPath}`}
+          className={({ isActive }) =>
+            isActive
+              ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
+              : styles.drawerItemButton
+          }
+          onClick={onNavigate}
+        >
+          <span>{category.nombre}</span>
+          {hasSubcategories && (
+            <span className={styles.arrow} data-open={isOpen}>
+              ›
+            </span>
+          )}
+        </NavLink>
       ) : (
         <button
           type="button"
@@ -69,7 +88,7 @@ function DrawerNavItem({
           <span>{category.nombre}</span>
           {hasSubcategories && (
             <span className={styles.arrow} data-open={isOpen}>
-              ‹
+              ›
             </span>
           )}
         </button>
@@ -83,6 +102,7 @@ function DrawerNavItem({
               category={subcategory}
               depth={depth + 1}
               onNavigate={onNavigate}
+              parentPath={depth === 0 ? categoryPath : parentPath}
             />
           ))}
         </div>
