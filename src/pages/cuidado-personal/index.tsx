@@ -7,9 +7,8 @@ function CuidadoPersonalPage() {
   
   return (
     <section className={styles.container}>
-      <h1>Cuidado Personal</h1>
       {category?.subcategorias && (
-        <SubCategoryGrid subcategories={category.subcategorias} />
+        <SubCategoryGrid subcategories={category.subcategorias} categorySlug="cuidado-personal" />
       )}
     </section>
   )

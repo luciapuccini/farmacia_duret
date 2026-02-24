@@ -7,9 +7,8 @@ function HogarYAlimentosPage() {
   
   return (
     <section className={styles.container}>
-      <h1>Hogar y Alimentos</h1>
       {category?.subcategorias && (
-        <SubCategoryGrid subcategories={category.subcategorias} />
+        <SubCategoryGrid subcategories={category.subcategorias} categorySlug="hogar-y-alimentos" />
       )}
     </section>
   )

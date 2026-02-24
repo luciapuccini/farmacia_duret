@@ -7,3 +7,16 @@
     background: g.palette(white);
     color: g.palette(black);
 }
+
+.pageHeader {
+    padding: 24px 0 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+}
+
+.pageTitle {
+    font-size: 32px;
+    font-weight: 600;
+    color: g.palette(black);
+    margin: 0;
+}

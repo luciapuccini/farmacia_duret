@@ -1,7 +1,7 @@
 function PapelesPage() {
   return (
     <section>
-      <h2>Papeles</h2>
+      
     </section>
   )
 }

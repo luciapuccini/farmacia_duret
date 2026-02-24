@@ -7,9 +7,8 @@ function SaludYFarmaciaPage() {
   
   return (
     <section className={styles.container}>
-      <h1>Salud y Farmacia</h1>
       {category?.subcategorias && (
-        <SubCategoryGrid subcategories={category.subcategorias} />
+        <SubCategoryGrid subcategories={category.subcategorias} categorySlug="salud-y-farmacia" />
       )}
     </section>
   )

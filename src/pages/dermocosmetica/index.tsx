@@ -7,9 +7,8 @@ function DermocosmeticaPage() {
   
   return (
     <section className={styles.container}>
-      <h1>Dermocosmética</h1>
       {category?.subcategorias && (
-        <SubCategoryGrid subcategories={category.subcategorias} />
+        <SubCategoryGrid subcategories={category.subcategorias} categorySlug="dermocosmetica" />
       )}
     </section>
   )

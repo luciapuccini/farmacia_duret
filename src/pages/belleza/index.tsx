@@ -7,9 +7,8 @@ function BellezaPage() {
   
   return (
     <section className={styles.container}>
-      <h1>Belleza</h1>
       {category?.subcategorias && (
-        <SubCategoryGrid subcategories={category.subcategorias} />
+        <SubCategoryGrid subcategories={category.subcategorias} categorySlug="belleza" />
       )}
     </section>
   )

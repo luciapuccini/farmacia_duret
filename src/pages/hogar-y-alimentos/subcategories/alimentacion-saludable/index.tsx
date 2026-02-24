@@ -1,7 +1,7 @@
 function AlimentacionSaludablePage() {
   return (
     <section>
-      <h2>Alimentación Saludable</h2>
+      
     </section>
   )
 }
