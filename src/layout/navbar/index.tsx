@@ -83,7 +83,7 @@ export default function Navbar() {
           </nav>
 
           <div className={styles.navRight}>
-            <button className={styles.navButton}>Action</button>
+            <a href="/reservas" className="btn-almond">Reservas</a>
           </div>
         </div>
       </div>

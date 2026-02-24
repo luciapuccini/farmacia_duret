@@ -201,6 +201,26 @@
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  background: g.palette(almond);
+  color: g.palette(black);
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    background: g.palette(almond);
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
 }
 
 .navButton {
