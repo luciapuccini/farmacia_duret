@@ -124,6 +124,34 @@ function ReservasPage() {
           <input name="bot-field" className={styles.hidden} aria-hidden="true" tabIndex={-1} />
 
           <div className={styles.field}>
+            <label htmlFor="name" className={styles.label}>
+              Tu nombre
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              className={styles.input}
+              placeholder="Juan Pérez"
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="email" className={styles.label}>
+              Tu email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              className={styles.input}
+              placeholder="juan@ejemplo.com"
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
             <label htmlFor="encargo" className={styles.label}>
               Detalle del encargo
             </label>

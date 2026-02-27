@@ -41,14 +41,19 @@ export const handler = async (event: NetlifyEvent): Promise<HandlerResponse> => 
   }
 
   const data = parsed?.payload?.data ?? parsed?.data ?? {}
-  console.log("🚀 ~ INFO -- data", data)
   const createdAt = parsed?.payload?.created_at ?? parsed?.created_at
+  const name = data.name ?? 'Sin nombre'
+  const email = data.email ?? 'Sin email'
 
   const lines = [
     '*Nuevo encargo recibido*',
     '',
-    data.encargo ?? '(sin detalle)',
+    `👤 ${name}`,
+    `📧 ${email}`,
+    '',
+    `📝 ${data.encargo ?? '(sin detalle)'}`,
   ]
+  console.log("🚀 ~ handler ~ lines:", lines)
 
   if (createdAt) {
     const date = new Date(createdAt).toLocaleString('es-AR', {
