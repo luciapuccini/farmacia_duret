@@ -1,16 +1,46 @@
 import { useState } from 'react'
 import styles from './reservas.module.scss'
 
+// ── Rate-limit helpers ────────────────────────────────────
+const STORAGE_KEY = 'reservas_submissions'
+const MAX_PER_DAY = 6
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10) // 'YYYY-MM-DD'
+}
+
+function getCount(): number {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return 0
+    const data = JSON.parse(raw) as { date: string; count: number }
+    return data.date === todayKey() ? data.count : 0
+  } catch {
+    return 0
+  }
+}
+
+function incrementCount(): number {
+  const next = getCount() + 1
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: todayKey(), count: next }))
+  return next
+}
+
+// ── Component ─────────────────────────────────────────────
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 function ReservasPage() {
   const [charCount, setCharCount] = useState(0)
   const [fileName, setFileName] = useState<string | null>(null)
   const [status, setStatus] = useState<Status>('idle')
+  const [submissionCount, setSubmissionCount] = useState(() => getCount())
+
+  const remaining = MAX_PER_DAY - submissionCount
+  const isLimited = remaining <= 0
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (status === 'submitting') return
+    if (status === 'submitting' || isLimited) return
 
     setStatus('submitting')
     const form = e.currentTarget
@@ -23,6 +53,8 @@ function ReservasPage() {
 
       if (!response.ok) throw new Error('Server error')
 
+      const newCount = incrementCount()
+      setSubmissionCount(newCount)
       setStatus('success')
       form.reset()
       setCharCount(0)
@@ -32,6 +64,26 @@ function ReservasPage() {
     }
   }
 
+  // ── Limit reached ─────────────────────────────────────
+  if (isLimited) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <div className={styles.limitBox}>
+            <p className={styles.limitTitle}>Límite diario alcanzado</p>
+            <p className={styles.limitText}>
+              Podés enviar hasta {MAX_PER_DAY} encargos por día. Volvé mañana o comunicate con nosotros directamente por teléfono.
+            </p>
+            <a href="tel:+541176231044" className={styles.limitPhone}>
+              +54 11 7623-1044
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Success ───────────────────────────────────────────
   if (status === 'success') {
     return (
       <div className={styles.container}>
@@ -41,15 +93,18 @@ function ReservasPage() {
             <p className={styles.successText}>
               Te contactaremos a la brevedad para confirmar la disponibilidad.
             </p>
-            <button className={styles.submit} onClick={() => setStatus('idle')}>
-              Hacer otro encargo
-            </button>
+            {remaining > 1 && (
+              <button className={styles.submit} onClick={() => setStatus('idle')}>
+                Hacer otro encargo
+              </button>
+            )}
           </div>
         </div>
       </div>
     )
   }
 
+  // ── Form ──────────────────────────────────────────────
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -110,9 +165,14 @@ function ReservasPage() {
             </p>
           )}
 
-          <button type="submit" className={styles.submit} disabled={status === 'submitting'}>
-            {status === 'submitting' ? 'Enviando...' : 'Enviar encargo'}
-          </button>
+          <div className={styles.formFooter}>
+            <button type="submit" className={styles.submit} disabled={status === 'submitting'}>
+              {status === 'submitting' ? 'Enviando...' : 'Enviar encargo'}
+            </button>
+            <span className={styles.remainingHint}>
+              {remaining} de {MAX_PER_DAY} encargos disponibles hoy
+            </span>
+          </div>
         </form>
       </div>
     </div>
