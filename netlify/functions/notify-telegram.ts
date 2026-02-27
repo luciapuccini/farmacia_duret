@@ -11,6 +11,8 @@ interface HandlerResponse {
 interface NetlifyFormPayload {
   created_at?: string
   data?: Record<string, string>
+  name?: string | null
+  email?: string | null
 }
 
 interface WebhookBody {
@@ -18,6 +20,8 @@ interface WebhookBody {
   data?: Record<string, string>
   created_at?: string
   form_name?: string
+  name?: string | null
+  email?: string | null
 }
 
 export const handler = async (event: NetlifyEvent): Promise<HandlerResponse> => {
@@ -40,10 +44,12 @@ export const handler = async (event: NetlifyEvent): Promise<HandlerResponse> => 
     return { statusCode: 400, body: 'Invalid JSON body' }
   }
 
-  const data = parsed?.payload?.data ?? parsed?.data ?? {}
-  const createdAt = parsed?.payload?.created_at ?? parsed?.created_at
-  const name = data.name ?? 'Sin nombre'
-  const email = data.email ?? 'Sin email'
+  const x = parsed?.payload ?? parsed
+  console.log('[notify-telegram] x:', JSON.stringify(x, null, 2))
+  const name = x.name ?? 'Sin nombre'
+  const email = x.email ?? 'Sin email'
+  const data = x.data ?? {}
+  const createdAt = x.created_at
 
   const lines = [
     '*Nuevo encargo recibido*',
@@ -53,7 +59,6 @@ export const handler = async (event: NetlifyEvent): Promise<HandlerResponse> => 
     '',
     `📝 ${data.encargo ?? '(sin detalle)'}`,
   ]
-  console.log("🚀 ~ handler ~ lines:", lines)
 
   if (createdAt) {
     const date = new Date(createdAt).toLocaleString('es-AR', {
