@@ -7,6 +7,7 @@ import OfertasPage from './pages/ofertas'
 import ContactoPage from './pages/contacto'
 import SubcategoryPage from './pages/subcategory'
 import CategoryPage from './pages/category'
+import NotFoundPage from './pages/not-found'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/medicamentos/venta-bajo-receta" element={<Navigate to="/reservas" replace />} />
           <Route path="/:category" element={<CategoryPage />} />
           <Route path="/:category/:subcategory" element={<SubcategoryPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
