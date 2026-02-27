@@ -118,7 +118,7 @@ export default function Navbar() {
                 Contacto
               </NavLink>
             </div>
-            <CtaButton  className={styles.navCta}>
+            <CtaButton to="/reservas" className={styles.navCta}>
               Reservas
             </CtaButton>
           </nav>

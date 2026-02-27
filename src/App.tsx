@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import Layout from './layout'
 import HomePage from './pages/home'
 import ReservasPage from './pages/reservas'
@@ -18,6 +18,7 @@ function App() {
           <Route path="/reservas" element={<ReservasPage />} />
           <Route path="/ofertas" element={<OfertasPage />} />
           <Route path="/contacto" element={<ContactoPage />} />
+          <Route path="/medicamentos/venta-bajo-receta" element={<Navigate to="/reservas" replace />} />
           <Route path="/:category" element={<CategoryPage />} />
           <Route path="/:category/:subcategory" element={<SubcategoryPage />} />
         </Routes>
