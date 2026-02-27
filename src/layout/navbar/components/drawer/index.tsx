@@ -78,19 +78,23 @@ function DrawerNavItem({
             </span>
           )}
         </NavLink>
+      ) : !hasSubcategories ? (
+        <NavLink
+          to={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
+          className={styles.drawerItemButton}
+          onClick={onNavigate}
+        >
+          <span>{category.nombre}</span>
+        </NavLink>
       ) : (
         <button
           type="button"
           className={styles.drawerItemButton}
-          onClick={() => hasSubcategories && setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
         >
           <span>{category.nombre}</span>
-          {hasSubcategories && (
-            <span className={styles.arrow} data-open={isOpen}>
-              ›
-            </span>
-          )}
+          <span className={styles.arrow} data-open={isOpen}>›</span>
         </button>
       )}
 
@@ -102,7 +106,7 @@ function DrawerNavItem({
               category={subcategory}
               depth={depth + 1}
               onNavigate={onNavigate}
-              parentPath={depth === 0 ? categoryPath : parentPath}
+              parentPath={depth === 0 ? categoryPath : `${parentPath}${categoryPath}`}
             />
           ))}
         </div>
@@ -135,6 +139,19 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
           {categories.map((category: Category) => (
             <DrawerNavItem key={category.nombre} category={category} onNavigate={onClose} />
           ))}
+          <div className={styles.drawerItem} data-depth={0}>
+            <NavLink
+              to="/contacto"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
+                  : styles.drawerItemButton
+              }
+              onClick={onClose}
+            >
+              <span>Contacto</span>
+            </NavLink>
+          </div>
         </nav>
       </div>
     </>

@@ -49,6 +49,14 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
           <span>{category.nombre}</span>
           {hasSubcategories && <span className={styles.chevron}>›</span>}
         </NavLink>
+      ) : depth === 2 ? (
+        <NavLink
+          to={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
+          className={styles.navItemButton}
+          onClick={() => setIsOpen(false)}
+        >
+          <span>{category.nombre}</span>
+        </NavLink>
       ) : (
         <button
           className={styles.navItemButton}
@@ -67,7 +75,7 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
               key={subcategory.nombre} 
               category={subcategory} 
               depth={depth + 1} 
-              parentPath={depth === 0 ? categoryPath : parentPath}
+              parentPath={depth === 0 ? categoryPath : `${parentPath}${categoryPath}`}
             />
           ))}
         </div>
@@ -98,6 +106,18 @@ export default function Navbar() {
             {categories.map((category) => (
               <NavItem key={category.nombre} category={category} />
             ))}
+            <div className={styles.navItem} data-depth={0}>
+              <NavLink
+                to="/contacto"
+                className={({ isActive }) =>
+                  isActive
+                    ? `${styles.navItemButton} ${styles.navItemButtonActive}`
+                    : styles.navItemButton
+                }
+              >
+                Contacto
+              </NavLink>
+            </div>
             <CtaButton  className={styles.navCta}>
               Reservas
             </CtaButton>

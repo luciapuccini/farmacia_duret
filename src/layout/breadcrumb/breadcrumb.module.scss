@@ -52,11 +52,8 @@
 }
 
 .currentPage {
-  color: #333;
+  color: rgba(0, 0, 0, 0.55);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 6px 12px;
-  background: linear-gradient(135deg, #fbf6ef 0%, #e8e0d5 100%);
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
 }

@@ -7,6 +7,7 @@ import Breadcrumb from './breadcrumb'
 import styles from './layout.module.scss'
 
 const categoryNames: Record<string, string> = {
+  'contacto': 'Contacto',
   'dermocosmetica': 'Dermocosmética',
   'belleza': 'Belleza',
   'cuidado-personal': 'Cuidado Personal',
@@ -97,7 +98,7 @@ export default function Layout({ children }: Props) {
         <Breadcrumb />
         {children}
       </Container>
-      <Footer>Footer</Footer>
+      <Footer />
     </div>
   )
 }

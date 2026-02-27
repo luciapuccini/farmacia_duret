@@ -1,0 +1,202 @@
+[
+  {
+    "id": "1",
+    "name": "Pampers Premium Care Recién Nacido x24",
+    "brand": "Pampers",
+    "image": "",
+    "current_offer": "20% off",
+    "category": "bebes",
+    "subcategory": "panales",
+    "filter": "recien-nacido"
+  },
+  {
+    "id": "2",
+    "name": "Huggies Natural Care Classic x60",
+    "brand": "Huggies",
+    "image": "",
+    "current_offer": null,
+    "category": "bebes",
+    "subcategory": "panales",
+    "filter": "panales-descartables"
+  },
+  {
+    "id": "3",
+    "name": "Pampers Active Baby Maxi x44",
+    "brand": "Pampers",
+    "image": "",
+    "current_offer": "3x2",
+    "category": "bebes",
+    "subcategory": "panales",
+    "filter": "panales-descartables"
+  },
+  {
+    "id": "4",
+    "name": "Huggies Wonder Pants Talle M x56",
+    "brand": "Huggies",
+    "image": "",
+    "current_offer": null,
+    "category": "bebes",
+    "subcategory": "panales",
+    "filter": "pants"
+  },
+  {
+    "id": "5",
+    "name": "Pampers Pants Talle G x48",
+    "brand": "Pampers",
+    "image": "",
+    "current_offer": "15% off",
+    "category": "bebes",
+    "subcategory": "panales",
+    "filter": "pants"
+  },
+  {
+    "id": "6",
+    "name": "Huggies Little Swimmers Talle M x11",
+    "brand": "Huggies",
+    "image": "",
+    "current_offer": null,
+    "category": "bebes",
+    "subcategory": "panales",
+    "filter": "panales-de-agua"
+  },
+  {
+    "id": "7",
+    "name": "Toallitas Huggies Natural Care x80",
+    "brand": "Huggies",
+    "image": "",
+    "current_offer": "2x1",
+    "category": "bebes",
+    "subcategory": "higiene-del-bebe",
+    "filter": "toallas-humedas"
+  },
+  {
+    "id": "8",
+    "name": "Toallitas Pampers Sensitive x52",
+    "brand": "Pampers",
+    "image": "",
+    "current_offer": null,
+    "category": "bebes",
+    "subcategory": "higiene-del-bebe",
+    "filter": "toallas-humedas"
+  },
+  {
+    "id": "9",
+    "name": "Óleo Calcáreo Johnson's 200ml",
+    "brand": "Johnson's",
+    "image": "",
+    "current_offer": null,
+    "category": "bebes",
+    "subcategory": "higiene-del-bebe",
+    "filter": "oleos-y-algodon"
+  },
+  {
+    "id": "10",
+    "name": "Shampoo Bebé Johnson's Neutro 400ml",
+    "brand": "Johnson's",
+    "image": "",
+    "current_offer": "10% off",
+    "category": "bebes",
+    "subcategory": "higiene-del-bebe",
+    "filter": "bano-del-bebe"
+  },
+  {
+    "id": "11",
+    "name": "Labial Mate Color Riche 01 Rouge Caresse",
+    "brand": "L'Oréal",
+    "image": "",
+    "current_offer": "20% off",
+    "category": "belleza",
+    "subcategory": "maquillaje",
+    "filter": "labios"
+  },
+  {
+    "id": "12",
+    "name": "Máscara Sky High Black Waterproof",
+    "brand": "Maybelline",
+    "image": "",
+    "current_offer": null,
+    "category": "belleza",
+    "subcategory": "maquillaje",
+    "filter": "ojos"
+  },
+  {
+    "id": "13",
+    "name": "Base Líquida ColorStay 24H Natural Beige",
+    "brand": "Revlon",
+    "image": "",
+    "current_offer": "15% off",
+    "category": "belleza",
+    "subcategory": "maquillaje",
+    "filter": "rostro"
+  },
+  {
+    "id": "14",
+    "name": "Crema Retinol Anti-Edad Día SPF30 50ml",
+    "brand": "Neutrogena",
+    "image": "",
+    "current_offer": null,
+    "category": "dermocosmetica",
+    "subcategory": "rostro",
+    "filter": "anti-edad"
+  },
+  {
+    "id": "15",
+    "name": "Agua Micelar Sensibio H2O 500ml",
+    "brand": "Bioderma",
+    "image": "",
+    "current_offer": "10% off",
+    "category": "dermocosmetica",
+    "subcategory": "rostro",
+    "filter": "limpieza"
+  },
+  {
+    "id": "16",
+    "name": "Crema Hidratante Toleriane Sensitive 40ml",
+    "brand": "La Roche-Posay",
+    "image": "",
+    "current_offer": null,
+    "category": "dermocosmetica",
+    "subcategory": "rostro",
+    "filter": "hidratacion"
+  },
+  {
+    "id": "17",
+    "name": "Desodorante Dove Original Crema 150ml",
+    "brand": "Dove",
+    "image": "",
+    "current_offer": "3x2",
+    "category": "cuidado-personal",
+    "subcategory": "higiene-personal",
+    "filter": "desodorantes"
+  },
+  {
+    "id": "18",
+    "name": "Jabón Líquido Protex Antibacterial 400ml",
+    "brand": "Protex",
+    "image": "",
+    "current_offer": null,
+    "category": "cuidado-personal",
+    "subcategory": "higiene-personal",
+    "filter": "jabones-y-ducha"
+  },
+  {
+    "id": "19",
+    "name": "Ibuprofeno 400mg x20 comprimidos",
+    "brand": "Rowe Pharma",
+    "image": "",
+    "current_offer": null,
+    "category": "medicamentos",
+    "subcategory": "venta-libre",
+    "filter": "analgesicos"
+  },
+  {
+    "id": "20",
+    "name": "Loratadina 10mg x10 comprimidos",
+    "brand": "Roemmers",
+    "image": "",
+    "current_offer": "15% off",
+    "category": "medicamentos",
+    "subcategory": "venta-libre",
+    "filter": "antialergicos"
+  }
+]

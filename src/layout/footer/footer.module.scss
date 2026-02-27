@@ -1,11 +1,26 @@
 @use '@/globals.module' as g;
 
 .footer {
-  border: 1px solid #cfcfcf;
-  padding: 0.75rem 1rem;
+  border-top: 1px solid #cfcfcf;
   background: g.palette(primary);
+}
+
+.inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
 
   @include g.up(md) {
-    padding: 1rem 2rem;
+    padding: 1.25rem 2rem;
+  }
+
+  p {
+    margin: 0;
   }
 }
