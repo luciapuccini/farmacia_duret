@@ -13,5 +13,13 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Netlify Forms detection: mirrors the /reservas form -->
+    <form name="reservas" netlify netlify-honeypot="bot-field" enctype="multipart/form-data" hidden>
+      <input type="hidden" name="form-name" value="reservas" />
+      <input name="bot-field" />
+      <textarea name="encargo"></textarea>
+      <input name="imagen" type="file" />
+    </form>
   </body>
 </html>

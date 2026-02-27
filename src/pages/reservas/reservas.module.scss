@@ -126,12 +126,65 @@
   padding: 0.625rem 1.5rem;
   transition: filter 0.15s ease, transform 0.15s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     filter: brightness(0.95);
     transform: translateY(-1px);
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: translateY(0);
   }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+/* ── Honeypot (visually hidden) ──────────────────────────── */
+
+.hidden {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ── Error message ───────────────────────────────────────── */
+
+.errorMsg {
+  font-size: 0.875rem;
+  color: #c0392b;
+  margin: 0;
+  padding: 0.625rem 0.875rem;
+  background: rgba(192, 57, 43, 0.06);
+  border-radius: 6px;
+  border: 1px solid rgba(192, 57, 43, 0.15);
+}
+
+/* ── Success state ───────────────────────────────────────── */
+
+.successBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 2rem;
+  background: g.palette(almond);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.successTitle {
+  font-size: 1.125rem;
+  font-weight: var(--font-weight-strong);
+  color: g.palette(black);
+  margin: 0;
+}
+
+.successText {
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.6;
 }

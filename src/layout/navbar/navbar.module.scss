@@ -1,72 +1,96 @@
 @use '@/globals.module' as g;
 
+/* ── Shell ────────────────────────────────────────────── */
+
 .navbar {
-  border: 1px solid #cfcfcf;
   background: g.palette(primary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
   overflow: visible;
 }
 
-.navContent {
+/* ── Top row: brand + actions ─────────────────────────── */
+
+.navTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
-  position: relative;
-  gap: 1rem;
+  padding: 0.875rem 1rem;
 
   @include g.up(md) {
-    padding: 0 2rem;
-    gap: 0;
+    padding: 0.875rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   }
 }
 
+.brand {
+  font-size: 1rem;
+  font-weight: var(--font-weight-strong);
+  color: g.palette(black);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.65;
+  }
+}
+
+/* Reservas CTA — desktop only */
+.navCta {
+  display: none;
+
+  @include g.up(md) {
+    display: inline-flex;
+  }
+}
+
+/* Hamburger — mobile only */
 .menuButton {
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
   border: none;
-  font-size: 1.5rem;
-  color: var(--text-color);
+  color: g.palette(black);
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 4px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease;
   flex-shrink: 0;
 
+  svg {
+    display: block;
+  }
+
   &:hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(0, 0, 0, 0.06);
   }
 
   &:active {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.1);
   }
 
-  /* Hide on desktop */
   @include g.up(md) {
     display: none;
   }
 }
 
+/* ── Categories row — desktop only ───────────────────── */
+
 .navCategories {
   display: none;
-  flex: 1;
-  gap: 0;
-  position: relative;
-  overflow: visible;
-  min-width: 0;
 
-  /* Show on desktop */
   @include g.up(md) {
     display: flex;
-    gap: 0;
-  }
-
-  @include g.up(md) {
-    overflow: visible;
+    align-items: stretch;
+    padding: 0 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
 
     &::-webkit-scrollbar {
       display: none;
@@ -74,178 +98,113 @@
   }
 }
 
+/* ── Nav item wrapper ─────────────────────────────────── */
+
 .navItem {
   position: relative;
   display: flex;
-  white-space: nowrap;
-
-  &[data-depth='0'] {
-    border-right: 1px solid rgba(0, 0, 0, 0.08);
-
-    &:last-child {
-      border-right: none;
-    }
-  }
+  align-items: stretch;
+  flex-shrink: 0;
 }
+
+/* ── Nav item button / link ───────────────────────────── */
 
 .navItemButton {
   background: transparent;
-  color: var(--text-color);
+  color: g.palette(black);
   border: none;
-  padding: 0.75rem 1rem;
+  padding: 0.625rem 0.875rem;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
+  gap: 0.3rem;
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
   text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  line-height: 1;
 
-  @include g.up(md) {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  &:hover:not(:disabled) {
-    background: rgba(0, 0, 0, 0.04);
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom-color: rgba(0, 0, 0, 0.2);
   }
 
   &[aria-expanded='true'] {
     background: rgba(0, 0, 0, 0.04);
 
     .chevron {
-      transform: rotate(90deg);
+      transform: rotate(180deg);
     }
   }
 }
 
 .navItemButtonActive {
-  background: rgba(0, 0, 0, 0.08);
+  border-bottom-color: g.palette(black);
 }
 
+/* ── Chevron icons ────────────────────────────────────── */
+
 .chevron {
-  font-size: 1.2rem;
-  display: inline-flex;
-  align-items: center;
-  transition: transform 0.2s ease;
-  color: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: transform 0.15s ease;
 }
+
+.chevronRight {
+  display: inline-block;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+/* ── Flyout submenu ───────────────────────────────────── */
 
 .submenu {
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
-  border: 1px solid #cfcfcf;
-  border-top: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: g.palette(white);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 2px solid g.palette(black);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   z-index: 1001;
-  min-width: 250px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
+  min-width: 210px;
 
-  &[data-depth='0'] {
-    left: 0;
-    top: 100%;
-    border-top: none;
-  }
-
-  &[data-depth='1'] {
-    left: 100%;
-    top: 0;
-    border-left: 1px solid #cfcfcf;
-    border-top: 1px solid #cfcfcf;
-    margin-left: -1px;
-  }
-
+  &[data-depth='1'],
   &[data-depth='2'] {
     left: 100%;
-    top: 0;
-    border-left: 1px solid #cfcfcf;
-    border-top: 1px solid #cfcfcf;
-    margin-left: -1px;
+    top: -1px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
+  /* Reset item layout inside menus */
   .navItem {
-    display: flex;
     flex-direction: column;
-    border: none;
+    align-items: stretch;
 
-    &:not(:last-child) .navItemButton {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
   }
 
+  /* Override button styles inside menus — no underline indicator */
   .navItemButton {
     width: 100%;
-    padding: 0.75rem 1rem;
-    display: flex;
+    padding: 0.7rem 1rem;
+    font-size: 0.875rem;
+    border-bottom: none;
     justify-content: space-between;
-    border-radius: 0;
-    text-align: left;
-    font-size: 0.85rem;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.04);
+      background: rgba(0, 0, 0, 0.05);
+      border-bottom: none;
     }
   }
-}
 
-.navRight {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  background: g.palette(almond);
-  color: g.palette(black);
-  padding: 0.625rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 400;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-
-  &:hover {
-    background: g.palette(almond);
-    filter: brightness(0.95);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  .navItemButtonActive {
+    background: rgba(0, 0, 0, 0.06);
+    border-bottom: none;
   }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: none;
-  }
-}
-
-.navButton {
-  background: g.palette(primary);
-  color: var(--text-color);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.02);
-    border-color: rgba(0, 0, 0, 0.12);
-  }
-
-  &:active {
-    background: rgba(0, 0, 0, 0.04);
-  }
-}
-
-.navCta {
-  margin-left: auto;
-  margin-top: 6px;
-  margin-bottom: 6px;
-
 }

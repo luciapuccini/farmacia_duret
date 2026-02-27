@@ -12,6 +12,22 @@ type Category = {
   subcategorias?: Category[]
 }
 
+function ChevronDown() {
+  return (
+    <svg className={styles.chevron} width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+      <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function ChevronRight() {
+  return (
+    <svg className={styles.chevronRight} width="6" height="10" viewBox="0 0 6 10" fill="none" aria-hidden="true">
+      <path d="M1 1l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function NavItem({ category, depth = 0, parentPath = '' }: { category: Category; depth?: number; parentPath?: string }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
@@ -34,8 +50,8 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
           }
           aria-expanded={isOpen}
         >
-          <span>{category.nombre}</span>
-          {hasSubcategories && <span className={styles.chevron}>›</span>}
+          {category.nombre}
+          {hasSubcategories && <ChevronDown />}
         </NavLink>
       ) : depth === 1 ? (
         <NavLink
@@ -46,16 +62,15 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
               : styles.navItemButton
           }
         >
-          <span>{category.nombre}</span>
-          {hasSubcategories && <span className={styles.chevron}>›</span>}
+          {category.nombre}
+          {hasSubcategories && <ChevronRight />}
         </NavLink>
       ) : depth === 2 ? (
         <NavLink
           to={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
           className={styles.navItemButton}
-          onClick={() => setIsOpen(false)}
         >
-          <span>{category.nombre}</span>
+          {category.nombre}
         </NavLink>
       ) : (
         <button
@@ -63,18 +78,18 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
           onClick={() => hasSubcategories && setIsOpen(!isOpen)}
           aria-expanded={isOpen}
         >
-          <span>{category.nombre}</span>
-          {hasSubcategories && <span className={styles.chevron}>›</span>}
+          {category.nombre}
+          {hasSubcategories && <ChevronRight />}
         </button>
       )}
 
       {hasSubcategories && isOpen && (
         <div className={styles.submenu} data-depth={depth}>
           {category.subcategorias?.map((subcategory) => (
-            <NavItem 
-              key={subcategory.nombre} 
-              category={subcategory} 
-              depth={depth + 1} 
+            <NavItem
+              key={subcategory.nombre}
+              category={subcategory}
+              depth={depth + 1}
               parentPath={depth === 0 ? categoryPath : `${parentPath}${categoryPath}`}
             />
           ))}
@@ -90,42 +105,53 @@ export default function Navbar() {
 
   return (
     <>
-      <div className={styles.navbar}>
-        <div className={styles.navContent}>
-          {isMobile && (
-            <button
-              className={styles.menuButton}
-              onClick={() => setIsDrawerOpen(true)}
-              aria-label="Open menu"
-            >
-              ☰
-            </button>
-          )}
+      <header className={styles.navbar}>
 
-          <nav className={styles.navCategories}>
-            {categories.map((category) => (
-              <NavItem key={category.nombre} category={category} />
-            ))}
-            <div className={styles.navItem} data-depth={0}>
-              <NavLink
-                to="/contacto"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.navItemButton} ${styles.navItemButtonActive}`
-                    : styles.navItemButton
-                }
-              >
-                Contacto
-              </NavLink>
-            </div>
-            <CtaButton to="/reservas" className={styles.navCta}>
-              Reservas
-            </CtaButton>
-          </nav>
+        {/* Top row: brand + CTA (desktop) / brand + hamburger (mobile) */}
+        <div className={styles.navTop}>
+          <NavLink to="/" className={styles.brand}>
+            Farmacia Duret
+          </NavLink>
 
-          
+          {/* Desktop CTA */}
+          <CtaButton to="/reservas" className={styles.navCta}>
+            Hacer un encargo
+          </CtaButton>
+
+          {/* Mobile hamburger */}
+          <button
+            className={styles.menuButton}
+            onClick={() => setIsDrawerOpen(true)}
+            aria-label="Abrir menú"
+          >
+            <svg width="20" height="16" viewBox="0 0 20 16" fill="currentColor" aria-hidden="true">
+              <rect width="20" height="2" rx="1" />
+              <rect y="7" width="20" height="2" rx="1" />
+              <rect y="14" width="20" height="2" rx="1" />
+            </svg>
+          </button>
         </div>
-      </div>
+
+        {/* Categories row — desktop only */}
+        <nav className={styles.navCategories} aria-label="Categorías">
+          {categories.map((category) => (
+            <NavItem key={category.nombre} category={category} />
+          ))}
+          <div className={styles.navItem} data-depth={0}>
+            <NavLink
+              to="/contacto"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.navItemButton} ${styles.navItemButtonActive}`
+                  : styles.navItemButton
+              }
+            >
+              Contacto
+            </NavLink>
+          </div>
+        </nav>
+
+      </header>
 
       {isMobile && (
         <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

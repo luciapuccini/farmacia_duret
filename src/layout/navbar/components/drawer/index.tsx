@@ -14,6 +14,22 @@ interface DrawerProps {
   onClose: () => void
 }
 
+function ChevronDown() {
+  return (
+    <svg className={styles.chevron} width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+      <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function ChevronRight() {
+  return (
+    <svg className={styles.chevron} width="6" height="10" viewBox="0 0 6 10" fill="none" aria-hidden="true">
+      <path d="M1 1l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 function DrawerNavItem({
   category,
   depth = 0,
@@ -43,21 +59,18 @@ function DrawerNavItem({
             }
             onClick={onNavigate}
           >
-            <span>{category.nombre}</span>
+            {category.nombre}
           </NavLink>
 
           {hasSubcategories && (
             <button
               type="button"
               className={styles.drawerToggle}
-              data-open={isOpen}
               onClick={() => setIsOpen(!isOpen)}
-              aria-label={`Mostrar ${category.nombre}`}
+              aria-label={`${isOpen ? 'Ocultar' : 'Mostrar'} ${category.nombre}`}
               aria-expanded={isOpen}
             >
-              <span className={styles.arrow} data-open={isOpen}>
-                ‹
-              </span>
+              {isOpen ? <ChevronDown /> : <ChevronRight />}
             </button>
           )}
         </div>
@@ -71,12 +84,8 @@ function DrawerNavItem({
           }
           onClick={onNavigate}
         >
-          <span>{category.nombre}</span>
-          {hasSubcategories && (
-            <span className={styles.arrow} data-open={isOpen}>
-              ›
-            </span>
-          )}
+          {category.nombre}
+          {hasSubcategories && <ChevronRight />}
         </NavLink>
       ) : !hasSubcategories ? (
         <NavLink
@@ -84,7 +93,7 @@ function DrawerNavItem({
           className={styles.drawerItemButton}
           onClick={onNavigate}
         >
-          <span>{category.nombre}</span>
+          {category.nombre}
         </NavLink>
       ) : (
         <button
@@ -93,8 +102,8 @@ function DrawerNavItem({
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
         >
-          <span>{category.nombre}</span>
-          <span className={styles.arrow} data-open={isOpen}>›</span>
+          {category.nombre}
+          {isOpen ? <ChevronDown /> : <ChevronRight />}
         </button>
       )}
 
@@ -118,24 +127,30 @@ function DrawerNavItem({
 export default function Drawer({ isOpen, onClose }: DrawerProps) {
   return (
     <>
-      {/* Backdrop */}
       {isOpen && (
-        <div className={styles.backdrop} onClick={onClose} />
+        <div className={styles.backdrop} onClick={onClose} aria-hidden="true" />
       )}
 
-      {/* Drawer */}
-      <div className={styles.drawer} data-open={isOpen}>
+      <div className={styles.drawer} data-open={isOpen} role="dialog" aria-modal="true" aria-label="Menú de navegación">
+
+        {/* Header: brand + close */}
         <div className={styles.drawerHeader}>
+          <NavLink to="/" className={styles.drawerBrand} onClick={onClose}>
+            Farmacia Duret
+          </NavLink>
           <button
             className={styles.closeButton}
             onClick={onClose}
-            aria-label="Close menu"
+            aria-label="Cerrar menú"
           >
-            ✕
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </button>
         </div>
 
-        <nav className={styles.drawerNav}>
+        {/* Nav items */}
+        <nav className={styles.drawerNav} aria-label="Categorías">
           {categories.map((category: Category) => (
             <DrawerNavItem key={category.nombre} category={category} onNavigate={onClose} />
           ))}
@@ -149,10 +164,18 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
               }
               onClick={onClose}
             >
-              <span>Contacto</span>
+              Contacto
             </NavLink>
           </div>
         </nav>
+
+        {/* Footer CTA */}
+        <div className={styles.drawerFooter}>
+          <NavLink to="/reservas" className={styles.drawerCta} onClick={onClose}>
+            Hacer un encargo
+          </NavLink>
+        </div>
+
       </div>
     </>
   )
