@@ -1,78 +1,77 @@
 # Farmacia Duret
 
-Farmaciaduret.com is a web application designed for a pharmacy system, utilizing Vite, React, and TypeScript. This project aims to provide a comprehensive online platform where users can view categories and sub-categories of products, a detailed product list, a contact page, and FAQs. It also includes a simple booking system for medications that require a prescription, integrating a connection with patients via WhatsApp.
+Sitio web de Farmacia Duret (Villa Rosa, Buenos Aires) — catálogo de productos, página de contacto y sistema de encargos online con notificaciones por Telegram.
 
-## Technology Stack
-- Vite: Sophisticated build tool for modern web projects
-- React: UI library for building interactive user interfaces
-- TypeScript: Strongly typed programming language that builds on JavaScript, providing better tooling at any scale
+## Stack
 
-Currently, two official plugins are available:
+- **Vite + React + TypeScript** — frontend SPA
+- **SCSS Modules** — estilos con scope por componente
+- **Netlify** — hosting, formularios y funciones serverless
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Desarrollo local
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Notificaciones por Telegram
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Cuando un cliente envía un encargo desde `/reservas`, el sistema notifica automáticamente a un grupo de Telegram. Los pasos a continuación explican cómo configurarlo.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Paso 1 — Crear el bot
+TBD
+
+### Paso 2 — Crear el grupo de notificaciones
+
+1. En Telegram, crear un nuevo grupo (ej. **"Encargos Farmacia Duret"**)
+2. Agregar el bot al grupo (buscarlo por su nombre de usuario)
+3. /start
+4. Agregar a todos los integrantes del equipo que deban recibir las notificaciones.
+
+### Paso 3 — Obtener el ID del grupo
+
+1. Abrir este enlace en el navegador (reemplazar `{TOKEN}` con el token del Paso 1):
+   ```
+   https://api.telegram.org/bot{TOKEN}/getUpdates
+   ```
+2. Buscar en la respuesta un bloque como este:
+   ```json
+   "chat": { "id": -1001234567890, "title": "Encargos Farmacia Duret", "type": "group" }
+   ```
+3. El número después de `"id":` es el **Chat ID** — copiarlo (incluir el signo `-` si lo tiene)
+
+### Paso 4 — Configurar las variables en Netlify
+
+1. Ingresar al panel de Netlify → **Site configuration → Environment variables**
+2. Hacer clic en **Add a variable** y agregar las siguientes dos:
+
+   | Variable | Valor |
+   |---|---|
+   | `TELEGRAM_BOT_TOKEN` | El token del Paso 1 |
+   | `TELEGRAM_CHAT_ID` | El ID del Paso 3 |
+
+3. Guardar los cambios
+4. Ir a **Deploys → Trigger deploy → Deploy site** para aplicar las variables
+
+### Paso 5 — Activar el webhook en Netlify Forms
+
+1. En Netlify → **Forms** → hacer clic en el formulario **reservas**
+2. Ir a **Form notifications → Add notification → Outgoing webhook**
+3. Completar los campos:
+   - **Event to listen for:** `New form submission`
+   - **URL to notify:** `https://{nombre-del-sitio}.netlify.app/.netlify/functions/notify-telegram`
+     *(reemplazar `{nombre-del-sitio}` con el subdominio real del sitio en Netlify)*
+4. Guardar
+
+### Verificación
+
+1. Abrir el sitio y enviar un encargo de prueba desde `/reservas`
+2. En pocos segundos debe llegar un mensaje al grupo de Telegram con el texto del encargo
+3. Si el mensaje no llega, revisar los logs en Netlify → **Functions → notify-telegram**
+
+---
+
+
