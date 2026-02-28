@@ -60,6 +60,10 @@ export const handler = async (event: NetlifyEvent): Promise<HandlerResponse> => 
     `📝 ${data.encargo ?? '(sin detalle)'}`,
   ]
 
+  if (data.imagen) {
+    lines.push(`🖼 ${data.imagen}`)
+  }
+
   if (createdAt) {
     const date = new Date(createdAt).toLocaleString('es-AR', {
       timeZone: 'America/Argentina/Buenos_Aires',
