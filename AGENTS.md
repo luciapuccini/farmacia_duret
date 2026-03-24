@@ -1,23 +1,34 @@
+## Framework
+
+This is a **Next.js App Router** project (React 19 + TypeScript). Hosted on Cloudflare Pages via `@opennextjs/cloudflare`.
+
 ## Page Structure
 
-For each page, we adhere to the following folder structure:
+Pages live in the `app/` directory using Next.js file-system routing:
 
-- A `page` folder which contains:
-  - `index.tsx`: The React component of the page.
-  - `.module.scss`: The CSS module for styling the component.
+- `app/page.tsx` — Home page
+- `app/contacto/page.tsx` — Static page
+- `app/ofertas/page.tsx` — Static page
+- `app/reservas/page.tsx` — Client component (`'use client'`) with form
+- `app/[category]/page.tsx` — Dynamic category page (renders SubCategoryGrid)
+- `app/[category]/[subcategory]/page.tsx` — Dynamic subcategory page (renders ProductCatalog)
+- `app/api/reservas/route.ts` — API route for form submission + Telegram notification
+- `app/not-found.tsx` — 404 page
 
-This structure ensures a consistent and organized approach to building our application's interface. Each page's style and functionality are encapsulated, making the components easily maintainable and scalable.
+Each page has its `.module.scss` file alongside it in the same directory.
 
 ## Component Structure
+
+Reusable components live in `src/components/`. Layout components in `src/layout/`.
 
 For parent components with sub-components:
 
 - A `components` folder immediately within the parent component's directory contains all sub-components.
-- Each sub-component follows the same folder structure as its parent:
+- Each sub-component follows the same folder structure:
   - `index.tsx`: The React component.
   - `.module.scss`: The CSS module for styling.
 
-Example structure for a parent component with sub-components:
+Example:
 
 ```
 src/layout/navbar/
@@ -27,69 +38,39 @@ src/layout/navbar/
     drawer/
       index.tsx
       drawer.module.scss
-    searchBar/
-      index.tsx
-      searchBar.module.scss
 ```
 
-This convention keeps related components organized together and makes it easy to locate and maintain sub-components close to their parent implementation.
+## Client vs Server Components
+
+- Components using hooks (`useState`, `useEffect`, `usePathname`, `useSearchParams`) must have `'use client'` at the top.
+- Pages that are purely presentational can be Server Components (the default).
+- The Navbar, Drawer, Breadcrumb, PageHeader, and ProductCatalog are client components.
 
 ## Helper Hooks and Utilities
 
-Custom React hooks and utility functions should be organized in `/src/helpers`:
+Custom React hooks and utility functions are in `src/helpers/`:
 
-- Create hook files in `src/helpers/` with descriptive names like `hooks.ts`, `utils.ts`, etc.
-- Group related helpers together (e.g., all custom hooks in `hooks.ts`)
-- Always include JSDoc comments explaining the purpose and parameters
-- Import helpers using absolute paths: `import { useMediaQuery } from '@/helpers/hooks'`
+- `hooks.ts` — Custom hooks like `useMediaQuery` (has `'use client'`)
+- `routes.ts` — `categoryNameToPath()` slug helper
 
-Example:
+Import using absolute paths: `import { useMediaQuery } from '@/helpers/hooks'`
 
-```typescript
-// src/helpers/hooks.ts
-export function useMediaQuery(query: string): boolean {
-  // Hook implementation
-}
+## Sass Breakpoints
 
-export function useLocalStorage(key: string) {
-  // Hook implementation
-}
-```
-
-Then import in your components:
-
-```typescript
-import { useMediaQuery, useLocalStorage } from '@/helpers/hooks'
-```
-
-**Sass Breakpoints**
-
-- Use the global Sass module at `src/globals.module.scss` to access responsive helpers.
-- Import it in SCSS files with: `@use "@/globals.module" as g;` (same path everywhere).
-- Use `@include g.up(md) { ... }` for styles that apply at and above the `md` breakpoint.
-- Use `@include g.down(md) { ... }` for styles that apply below the `md` breakpoint.
- 
+- Use the global Sass utilities at `src/globals.scss` for responsive helpers and palette.
+- Import in SCSS files with: `@use "@/globals" as g;`
+- Use `@include g.up(md) { ... }` for styles at and above the `md` breakpoint.
+- Use `@include g.down(md) { ... }` for styles below the `md` breakpoint.
+- Use `g.palette(black)`, `g.palette(white)`, etc. for theme colors.
 
 Example:
 
-```
+```scss
 .footer {
-  background: #f8fafc; // mobile
+  background: #f8fafc;
 
   @include g.up(md) {
-    background: #eef6ff; // desktop and up
-  }
-}
-```
-
-Example `g.down`:
-
-```
-.nav {
-  background: white;
-
-  @include g.down(md) {
-    background: #f8fafc; // mobile and smaller than md
+    background: #eef6ff;
   }
 }
 ```

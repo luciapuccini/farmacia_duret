@@ -1,4 +1,7 @@
-import { NavLink, useLocation } from 'react-router'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './breadcrumb.module.scss'
 
 const BASE_URL = 'https://www.farmaciaduret.com'
@@ -77,8 +80,8 @@ function formatSubcategoryName(category: string, slug: string): string {
 }
 
 export default function Breadcrumb() {
-  const location = useLocation()
-  const pathParts = location.pathname.split('/').filter(Boolean)
+  const pathname = usePathname()
+  const pathParts = pathname.split('/').filter(Boolean)
 
   if (pathParts.length === 0) {
     return null
@@ -116,20 +119,20 @@ export default function Breadcrumb() {
       <nav className={styles.breadcrumb} aria-label="Breadcrumb">
       <ol className={styles.breadcrumbList}>
         <li className={styles.breadcrumbItem}>
-          <NavLink to="/" className={styles.breadcrumbLink}>
+          <Link href="/" className={styles.breadcrumbLink}>
             Inicio
-          </NavLink>
+          </Link>
         </li>
-        
+
         {categoryName && (
           <li className={styles.breadcrumbItem}>
             <span className={styles.separator}>›</span>
-            <NavLink to={`/${category}`} className={styles.breadcrumbLink}>
+            <Link href={`/${category}`} className={styles.breadcrumbLink}>
               {categoryName}
-            </NavLink>
+            </Link>
           </li>
         )}
-        
+
         {subcategoryName && (
           <li className={styles.breadcrumbItem}>
             <span className={styles.separator}>›</span>
@@ -141,3 +144,5 @@ export default function Breadcrumb() {
     </>
   )
 }
+
+export { categoryNames, subcategoryNames }

@@ -1,0 +1,59 @@
+@use "sass:map" as map;
+
+$screens: (
+    sm: 640px,
+    md: 768px,
+    lg: 1024px,
+    xl: 1280px,
+    '2xl': 1536px,
+);
+
+/* Color palette map for Sass consumption */
+$palette: (
+    black: var(--text-color),
+    white: var(--floral-white),
+    primary: var(--dust-grey),
+    almond: var(--almond-cream),
+);
+
+@function palette($key) {
+    $val: map.get($palette, $key);
+
+    @if $val {
+        @return $val;
+    }
+
+    @else {
+        @error "Unknown palette key `#{$key}`. Available: #{map.keys($palette)}";
+    }
+}
+
+@mixin up($size) {
+    $val: map.get($screens, $size);
+
+    @if $val {
+        @media (min-width: $val) {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "No screen size `#{$size}` found in $screens map.";
+    }
+}
+
+@mixin down($size) {
+    $val: map.get($screens, $size);
+
+    @if $val {
+        $max: $val - 0.02px;
+
+        @media (max-width: $max) {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "No screen size `#{$size}` found in $screens map.";
+    }
+}

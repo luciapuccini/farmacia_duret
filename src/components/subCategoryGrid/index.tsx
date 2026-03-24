@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import Link from 'next/link'
 import styles from './subCategoryGrid.module.scss'
 import CtaButton from '@/components/CtaButton'
 
@@ -37,9 +37,9 @@ function SubCategoryGrid({ subcategories, categorySlug }: SubCategoryGridProps) 
       {subcategories.map((sub, index) => {
         const slug = nameToSlug(sub.nombre)
         const linkUrl = categorySlug ? `/${categorySlug}/${slug}` : `/${slug}`
-        
+
         return (
-          <Link key={sub.nombre} to={linkUrl} className={styles.card}>
+          <Link key={sub.nombre} href={linkUrl} className={styles.card}>
             <div className={styles.imageWrapper}>
               <img
                 src={placeholderImages[index % placeholderImages.length]}

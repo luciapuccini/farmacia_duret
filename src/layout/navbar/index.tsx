@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react'
-import { NavLink } from 'react-router'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './navbar.module.scss'
 import Drawer from './components/drawer'
 import categories from '@/data/categories.json'
@@ -28,10 +31,12 @@ function ChevronRight() {
   )
 }
 
-function NavItem({ category, depth = 0, parentPath = '' }: { category: Category; depth?: number; parentPath?: string }) {
+function NavItem({ category, depth = 0, parentPath = '', pathname }: { category: Category; depth?: number; parentPath?: string; pathname: string }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
   const categoryPath = categoryNameToPath(category.nombre)
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
   return (
     <div
@@ -41,10 +46,10 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
       onMouseLeave={() => setIsOpen(false)}
     >
       {depth === 0 ? (
-        <NavLink
-          to={categoryPath}
-          className={({ isActive }) =>
-            isActive
+        <Link
+          href={categoryPath}
+          className={
+            isActive(categoryPath)
               ? `${styles.navItemButton} ${styles.navItemButtonActive}`
               : styles.navItemButton
           }
@@ -52,28 +57,29 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
         >
           {category.nombre}
           {hasSubcategories && <ChevronDown />}
-        </NavLink>
+        </Link>
       ) : depth === 1 ? (
-        <NavLink
-          to={`${parentPath}/${categoryPath}`}
-          className={({ isActive }) =>
-            isActive
+        <Link
+          href={`${parentPath}/${categoryPath}`}
+          className={
+            isActive(`${parentPath}/${categoryPath}`)
               ? `${styles.navItemButton} ${styles.navItemButtonActive}`
               : styles.navItemButton
           }
         >
           {category.nombre}
           {hasSubcategories && <ChevronRight />}
-        </NavLink>
+        </Link>
       ) : depth === 2 ? (
-        <NavLink
-          to={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
+        <Link
+          href={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
           className={styles.navItemButton}
         >
           {category.nombre}
-        </NavLink>
+        </Link>
       ) : (
         <button
+          type="button"
           className={styles.navItemButton}
           onClick={() => hasSubcategories && setIsOpen(!isOpen)}
           aria-expanded={isOpen}
@@ -91,6 +97,7 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
               category={subcategory}
               depth={depth + 1}
               parentPath={depth === 0 ? categoryPath : `${parentPath}${categoryPath}`}
+              pathname={pathname}
             />
           ))}
         </div>
@@ -102,6 +109,7 @@ function NavItem({ category, depth = 0, parentPath = '' }: { category: Category;
 export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const isMobile = useMediaQuery('(max-width: 767px)')
+  const pathname = usePathname()
 
   return (
     <>
@@ -109,17 +117,18 @@ export default function Navbar() {
 
         {/* Top row: brand + CTA (desktop) / brand + hamburger (mobile) */}
         <div className={styles.navTop}>
-          <NavLink to="/" className={styles.brand}>
+          <Link href="/" className={styles.brand}>
             Farmacia Duret
-          </NavLink>
+          </Link>
 
           {/* Desktop CTA */}
-          <CtaButton to="/reservas" className={styles.navCta}>
+          <CtaButton href="/reservas" className={styles.navCta}>
             Hacer un encargo
           </CtaButton>
 
           {/* Mobile hamburger */}
           <button
+            type="button"
             className={styles.menuButton}
             onClick={() => setIsDrawerOpen(true)}
             aria-label="Abrir menú"
@@ -135,19 +144,19 @@ export default function Navbar() {
         {/* Categories row — desktop only */}
         <nav className={styles.navCategories} aria-label="Categorías">
           {categories.map((category) => (
-            <NavItem key={category.nombre} category={category} />
+            <NavItem key={category.nombre} category={category} pathname={pathname} />
           ))}
           <div className={styles.navItem} data-depth={0}>
-            <NavLink
-              to="/contacto"
-              className={({ isActive }) =>
-                isActive
+            <Link
+              href="/contacto"
+              className={
+                pathname === '/contacto'
                   ? `${styles.navItemButton} ${styles.navItemButtonActive}`
                   : styles.navItemButton
               }
             >
               Contacto
-            </NavLink>
+            </Link>
           </div>
         </nav>
 
