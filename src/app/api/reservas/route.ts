@@ -1,8 +1,10 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
-  const token = process.env.TELEGRAM_BOT_TOKEN
-  const chatId = process.env.TELEGRAM_CHAT_ID
+  const { env } = getCloudflareContext()
+  const token = env.TELEGRAM_BOT_TOKEN
+  const chatId = env.TELEGRAM_CHAT_ID
 
   if (!token || !chatId) {
     console.error('[notify-telegram] Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID')
