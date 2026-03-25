@@ -1,1 +1,7 @@
 - Reservas broken -> not more netlfily 500
+- easy way to update categories/products async with other user. CMS?
+- DB? recurring users?
+- measure interactions
+- SEO review
+- search categories
+- nav dropdowns sub categories broken 

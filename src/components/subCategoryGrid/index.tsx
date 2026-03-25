@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import styles from './subCategoryGrid.module.scss'
 import CtaButton from '@/components/CtaButton'
+import { nameToSlug } from '@/utils/nameToSlug'
 
 export interface SubCategory {
   nombre: string
@@ -20,16 +21,6 @@ const placeholderImages = [
   'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&h=400&fit=crop',
   'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop',
 ]
-
-function nameToSlug(name: string): string {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-}
 
 function SubCategoryGrid({ subcategories, categorySlug }: SubCategoryGridProps) {
   return (

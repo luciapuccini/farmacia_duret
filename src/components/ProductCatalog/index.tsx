@@ -4,6 +4,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import categories from '@/data/categories.json'
 import productsData from '@/data/products.json'
 import styles from './catalog.module.scss'
+import { nameToSlug } from '@/utils/nameToSlug'
 
 type Product = {
   id: string
@@ -17,16 +18,6 @@ type Product = {
 }
 
 type Filter = { label: string; slug: string }
-
-function nameToSlug(name: string): string {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-}
 
 function getFilters(categorySlug: string, subcategorySlug: string): Filter[] {
   for (const cat of categories) {
