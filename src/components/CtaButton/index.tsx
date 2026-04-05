@@ -1,16 +1,16 @@
-import { NavLink } from 'react-router'
-import styles from './CtaButton.module.scss'
+import Link from 'next/link'
 import clsx from 'clsx'
+import styles from './CtaButton.module.scss'
 
 interface CtaButtonProps {
   children: React.ReactNode
   onClick?: () => void
   className?: string
   variant?: 'default' | 'almond' | 'card'
-  to?: string
+  href?: string
 }
 
-function CtaButton({ children, onClick, className, variant = 'default', to }: CtaButtonProps) {
+function CtaButton({ children, onClick, className, variant = 'default', href }: CtaButtonProps) {
   const classNames = clsx(
     styles.ctaButton,
     variant === 'almond' && styles.almond,
@@ -18,16 +18,16 @@ function CtaButton({ children, onClick, className, variant = 'default', to }: Ct
     className
   )
 
-  if (to) {
+  if (href) {
     return (
-      <NavLink to={to} className={classNames}>
+      <Link href={href} className={classNames}>
         {children}
-      </NavLink>
+      </Link>
     )
   }
 
   return (
-    <button className={classNames} onClick={onClick}>
+    <button type="button" className={classNames} onClick={onClick}>
       {children}
     </button>
   )

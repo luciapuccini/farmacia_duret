@@ -1,4 +1,4 @@
-@use '@/globals.module' as g;
+@use '@/globals' as g;
 
 /* ── Shell ────────────────────────────────────────────── */
 
@@ -89,13 +89,18 @@
     display: flex;
     align-items: stretch;
     padding: 0 1.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    overflow: visible;
   }
+}
+
+/* ── Nav list reset ───────────────────────────────────── */
+
+.navList {
+  display: flex;
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* ── Nav item wrapper ─────────────────────────────────── */
@@ -162,6 +167,9 @@
 /* ── Flyout submenu ───────────────────────────────────── */
 
 .submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   position: absolute;
   top: 100%;
   left: 0;

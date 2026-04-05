@@ -1,0 +1,66 @@
+@use "sass:map" as map;
+
+$screens: (
+    sm: 640px,
+    md: 768px,
+    lg: 1024px,
+    xl: 1280px,
+    '2xl': 1536px,
+);
+
+$palette: (
+    black: #0A0A0A,
+    white: #FBF6EF,
+    primary: #DCE0D9,
+    almond: #EAD7C3,
+    blue: #24bfb5,
+    green: #b5eb52,
+);
+
+$font-weights: (
+    base: 300,
+    medium: 400,
+    strong: 500,
+);
+
+@function palette($key) {
+    $val: map.get($palette, $key);
+
+    @if $val {
+        @return $val;
+    }
+
+    @else {
+        @error "Unknown palette key `#{$key}`. Available: #{map.keys($palette)}";
+    }
+}
+
+@mixin up($size) {
+    $val: map.get($screens, $size);
+
+    @if $val {
+        @media (min-width: $val) {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "No screen size `#{$size}` found in $screens map.";
+    }
+}
+
+@mixin down($size) {
+    $val: map.get($screens, $size);
+
+    @if $val {
+        $max: $val - 0.02px;
+
+        @media (max-width: $max) {
+            @content;
+        }
+    }
+
+    @else {
+        @warn "No screen size `#{$size}` found in $screens map.";
+    }
+}

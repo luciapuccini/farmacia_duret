@@ -1,0 +1,48 @@
+/* Reset / base styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: var(--font-weight-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--text-color);
+    background: var(--floral-white);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: var(--font-weight-strong);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}

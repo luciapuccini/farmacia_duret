@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react'
-import { NavLink } from 'react-router'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './drawer.module.scss'
 import categories from '@/data/categories.json'
 import { categoryNameToPath } from '@/helpers/routes'
@@ -35,32 +38,36 @@ function DrawerNavItem({
   depth = 0,
   onNavigate,
   parentPath = '',
+  pathname,
 }: {
   category: Category
   depth?: number
   onNavigate: () => void
   parentPath?: string
+  pathname: string
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
   const categoryPath = categoryNameToPath(category.nombre)
   const isTopLevel = depth === 0
 
+  const isActiveLink = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
+
   return (
     <div className={styles.drawerItem} data-depth={depth}>
       {isTopLevel ? (
         <div className={styles.drawerItemHeader}>
-          <NavLink
-            to={categoryPath}
-            className={({ isActive }) =>
-              isActive
+          <Link
+            href={categoryPath}
+            className={
+              isActiveLink(categoryPath)
                 ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
                 : styles.drawerItemButton
             }
             onClick={onNavigate}
           >
             {category.nombre}
-          </NavLink>
+          </Link>
 
           {hasSubcategories && (
             <button
@@ -75,10 +82,10 @@ function DrawerNavItem({
           )}
         </div>
       ) : depth === 1 ? (
-        <NavLink
-          to={`${parentPath}/${categoryPath}`}
-          className={({ isActive }) =>
-            isActive
+        <Link
+          href={`${parentPath}/${categoryPath}`}
+          className={
+            isActiveLink(`${parentPath}/${categoryPath}`)
               ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
               : styles.drawerItemButton
           }
@@ -86,15 +93,15 @@ function DrawerNavItem({
         >
           {category.nombre}
           {hasSubcategories && <ChevronRight />}
-        </NavLink>
+        </Link>
       ) : !hasSubcategories ? (
-        <NavLink
-          to={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
+        <Link
+          href={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
           className={styles.drawerItemButton}
           onClick={onNavigate}
         >
           {category.nombre}
-        </NavLink>
+        </Link>
       ) : (
         <button
           type="button"
@@ -116,6 +123,7 @@ function DrawerNavItem({
               depth={depth + 1}
               onNavigate={onNavigate}
               parentPath={depth === 0 ? categoryPath : `${parentPath}${categoryPath}`}
+              pathname={pathname}
             />
           ))}
         </div>
@@ -125,6 +133,8 @@ function DrawerNavItem({
 }
 
 export default function Drawer({ isOpen, onClose }: DrawerProps) {
+  const pathname = usePathname()
+
   return (
     <>
       {isOpen && (
@@ -135,10 +145,11 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
 
         {/* Header: brand + close */}
         <div className={styles.drawerHeader}>
-          <NavLink to="/" className={styles.drawerBrand} onClick={onClose}>
+          <Link href="/" className={styles.drawerBrand} onClick={onClose}>
             Farmacia Duret
-          </NavLink>
+          </Link>
           <button
+            type="button"
             className={styles.closeButton}
             onClick={onClose}
             aria-label="Cerrar menú"
@@ -152,28 +163,28 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
         {/* Nav items */}
         <nav className={styles.drawerNav} aria-label="Categorías">
           {categories.map((category: Category) => (
-            <DrawerNavItem key={category.nombre} category={category} onNavigate={onClose} />
+            <DrawerNavItem key={category.nombre} category={category} onNavigate={onClose} pathname={pathname} />
           ))}
           <div className={styles.drawerItem} data-depth={0}>
-            <NavLink
-              to="/contacto"
-              className={({ isActive }) =>
-                isActive
+            <Link
+              href="/contacto"
+              className={
+                pathname === '/contacto'
                   ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
                   : styles.drawerItemButton
               }
               onClick={onClose}
             >
               Contacto
-            </NavLink>
+            </Link>
           </div>
         </nav>
 
         {/* Footer CTA */}
         <div className={styles.drawerFooter}>
-          <NavLink to="/reservas" className={styles.drawerCta} onClick={onClose}>
+          <Link href="/reservas" className={styles.drawerCta} onClick={onClose}>
             Hacer un encargo
-          </NavLink>
+          </Link>
         </div>
 
       </div>

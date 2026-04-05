@@ -1,7 +1,10 @@
-import { useSearchParams } from 'react-router'
+'use client'
+
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import categories from '@/data/categories.json'
 import productsData from '@/data/products.json'
 import styles from './catalog.module.scss'
+import { nameToSlug } from '@/utils/nameToSlug'
 
 type Product = {
   id: string
@@ -15,16 +18,6 @@ type Product = {
 }
 
 type Filter = { label: string; slug: string }
-
-function nameToSlug(name: string): string {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-}
 
 function getFilters(categorySlug: string, subcategorySlug: string): Filter[] {
   for (const cat of categories) {
@@ -62,7 +55,9 @@ function ProductCard({ product }: { product: Product }) {
 type Props = { category: string; subcategory: string }
 
 export default function ProductCatalog({ category, subcategory }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const activeFilter = searchParams.get('f')
 
   const filters = getFilters(category, subcategory)
@@ -74,7 +69,14 @@ export default function ProductCatalog({ category, subcategory }: Props) {
   })
 
   function setFilter(slug: string | null) {
-    setSearchParams(slug ? { f: slug } : {})
+    const params = new URLSearchParams(searchParams.toString())
+    if (slug) {
+      params.set('f', slug)
+    } else {
+      params.delete('f')
+    }
+    const query = params.toString()
+    router.replace(query ? `${pathname}?${query}` : pathname)
   }
 
   return (
@@ -82,6 +84,7 @@ export default function ProductCatalog({ category, subcategory }: Props) {
       {filters.length > 0 && (
         <div className={styles.filterBar} role="toolbar" aria-label="Filtrar por categoría">
           <button
+            type="button"
             className={`${styles.chip} ${!activeFilter ? styles.chipActive : ''}`}
             onClick={() => setFilter(null)}
           >
@@ -89,6 +92,7 @@ export default function ProductCatalog({ category, subcategory }: Props) {
           </button>
           {filters.map(({ label, slug }) => (
             <button
+              type="button"
               key={slug}
               className={`${styles.chip} ${activeFilter === slug ? styles.chipActive : ''}`}
               onClick={() => setFilter(slug)}
