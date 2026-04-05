@@ -37,7 +37,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
 	const [fileName, setFileName] = useState<string | null>(null);
-	const [status, setStatus] = useState<Status>("success");
+	const [status, setStatus] = useState<Status>("idle");
 	const [submissionCount, setSubmissionCount] = useState(() => getCount());
 
 	const remaining = MAX_PER_DAY - submissionCount;
