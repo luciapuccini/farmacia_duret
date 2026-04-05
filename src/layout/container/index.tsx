@@ -4,5 +4,5 @@ import styles from './container.module.scss'
 type Props = { children?: React.ReactNode }
 
 export default function Container({ children }: Props) {
-  return <div className={styles.container}>{children}</div>
+  return <main className={styles.container}>{children}</main>
 }

@@ -37,7 +37,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
 	const [fileName, setFileName] = useState<string | null>(null);
-	const [status, setStatus] = useState<Status>("idle");
+	const [status, setStatus] = useState<Status>("success");
 	const [submissionCount, setSubmissionCount] = useState(() => getCount());
 
 	const remaining = MAX_PER_DAY - submissionCount;
@@ -65,6 +65,7 @@ export default function ReservasPage() {
 			setCharCount(0);
 			setFileName(null);
 		} catch {
+			console.error("Error submitting form", e);
 			setStatus("error");
 		}
 	}
@@ -153,6 +154,20 @@ export default function ReservasPage() {
 							type="email"
 							className={styles.input}
 							placeholder="juan@ejemplo.com"
+							required
+						/>
+					</div>
+
+					<div className={styles.field}>
+						<label htmlFor="telefono" className={styles.label}>
+							Tu teléfono
+						</label>
+						<input
+							id="telefono"
+							name="telefono"
+							type="tel"
+							className={styles.input}
+							placeholder="+54 11 1234-5678"
 							required
 						/>
 					</div>

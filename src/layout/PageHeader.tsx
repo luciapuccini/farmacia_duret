@@ -21,8 +21,8 @@ export default function PageHeader() {
   if (!pageTitle) return null
 
   return (
-    <header className={styles.pageHeader}>
+    <div className={styles.pageHeader}>
       <h1 className={styles.pageTitle}>{pageTitle}</h1>
-    </header>
+    </div>
   )
 }
