@@ -1,10 +1,8 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextResponse } from "next/server";
+import config from "@/config";
 
 export async function POST(request: Request) {
-	const { env } = getCloudflareContext();
-	const token = env.TELEGRAM_BOT_TOKEN;
-	const chatId = env.TELEGRAM_CHAT_ID;
+	const { botToken: token, chatId } = config.telegram;
 
 	if (!token || !chatId) {
 		console.error(
