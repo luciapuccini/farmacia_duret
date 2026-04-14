@@ -28,3 +28,6 @@ dist-ssr
 
 # prevent the build output
 .open-next
+
+# Secret files
+.env.local

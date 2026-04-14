@@ -81,3 +81,10 @@ src/
   data/                 # categories.json — catalog structure
   helpers/              # Shared utilities and hooks
 ```
+
+
+## Using cloudflare & env settings
+
+local dev config lives in `.env.local` 
+
+`.dev.vars` is cloudflare config, not available in next.js runtime
