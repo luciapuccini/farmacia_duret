@@ -32,3 +32,6 @@ dist-ssr
 # Secret files
 .env.local
 .dev.vars
+
+# Test coverage
+coverage
