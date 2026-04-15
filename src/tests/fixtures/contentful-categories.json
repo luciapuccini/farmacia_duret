@@ -1,0 +1,62 @@
+{
+  "sys": { "type": "Array" },
+  "total": 2,
+  "skip": 0,
+  "limit": 100,
+  "items": [
+    {
+      "sys": {
+        "id": "entry001",
+        "type": "Entry",
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z",
+        "locale": "es-AR",
+        "revision": 1,
+        "contentType": {
+          "sys": { "type": "Link", "linkType": "ContentType", "id": "product" }
+        },
+        "space": {
+          "sys": { "type": "Link", "linkType": "Space", "id": "r8abgvc19yds" }
+        },
+        "environment": {
+          "sys": { "type": "Link", "linkType": "Environment", "id": "master" }
+        }
+      },
+      "fields": {
+        "name": "Ibuprofeno 400mg",
+        "slug": "ibuprofeno-400mg",
+        "category": "medicamentos",
+        "subcategory": "venta-libre",
+        "brand": "Laboratorio Bago"
+      },
+      "metadata": { "tags": [] }
+    },
+    {
+      "sys": {
+        "id": "entry002",
+        "type": "Entry",
+        "createdAt": "2024-01-02T00:00:00.000Z",
+        "updatedAt": "2024-01-02T00:00:00.000Z",
+        "locale": "es-AR",
+        "revision": 1,
+        "contentType": {
+          "sys": { "type": "Link", "linkType": "ContentType", "id": "product" }
+        },
+        "space": {
+          "sys": { "type": "Link", "linkType": "Space", "id": "r8abgvc19yds" }
+        },
+        "environment": {
+          "sys": { "type": "Link", "linkType": "Environment", "id": "master" }
+        }
+      },
+      "fields": {
+        "name": "Hidratante Facial SPF50",
+        "slug": "hidratante-facial-spf50",
+        "category": "dermocosmetica",
+        "subcategory": "facial",
+        "brand": "La Roche-Posay"
+      },
+      "metadata": { "tags": [] }
+    }
+  ]
+}

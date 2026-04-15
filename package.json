@@ -11,7 +11,12 @@
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
 		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-		"upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload"
+		"upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"test:e2e": "playwright test",
+		"test:e2e:ui": "playwright test --ui"
 	},
 	"dependencies": {
 		"@opennextjs/cloudflare": "^1.17.1",
@@ -24,13 +29,17 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.1",
+		"@playwright/test": "^1.59.1",
 		"@types/node": "^24.10.1",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
+		"@vitest/coverage-v8": "^4.1.4",
 		"eslint": "^9.39.3",
 		"eslint-plugin-react-hooks": "^7.0.1",
 		"globals": "^16.5.0",
 		"typescript": "~5.9.3",
-		"typescript-eslint": "^8.36.0"
+		"typescript-eslint": "^8.36.0",
+		"vite-tsconfig-paths": "^6.1.1",
+		"vitest": "^4.1.4"
 	}
 }

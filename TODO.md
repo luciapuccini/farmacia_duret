@@ -1,5 +1,9 @@
-- easy way to update categories/products async with other user. CMS?
 - measure interactions
 - SEO review
 - search categories
 - validate if https://whapi.cloud/ could automate with whatsapp
+- easy way to update categories/products async with other user. CMS?
+- progress with CMS
+- tests unit, e2e, visuals
+- analytics
+- unify structure folders with clear client/server/ infra folders..
