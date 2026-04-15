@@ -88,3 +88,35 @@ src/
 local dev config lives in `.env.local` 
 
 `.dev.vars` is cloudflare config, not available in next.js runtime
+
+---
+
+## Testing
+
+Three levels, two runners.
+
+| Level | What it tests | Command |
+| --- | --- | --- |
+| Unit | Pure logic (helpers, utils) | `npm test` |
+| Integration | Module boundaries — Contentful, Telegram API route | `npm test` |
+| E2E | Full browser flow against a running dev server | `npm run test:e2e` |
+
+### Unit & integration (Vitest)
+
+```bash
+npm test
+```
+
+No network calls — external dependencies are mocked via `vi.mock()` and JSON fixtures in `src/tests/fixtures/`.
+
+### E2E (Playwright)
+
+```bash
+npm run test:e2e
+```
+
+Starts `next dev` automatically, then drives real Chromium. For the interactive debugger:
+
+```bash
+npm run test:e2e:ui
+```
