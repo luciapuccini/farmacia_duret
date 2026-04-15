@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./reservas.module.scss";
 
 // ── Rate-limit helpers ────────────────────────────────────
@@ -38,7 +38,11 @@ export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
 	const [fileName, setFileName] = useState<string | null>(null);
 	const [status, setStatus] = useState<Status>("idle");
-	const [submissionCount, setSubmissionCount] = useState(() => getCount());
+	const [submissionCount, setSubmissionCount] = useState(0);
+
+	useEffect(() => {
+		setSubmissionCount(getCount());
+	}, []);
 
 	const remaining = MAX_PER_DAY - submissionCount;
 	const isLimited = remaining <= 0;
@@ -64,8 +68,8 @@ export default function ReservasPage() {
 			form.reset();
 			setCharCount(0);
 			setFileName(null);
-		} catch {
-			console.error("Error submitting form", e);
+		} catch (err) {
+			console.error("Error submitting form", err);
 			setStatus("error");
 		}
 	}
