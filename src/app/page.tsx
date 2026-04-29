@@ -47,7 +47,7 @@ export default function HomePage() {
 								</svg>
 							</span>
 							<span className={styles.trustLabel}>
-								<b>Productos auténticos</b>Habilitados por ANMAT
+								<b>Envíos a domicilio</b> Consultar zonas
 							</span>
 						</div>
 						<div className={styles.trustItem}>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { countProductsByCategory } from "@/utils/countProducts";
 import styles from "./catalog-section.module.scss";
 
@@ -17,28 +17,77 @@ type CategoryConfig = {
 };
 
 const CATEGORIES: CategoryConfig[] = [
-	{ name: "Dermocosmética",    slug: "dermocosmetica",    svg: "cat-skin.svg",     tags: ["cuidado"],      thumbVariant: "green"   },
-	{ name: "Belleza",           slug: "belleza",           svg: null,               tags: ["cuidado"],      thumbVariant: "green"   },
-	{ name: "Cuidado Personal",  slug: "cuidado-personal",  svg: "cat-oral.svg",     tags: ["cuidado"],      thumbVariant: "green"   },
-	{ name: "Bebés",             slug: "bebes",             svg: "cat-baby.svg",     tags: ["bebes"],        thumbVariant: "green"   },
-	{ name: "Hogar y Alimentos", slug: "hogar-y-alimentos", svg: null,               tags: [],               thumbVariant: "default" },
-	{ name: "Salud y Farmacia",  slug: "salud-y-farmacia",  svg: "cat-vitamins.svg", tags: ["cuidado"],      thumbVariant: "green"   },
-	{ name: "Medicamentos",      slug: "medicamentos",      svg: "cat-otc.svg",      tags: ["medicamentos"], thumbVariant: "blue"    },
-	{ name: "Ofertas",           slug: "ofertas",           svg: null,               tags: ["ofertas"],      thumbVariant: "accent", badge: "Hasta −30%" },
+	{
+		name: "Dermocosmética",
+		slug: "dermocosmetica",
+		svg: "cat-skin.svg",
+		tags: ["cuidado"],
+		thumbVariant: "green",
+	},
+	{
+		name: "Belleza",
+		slug: "belleza",
+		svg: null,
+		tags: ["cuidado"],
+		thumbVariant: "green",
+	},
+	{
+		name: "Cuidado Personal",
+		slug: "cuidado-personal",
+		svg: "cat-oral.svg",
+		tags: ["cuidado"],
+		thumbVariant: "green",
+	},
+	{
+		name: "Bebés",
+		slug: "bebes",
+		svg: "cat-baby.svg",
+		tags: ["bebes"],
+		thumbVariant: "green",
+	},
+	{
+		name: "Hogar y Alimentos",
+		slug: "hogar-y-alimentos",
+		svg: null,
+		tags: [],
+		thumbVariant: "default",
+	},
+	{
+		name: "Salud y Farmacia",
+		slug: "salud-y-farmacia",
+		svg: "cat-vitamins.svg",
+		tags: ["cuidado"],
+		thumbVariant: "green",
+	},
+	{
+		name: "Medicamentos",
+		slug: "medicamentos",
+		svg: "cat-otc.svg",
+		tags: ["medicamentos"],
+		thumbVariant: "blue",
+	},
+	{
+		name: "Ofertas",
+		slug: "ofertas",
+		svg: null,
+		tags: ["ofertas"],
+		thumbVariant: "accent",
+		badge: "Hasta −30%",
+	},
 ];
 
 const CHIPS = [
-	{ label: "Todas",            filter: "all"          },
-	{ label: "Medicamentos",     filter: "medicamentos" },
-	{ label: "Cuidado personal", filter: "cuidado"      },
-	{ label: "Bebés",            filter: "bebes"        },
-	{ label: "Ofertas",          filter: "ofertas"      },
+	{ label: "Todas", filter: "all" },
+	{ label: "Medicamentos", filter: "medicamentos" },
+	{ label: "Cuidado personal", filter: "cuidado" },
+	{ label: "Bebés", filter: "bebes" },
+	{ label: "Ofertas", filter: "ofertas" },
 ];
 
 const THUMB_CLASS: Record<ThumbVariant, string> = {
-	green:   styles.catThumbGreen,
-	blue:    styles.catThumbBlue,
-	accent:  styles.catThumbAccent,
+	green: styles.catThumbGreen,
+	blue: styles.catThumbBlue,
+	accent: styles.catThumbAccent,
 	default: "",
 };
 
@@ -50,13 +99,19 @@ function chipCount(filter: string): number {
 export default function CatalogSection() {
 	const [activeFilter, setActiveFilter] = useState("all");
 
+	useEffect(() => {
+		if (window.location.hash === "#catalogo") {
+			history.replaceState(null, "", "/");
+		}
+	}, []);
+
 	const visible =
 		activeFilter === "all"
 			? CATEGORIES
 			: CATEGORIES.filter((c) => c.tags.includes(activeFilter));
 
 	return (
-		<section className={styles.section}>
+		<section className={styles.section} id="catalogo">
 			{/* ── Section header ─────────────────────────────── */}
 			<div className={styles.sectHead}>
 				<div>

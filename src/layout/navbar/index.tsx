@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import categories from "@/data/categories.json";
@@ -15,7 +15,6 @@ type Category = {
 	nombre: string;
 	subcategorias?: Category[];
 };
-
 
 function SubnavItem({
 	category,
@@ -110,10 +109,22 @@ export default function Navbar() {
 	const isMobile = useMediaQuery("(max-width: 767px)");
 	const pathname = usePathname();
 
+	const router = useRouter();
 	const subnavCategories = categories.filter((c) => c.nombre !== "Ofertas");
 
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
+
+	const handleCatalogClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		e.preventDefault();
+		const el = document.getElementById("catalogo");
+		if (el) {
+			el.scrollIntoView({ behavior: "smooth" });
+			history.replaceState(null, "", "/");
+		} else {
+			router.push("/#catalogo");
+		}
+	};
 
 	return (
 		<>
@@ -205,7 +216,8 @@ export default function Navbar() {
 				<nav className={styles.subnav} aria-label="Categorías">
 					<div className={styles.subnavInner}>
 						<Link
-							href="/"
+							href="/#catalogo"
+							onClick={handleCatalogClick}
 							className={
 								pathname === "/"
 									? `${styles.subnavLink} ${styles.subnavLinkActive}`

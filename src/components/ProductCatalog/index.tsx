@@ -35,6 +35,9 @@ function getFilters(categorySlug: string, subcategorySlug: string): Filter[] {
 function ProductCard({ product }: { product: Product }) {
 	return (
 		<div className={styles.card}>
+			{product.current_offer && (
+				<span className={styles.offerBadge}>{product.current_offer}</span>
+			)}
 			<div className={styles.cardImage}>
 				{product.image ? (
 					<img
@@ -44,9 +47,6 @@ function ProductCard({ product }: { product: Product }) {
 					/>
 				) : (
 					<div className={styles.cardImgPlaceholder} />
-				)}
-				{product.current_offer && (
-					<span className={styles.offerBadge}>{product.current_offer}</span>
 				)}
 			</div>
 			<div className={styles.cardBody}>
