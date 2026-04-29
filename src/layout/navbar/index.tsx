@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-import CtaButton from "@/components/CtaButton";
 import categories from "@/data/categories.json";
 import { useMediaQuery } from "@/helpers/hooks";
 import { categoryNameToPath } from "@/helpers/routes";
@@ -17,49 +16,8 @@ type Category = {
 	subcategorias?: Category[];
 };
 
-function ChevronDown() {
-	return (
-		<svg
-			className={styles.chevron}
-			width="10"
-			height="6"
-			viewBox="0 0 10 6"
-			fill="none"
-			aria-hidden="true"
-		>
-			<path
-				d="M1 1l4 4 4-4"
-				stroke="currentColor"
-				strokeWidth="1.5"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	);
-}
 
-function ChevronRight() {
-	return (
-		<svg
-			className={styles.chevronRight}
-			width="6"
-			height="10"
-			viewBox="0 0 6 10"
-			fill="none"
-			aria-hidden="true"
-		>
-			<path
-				d="M1 1l4 4-4 4"
-				stroke="currentColor"
-				strokeWidth="1.5"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	);
-}
-
-function NavItem({
+function SubnavItem({
 	category,
 	depth = 0,
 	parentPath = "",
@@ -74,78 +32,69 @@ function NavItem({
 	const hasSubcategories =
 		category.subcategorias && category.subcategorias.length > 0;
 	const categoryPath = categoryNameToPath(category.nombre);
-
 	const isActive = (href: string) =>
-		pathname === href || pathname.startsWith(href + "/");
+		pathname === href || pathname.startsWith(`${href}/`);
 
 	return (
 		<li
-			className={styles.navItem}
-			data-depth={depth}
+			className={styles.subnavItem}
 			onMouseEnter={() => hasSubcategories && setIsOpen(true)}
 			onMouseLeave={() => setIsOpen(false)}
-			onClick={() => setIsOpen(false)}
-			onKeyDown={(e) => {
-				if (e.key === "Escape") setIsOpen(false);
-			}}
 		>
-			{depth === 0 ? (
+			{depth === 0 && (
 				<Link
 					href={categoryPath}
 					className={
 						isActive(categoryPath)
-							? `${styles.navItemButton} ${styles.navItemButtonActive}`
-							: styles.navItemButton
+							? `${styles.subnavLink} ${styles.subnavLinkActive}`
+							: styles.subnavLink
 					}
-					aria-expanded={isOpen}
 				>
 					{category.nombre}
-					{hasSubcategories && <ChevronDown />}
 				</Link>
-			) : depth === 1 ? (
+			)}
+
+			{depth === 1 && (
 				<Link
 					href={`${parentPath}/${categoryPath}`}
 					className={
 						isActive(`${parentPath}/${categoryPath}`)
-							? `${styles.navItemButton} ${styles.navItemButtonActive}`
-							: styles.navItemButton
+							? `${styles.dropdownLink} ${styles.dropdownLinkActive}`
+							: styles.dropdownLink
 					}
 				>
 					{category.nombre}
-					{hasSubcategories && <ChevronRight />}
 				</Link>
-			) : depth === 2 ? (
+			)}
+
+			{depth === 2 && (
 				<Link
 					href={
 						category.nombre === "Ver todos los productos"
 							? parentPath
 							: `${parentPath}?f=${categoryPath.slice(1)}`
 					}
-					className={styles.navItemButton}
+					className={styles.dropdownLink}
 				>
 					{category.nombre}
 				</Link>
-			) : (
-				<button
-					type="button"
-					className={styles.navItemButton}
-					onClick={() => hasSubcategories && setIsOpen(!isOpen)}
-					aria-expanded={isOpen}
-				>
-					{category.nombre}
-					{hasSubcategories && <ChevronRight />}
-				</button>
 			)}
 
 			{hasSubcategories && isOpen && (
-				<ul className={styles.submenu} data-depth={depth}>
-					{category.subcategorias?.map((subcategory) => (
-						<NavItem
-							key={subcategory.nombre}
-							category={subcategory}
+				<ul
+					className={
+						depth === 0
+							? styles.dropdown
+							: `${styles.dropdown} ${styles.dropdownNested}`
+					}
+				>
+					{category.subcategorias?.map((sub) => (
+						<SubnavItem
+							key={sub.nombre}
+							category={sub}
 							depth={depth + 1}
 							parentPath={
-								depth === 0 ? categoryPath : `${parentPath}${categoryPath}`
+								depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`
 							}
 							pathname={pathname}
 						/>
@@ -161,64 +110,125 @@ export default function Navbar() {
 	const isMobile = useMediaQuery("(max-width: 767px)");
 	const pathname = usePathname();
 
+	const subnavCategories = categories.filter((c) => c.nombre !== "Ofertas");
+
+	const isActive = (href: string) =>
+		pathname === href || pathname.startsWith(`${href}/`);
+
 	return (
 		<>
 			<header className={styles.navbar}>
-				{/* Top row: brand + CTA (desktop) / brand + hamburger (mobile) */}
+				{/* ── Top row ─────────────────────────────────── */}
 				<div className={styles.navTop}>
 					<Link href="/" className={styles.brand}>
+						<span className={styles.logoMark} aria-hidden="true">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2.4"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								width="18"
+								height="18"
+								aria-hidden="true"
+							>
+								<path d="M12 4v16M4 12h16" />
+							</svg>
+						</span>
 						Farmacia Duret
 					</Link>
 
-					{/* Desktop CTA */}
-					<CtaButton href="/reservas" className={styles.navCta}>
-						Hacer un encargo
-					</CtaButton>
-
-					{/* Mobile hamburger */}
-					<button
-						type="button"
-						className={styles.menuButton}
-						onClick={() => setIsDrawerOpen(true)}
-						aria-label="Abrir menú"
-					>
-						<svg
-							width="20"
-							height="16"
-							viewBox="0 0 20 16"
-							fill="currentColor"
-							aria-hidden="true"
+					<nav className={styles.navLinks} aria-label="Navegación principal">
+						<Link
+							href="/"
+							className={
+								pathname === "/"
+									? `${styles.navLink} ${styles.navLinkActive}`
+									: styles.navLink
+							}
 						>
-							<rect width="20" height="2" rx="1" />
-							<rect y="7" width="20" height="2" rx="1" />
-							<rect y="14" width="20" height="2" rx="1" />
-						</svg>
-					</button>
+							Catálogo
+						</Link>
+						<Link
+							href="/contacto"
+							className={
+								isActive("/contacto")
+									? `${styles.navLink} ${styles.navLinkActive}`
+									: styles.navLink
+							}
+						>
+							Contacto
+						</Link>
+					</nav>
+
+					<div className={styles.navActions}>
+						<Link href="/reservas" className={styles.navEncargo}>
+							<svg
+								width="15"
+								height="15"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2.2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+							</svg>
+							Hacer un encargo
+						</Link>
+
+						<button
+							type="button"
+							className={styles.menuButton}
+							onClick={() => setIsDrawerOpen(true)}
+							aria-label="Abrir menú"
+						>
+							<svg
+								width="20"
+								height="16"
+								viewBox="0 0 20 16"
+								fill="currentColor"
+								aria-hidden="true"
+							>
+								<rect width="20" height="2" rx="1" />
+								<rect y="7" width="20" height="2" rx="1" />
+								<rect y="14" width="20" height="2" rx="1" />
+							</svg>
+						</button>
+					</div>
 				</div>
 
-				{/* Categories row — desktop only */}
-				<nav className={styles.navCategories} aria-label="Categorías">
-					<ul className={styles.navList}>
-						{categories.map((category) => (
-							<NavItem
-								key={category.nombre}
-								category={category}
-								pathname={pathname}
-							/>
-						))}
-						<li className={styles.navItem} data-depth={0}>
-							<Link
-								href="/contacto"
-								className={
-									pathname === "/contacto"
-										? `${styles.navItemButton} ${styles.navItemButtonActive}`
-										: styles.navItemButton
-								}
-							>
-								Contacto
-							</Link>
-						</li>
-					</ul>
+				{/* ── Sub-nav ribbon — desktop only ────────────── */}
+				<nav className={styles.subnav} aria-label="Categorías">
+					<div className={styles.subnavInner}>
+						<Link
+							href="/"
+							className={
+								pathname === "/"
+									? `${styles.subnavLink} ${styles.subnavLinkActive}`
+									: styles.subnavLink
+							}
+						>
+							Todo el catálogo
+						</Link>
+						<span className={styles.subnavDivider} aria-hidden="true" />
+						<ul className={styles.subnavList}>
+							{subnavCategories.map((cat) => (
+								<SubnavItem
+									key={cat.nombre}
+									category={cat}
+									pathname={pathname}
+								/>
+							))}
+						</ul>
+						<Link href="/ofertas" className={styles.subnavCta}>
+							<span className={styles.subnavCtaDot} aria-hidden="true" />
+							Ofertas
+						</Link>
+					</div>
 				</nav>
 			</header>
 
