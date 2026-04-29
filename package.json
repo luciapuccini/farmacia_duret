@@ -19,7 +19,7 @@
 		"test:e2e:ui": "playwright test --ui"
 	},
 	"dependencies": {
-		"@opennextjs/cloudflare": "^1.17.1",
+		"@opennextjs/cloudflare": "^1.19.4",
 		"clsx": "^2.1.1",
 		"contentful": "^11.12.1",
 		"next": "^16.2.1",
