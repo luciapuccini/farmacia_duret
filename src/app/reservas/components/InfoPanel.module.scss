@@ -1,0 +1,214 @@
+@use '@/globals' as g;
+
+.side {
+  background:
+    radial-gradient(120% 70% at 90% 0%, oklch(0.74 0.12 165 / 0.55), transparent 55%),
+    linear-gradient(180deg, var(--blue-700), var(--blue-600) 60%, oklch(0.5 0.13 195));
+  color: white;
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 28px,
+      oklch(1 0 0 / 0.04) 28px 29px
+    );
+    pointer-events: none;
+  }
+
+  @include g.down(md) {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding: 36px 28px;
+  }
+}
+
+/* ── Badge ─────────────────────────────────────────────── */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: oklch(1 0 0 / 0.15);
+  backdrop-filter: blur(6px);
+  color: white;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  width: fit-content;
+  border: 1px solid oklch(1 0 0 / 0.18);
+  position: relative;
+  z-index: 1;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--green-500);
+  box-shadow: 0 0 0 3px oklch(0.74 0.12 165 / 0.4);
+  flex-shrink: 0;
+}
+
+/* ── Heading ───────────────────────────────────────────── */
+
+.heading {
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  margin: 20px 0 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.accent {
+  font-style: normal;
+  color: oklch(0.92 0.1 165);
+}
+
+.lede {
+  font-size: 15.5px;
+  color: oklch(0.92 0.02 235);
+  margin: 0 0 36px;
+  line-height: 1.6;
+  text-wrap: pretty;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Steps ─────────────────────────────────────────────── */
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.stepN {
+  width: 30px;
+  height: 30px;
+  background: oklch(1 0 0 / 0.16);
+  border: 1px solid oklch(1 0 0 / 0.25);
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.done .stepN {
+  background: var(--green-500);
+  border-color: var(--green-500);
+  color: var(--ink-900);
+}
+
+.stepBody {
+  b {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 2px;
+  }
+  span {
+    font-size: 13px;
+    color: oklch(0.88 0.03 235);
+  }
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+
+.foot {
+  margin-top: auto;
+  padding-top: 28px;
+  border-top: 1px solid oklch(1 0 0 / 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.footRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: oklch(0.92 0.02 235);
+
+  b {
+    color: white;
+    font-weight: 700;
+    display: block;
+  }
+}
+
+.footIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  background: oklch(1 0 0 / 0.14);
+  display: grid;
+  place-items: center;
+  color: var(--green-500);
+  flex-shrink: 0;
+}
+
+.phone {
+  color: oklch(0.92 0.1 165);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* ── Disclaimer ────────────────────────────────────────── */
+
+.disclaimer {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 11px 13px;
+  background: oklch(1 0 0 / 0.08);
+  border: 1px solid oklch(1 0 0 / 0.16);
+  border-left: 3px solid var(--green-500);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.55;
+  color: oklch(0.92 0.02 235);
+
+  svg {
+    color: var(--green-500);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  b {
+    color: white;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sube tu receta · Farmacia Duret</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-900: oklch(0.22 0.03 235);
+    --ink-700: oklch(0.38 0.025 235);
+    --ink-500: oklch(0.55 0.02 235);
+    --ink-400: oklch(0.66 0.015 235);
+    --ink-300: oklch(0.82 0.012 235);
+    --line:    oklch(0.92 0.008 220);
+    --line-2:  oklch(0.95 0.006 220);
+    --bg:      oklch(0.995 0.003 220);
+    --bg-soft: oklch(0.985 0.008 220);
+    --bg-blue: oklch(0.97 0.025 235);
+    --bg-mint: oklch(0.965 0.035 165);
+
+    --blue-700: oklch(0.46 0.13 245);
+    --blue-600: oklch(0.55 0.14 240);
+    --blue-500: oklch(0.62 0.13 235);
+    --blue-100: oklch(0.93 0.04 235);
+
+    --green-700: oklch(0.55 0.13 165);
+    --green-600: oklch(0.66 0.13 165);
+    --green-500: oklch(0.74 0.12 165);
+    --green-100: oklch(0.93 0.05 165);
+
+    --warn:    oklch(0.72 0.13 75);
+
+    --radius-sm: 4px;
+    --radius:    6px;
+    --radius-lg: 10px;
+    --radius-xl: 14px;
+    --radius-btn: 6px;
+
+    --shadow-sm: 0 1px 2px oklch(0.4 0.05 235 / 0.06);
+    --shadow:    0 6px 24px -8px oklch(0.4 0.08 235 / 0.16), 0 1px 2px oklch(0.4 0.05 235 / 0.05);
+    --shadow-lg: 0 24px 60px -20px oklch(0.4 0.1 235 / 0.25), 0 2px 6px oklch(0.4 0.05 235 / 0.06);
+
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *,*::before,*::after{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family: var(--font-sans);
+    color: var(--ink-900);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+  }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family: inherit; cursor:pointer; }
+
+  .wrap{ max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+
+  /* ============ HEADER (compact) ============ */
+  .hdr{
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .hdr-inner{
+    display:flex; align-items:center; gap: 28px;
+    padding: 16px 0;
+  }
+  .logo{
+    display:inline-flex; align-items:center; gap:10px;
+    font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
+    color: var(--ink-900);
+  }
+  .logo-mark{
+    width: 34px; height: 34px; border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--blue-600), var(--green-600));
+    display:grid; place-items:center; color:white;
+    box-shadow: 0 4px 14px -4px oklch(0.55 0.13 235 / 0.5);
+  }
+  .logo-mark svg{ width: 18px; height:18px; }
+  .crumbs{
+    margin-left: auto;
+    display:flex; align-items:center; gap: 8px;
+    font-size: 13.5px; color: var(--ink-500);
+  }
+  .crumbs a:hover{ color: var(--blue-700); }
+  .crumbs span{ color: var(--ink-300); }
+  .crumbs b{ color: var(--ink-900); font-weight: 600; }
+
+  /* ============ MAIN LAYOUT ============ */
+  main{
+    display:grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    min-height: calc(100vh - 67px);
+  }
+
+  /* ============ COLORED SIDEBAR ============ */
+  .side{
+    background:
+      radial-gradient(120% 70% at 90% 0%, oklch(0.74 0.12 165 / 0.55), transparent 55%),
+      linear-gradient(180deg, var(--blue-700), var(--blue-600) 60%, oklch(0.5 0.13 195));
+    color: white;
+    padding: 64px 56px;
+    display:flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .side::before{
+    content:""; position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(135deg,
+        transparent 0 28px,
+        oklch(1 0 0 / 0.04) 28px 29px);
+    pointer-events:none;
+  }
+
+  .side-eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background: oklch(1 0 0 / 0.15);
+    backdrop-filter: blur(6px);
+    color: white;
+    padding: 6px 12px; border-radius: var(--radius-sm);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase;
+    width: fit-content;
+    border: 1px solid oklch(1 0 0 / 0.18);
+  }
+  .side-eyebrow .dot{
+    width:6px; height:6px; border-radius: 2px; background: var(--green-500);
+    box-shadow: 0 0 0 3px oklch(0.74 0.12 165 / 0.4);
+  }
+
+  .side h1{
+    font-size: clamp(36px, 4.4vw, 54px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    margin: 24px 0 18px;
+    text-wrap: balance;
+  }
+  .side h1 em{
+    font-style: normal;
+    color: oklch(0.92 0.1 165);
+  }
+  .side .lede{
+    font-size: 16.5px;
+    color: oklch(0.92 0.02 235);
+    max-width: 440px;
+    margin: 0 0 40px;
+    text-wrap: pretty;
+  }
+
+  .steps{
+    display:flex; flex-direction: column; gap: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    padding-left: 4px;
+  }
+  .step{
+    display:flex; gap: 16px; align-items: flex-start;
+    position: relative;
+  }
+  .step-n{
+    width: 32px; height: 32px;
+    background: oklch(1 0 0 / 0.16);
+    border: 1px solid oklch(1 0 0 / 0.25);
+    border-radius: var(--radius-sm);
+    display:grid; place-items:center;
+    font-weight: 700; font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .step.done .step-n{
+    background: var(--green-500);
+    border-color: var(--green-500);
+    color: var(--ink-900);
+  }
+  .step-body b{
+    display:block;
+    font-size: 14.5px; font-weight: 700;
+    color: white;
+    margin-bottom: 2px;
+  }
+  .step-body span{
+    font-size: 13.5px;
+    color: oklch(0.88 0.03 235);
+  }
+
+  .side-foot{
+    margin-top: auto;
+    padding-top: 32px;
+    border-top: 1px solid oklch(1 0 0 / 0.15);
+    display:flex; flex-direction:column; gap: 14px;
+  }
+  .side-foot-row{
+    display:flex; align-items:center; gap: 12px;
+    font-size: 13.5px;
+    color: oklch(0.92 0.02 235);
+  }
+  .side-foot-row .ic{
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    background: oklch(1 0 0 / 0.14);
+    display:grid; place-items:center;
+    color: var(--green-500);
+    flex-shrink: 0;
+  }
+  .side-foot-row b{ color: white; font-weight: 700; display:block; }
+
+  .disclaimer{
+    display:flex; gap: 10px; align-items: flex-start;
+    margin-top: 4px;
+    padding: 12px 14px;
+    background: oklch(1 0 0 / 0.08);
+    border: 1px solid oklch(1 0 0 / 0.16);
+    border-left: 3px solid var(--green-500);
+    border-radius: var(--radius-sm);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: oklch(0.92 0.02 235);
+  }
+  .disclaimer svg{
+    color: var(--green-500);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .disclaimer b{ color: white; font-weight: 700; }
+
+  /* ============ FORM SIDE ============ */
+  .form-side{
+    padding: 64px 64px 88px;
+    background: var(--bg);
+    display:flex; flex-direction:column;
+  }
+  .form-head{
+    margin-bottom: 36px;
+  }
+  .form-head h2{
+    font-size: 26px;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 8px;
+  }
+  .form-head p{
+    color: var(--ink-700); font-size: 15px;
+    margin: 0;
+  }
+
+  form{ display: flex; flex-direction: column; gap: 28px; }
+
+  .group{
+    display:flex; flex-direction:column; gap: 18px;
+  }
+  .group-title{
+    display:flex; align-items:center; gap:10px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-500);
+  }
+  .group-title::after{
+    content:""; flex:1; height:1px; background: var(--line);
+  }
+  .group-title .num{
+    width: 22px; height: 22px;
+    border-radius: var(--radius-sm);
+    background: var(--blue-100); color: var(--blue-700);
+    display:grid; place-items:center;
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field{ display:flex; flex-direction:column; gap: 6px; }
+  .field label{
+    font-size: 13.5px; font-weight: 600;
+    color: var(--ink-900);
+  }
+  .field label .req{ color: var(--blue-600); margin-left: 2px; }
+  .field .hint{
+    font-size: 12.5px; color: var(--ink-500);
+  }
+
+  .input, .textarea{
+    font: inherit; font-size: 14.5px;
+    width: 100%;
+    padding: 11px 14px;
+    background: white;
+    color: var(--ink-900);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-btn);
+    transition: all 0.15s ease;
+    outline: 0;
+  }
+  .input::placeholder, .textarea::placeholder{ color: var(--ink-400); }
+  .input:focus, .textarea:focus{
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 4px oklch(0.62 0.13 235 / 0.12);
+    background: white;
+  }
+  .textarea{
+    resize: vertical; min-height: 110px;
+    font-family: inherit;
+  }
+
+  .input-wrap{ position: relative; }
+  .input-wrap .icon{
+    position:absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-500); pointer-events:none;
+  }
+  .input-wrap .input{ padding-left: 40px; }
+  .input-wrap:focus-within .icon{ color: var(--blue-600); }
+
+  /* Phone with country code */
+  .phone-row{
+    display:flex; gap: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-btn);
+    background: white;
+    transition: all 0.15s ease;
+    overflow: hidden;
+  }
+  .phone-row:focus-within{
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 4px oklch(0.62 0.13 235 / 0.12);
+  }
+  .phone-cc{
+    display:flex; align-items:center; gap: 8px;
+    padding: 0 14px;
+    background: var(--bg-soft);
+    border-right: 1px solid var(--line);
+    font-size: 14px; font-weight: 600;
+    color: var(--ink-700);
+  }
+  .phone-cc svg{ color: var(--ink-500); }
+  .phone-row input{
+    flex: 1;
+    padding: 11px 14px;
+    border: 0; outline: 0;
+    font: inherit; font-size: 14.5px;
+    color: var(--ink-900);
+    background: transparent;
+  }
+  .phone-row input::placeholder{ color: var(--ink-400); }
+
+  /* ============ DROPZONE ============ */
+  .drop{
+    position: relative;
+    border: 2px dashed oklch(0.62 0.13 235 / 0.4);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(80% 100% at 50% 0%, oklch(0.97 0.025 235), transparent 70%),
+      var(--bg-soft);
+    padding: 32px 28px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+  .drop:hover, .drop.dragover{
+    border-color: var(--blue-600);
+    background:
+      radial-gradient(80% 100% at 50% 0%, oklch(0.95 0.04 235), transparent 70%),
+      var(--bg-blue);
+  }
+  .drop input[type=file]{
+    position:absolute; inset:0; opacity:0; cursor: pointer;
+  }
+  .drop-icon{
+    width: 56px; height: 56px;
+    margin: 0 auto 14px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--blue-600), var(--green-600));
+    display:grid; place-items:center;
+    color: white;
+    box-shadow: 0 8px 20px -8px oklch(0.55 0.13 235 / 0.5);
+  }
+  .drop-title{
+    font-size: 16px; font-weight: 700;
+    color: var(--ink-900);
+    margin-bottom: 4px;
+  }
+  .drop-title u{
+    color: var(--blue-700); text-decoration: none;
+    border-bottom: 1.5px solid var(--blue-500);
+    padding-bottom: 1px;
+  }
+  .drop-meta{
+    font-size: 13px; color: var(--ink-500);
+  }
+  .drop-formats{
+    display:flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .drop-formats span{
+    font-family: var(--font-mono); font-size: 11px;
+    background: white; border: 1px solid var(--line);
+    color: var(--ink-700);
+    padding: 3px 8px; border-radius: var(--radius-sm);
+    font-weight: 500;
+  }
+
+  /* File list */
+  .files{
+    margin-top: 16px;
+    display:flex; flex-direction: column; gap: 8px;
+  }
+  .files:empty{ display:none; }
+  .file{
+    display:flex; align-items:center; gap: 12px;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-btn);
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn{
+    from{ opacity:0; transform: translateY(-4px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  .file-thumb{
+    width: 40px; height:40px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-mint);
+    color: var(--green-700);
+    display:grid; place-items:center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .file-thumb img{ width:100%; height:100%; object-fit: cover; }
+  .file-body{ flex:1; min-width: 0; }
+  .file-name{
+    font-size: 13.5px; font-weight: 600;
+    color: var(--ink-900);
+    white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+  }
+  .file-meta{ font-size: 12px; color: var(--ink-500); }
+  .file-rm{
+    width: 30px; height: 30px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line); background: white;
+    color: var(--ink-500);
+    display:grid; place-items:center;
+    transition: all 0.15s ease;
+  }
+  .file-rm:hover{ color: var(--blue-700); border-color: var(--blue-500); }
+
+  /* ============ CONSENT ============ */
+  .consent{
+    display:flex; gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .consent input{
+    appearance: none;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--ink-300);
+    border-radius: var(--radius-sm);
+    background: white;
+    cursor: pointer;
+    display:grid; place-items:center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.15s ease;
+  }
+  .consent input:checked{
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+  }
+  .consent input:checked::after{
+    content:""; width: 9px; height: 5px;
+    border-left: 2px solid white; border-bottom: 2px solid white;
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+  .consent label{
+    font-size: 13px; color: var(--ink-700);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .consent a{ color: var(--blue-700); font-weight: 600; border-bottom: 1px solid var(--blue-500); }
+
+  /* ============ ACTIONS ============ */
+  .actions{
+    display:flex; align-items:center; gap: 12px;
+    padding-top: 8px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding: 13px 22px; border-radius: var(--radius-btn);
+    font-weight: 600; font-size: 15px;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    background: transparent; color: inherit;
+    font-family: inherit;
+  }
+  .btn-primary{
+    background: var(--blue-600); color: white;
+    box-shadow: 0 4px 14px -4px oklch(0.55 0.13 235 / 0.5);
+  }
+  .btn-primary:hover{ background: var(--blue-700); transform: translateY(-1px); }
+  .btn-ghost{ color: var(--ink-700); }
+  .btn-ghost:hover{ background: var(--bg-soft); }
+  .actions .meta{
+    margin-left: auto;
+    display:flex; align-items: center; gap:8px;
+    font-size: 12.5px; color: var(--ink-500);
+  }
+  .actions .meta svg{ color: var(--green-600); }
+
+  /* ============ SUCCESS STATE ============ */
+  .success{
+    display:none;
+    text-align: center;
+    padding: 56px 24px;
+  }
+  .success.show{ display:block; }
+  .form-side.done form{ display:none; }
+  .form-side.done .form-head{ display:none; }
+  .success-icon{
+    width: 72px; height:72px;
+    margin: 0 auto 20px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--green-600), oklch(0.6 0.13 195));
+    color: white;
+    display:grid; place-items:center;
+    box-shadow: 0 12px 30px -10px oklch(0.66 0.13 165 / 0.5);
+  }
+  .success h3{
+    font-size: 28px; font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0 0 10px;
+  }
+  .success p{
+    color: var(--ink-700); font-size: 15px;
+    max-width: 360px; margin: 0 auto 24px;
+  }
+  .success .ref{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--font-mono); font-size: 13px;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    padding: 8px 14px; border-radius: var(--radius-btn);
+    color: var(--ink-700);
+  }
+  .success .ref b{ color: var(--ink-900); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px){
+    main{ grid-template-columns: 1fr; }
+    .side{ padding: 48px 32px; }
+    .form-side{ padding: 48px 32px 72px; }
+    .crumbs{ display:none; }
+  }
+  @media (max-width: 560px){
+    .wrap{ padding: 0 18px; }
+    .row{ grid-template-columns: 1fr; }
+    .side{ padding: 36px 24px; }
+    .form-side{ padding: 40px 24px 64px; }
+    .actions{ flex-direction: column-reverse; align-items: stretch; }
+    .actions .meta{ margin: 0; justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr-inner">
+    <a class="logo" href="Landing Page.html">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v16M4 12h16"/>
+        </svg>
+      </span>
+      Farmacia Duret
+    </a>
+    <div class="crumbs">
+      <a href="Landing Page.html">Inicio</a>
+      <span>/</span>
+      <b>Sube tu receta</b>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ COLORED SIDEBAR ============ -->
+  <aside class="side">
+    <span class="side-eyebrow"><span class="dot"></span>Reservas · Sube tu receta</span>
+    <h1>Tu receta lista en <em>30 minutos</em>.</h1>
+    <p class="lede">Sube una foto o PDF de tu receta médica y nuestro farmacéutico te confirma disponibilidad, precio y horario de recogida por WhatsApp.</p>
+
+    <div class="steps">
+      <div class="step done">
+        <span class="step-n">1</span>
+        <div class="step-body">
+          <b>Comparte tu receta</b>
+          <span>Llena el formulario con tu foto o PDF.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">2</span>
+        <div class="step-body">
+          <b>Te confirmamos en 30 min</b>
+          <span>Disponibilidad, precio total y tiempo de preparación.</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">3</span>
+        <div class="step-body">
+          <b>Recoge o recibe en casa</b>
+          <span>En sucursal sin filas, o entrega el mismo día.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-foot">
+      <div class="side-foot-row">
+        <span class="ic">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
+        <span><b>Tu información está segura</b>Ciframos tus datos y recetas.</span>
+      </div>
+      <div class="side-foot-row">
+        <span class="ic">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </span>
+        <span><b>¿Prefieres llamar?</b>800 DURET 24 · 24/7</span>
+      </div>
+
+      <div class="disclaimer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Por regulación sanitaria, los productos con receta deben recogerse <b>personalmente en sucursal</b> presentando la receta original e identificación oficial. No realizamos entrega a domicilio de medicamentos controlados.</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ FORM ============ -->
+  <section class="form-side" id="formSide">
+    <div class="form-head">
+      <h2>Cuéntanos de ti</h2>
+      <p>Solo necesitamos unos datos para contactarte cuando tu pedido esté listo.</p>
+    </div>
+
+    <form id="recetaForm" novalidate>
+      <!-- Group: contact -->
+      <div class="group">
+        <div class="group-title"><span class="num">1</span>Tus datos</div>
+
+        <div class="field">
+          <label>Nombre completo<span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input class="input" type="text" placeholder="Ej. María González" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Teléfono<span class="req">*</span></label>
+            <div class="phone-row">
+              <span class="phone-cc">
+                🇲🇽 +52
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+              <input type="tel" placeholder="55 1234 5678" required />
+            </div>
+            <span class="hint">Te avisamos por WhatsApp.</span>
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <div class="input-wrap">
+              <span class="icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <input class="input" type="email" placeholder="tu@email.com" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group: receta -->
+      <div class="group">
+        <div class="group-title"><span class="num">2</span>Tu receta</div>
+
+        <label class="drop" id="drop">
+          <input type="file" id="fileInput" accept="image/*,.pdf" multiple />
+          <div class="drop-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="drop-title">Arrastra tu receta o <u>elige un archivo</u></div>
+          <div class="drop-meta">Foto clara o PDF · máx. 10 MB por archivo</div>
+          <div class="drop-formats">
+            <span>JPG</span><span>PNG</span><span>HEIC</span><span>PDF</span>
+          </div>
+        </label>
+
+        <div class="files" id="files"></div>
+      </div>
+
+      <!-- Group: notes -->
+      <div class="group">
+        <div class="group-title"><span class="num">3</span>Notas (opcional)</div>
+        <div class="field">
+          <label>Comentarios para el farmacéutico</label>
+          <textarea class="textarea" placeholder="Ej. necesito el genérico si está disponible, prefiero recoger en sucursal Polanco mañana en la tarde…"></textarea>
+        </div>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" checked />
+        <label for="consent">Acepto el <a href="#">aviso de privacidad</a> y autorizo el uso de mi receta para preparar mi pedido. No compartimos tus datos con terceros.</label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-ghost">Cancelar</button>
+        <button type="submit" class="btn btn-primary">
+          Enviar receta
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <span class="meta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Conexión cifrada
+        </span>
+      </div>
+    </form>
+
+    <!-- ============ SUCCESS ============ -->
+    <div class="success" id="success">
+      <div class="success-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>¡Receta recibida!</h3>
+      <p>Te escribimos por WhatsApp en menos de 30 minutos con la confirmación.</p>
+      <span class="ref">Folio: <b id="folio">FD-2026-0481</b></span>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ===== Dropzone =====
+  const drop = document.getElementById('drop');
+  const fileInput = document.getElementById('fileInput');
+  const filesEl = document.getElementById('files');
+  let store = [];
+
+  function fmt(b){
+    if (b < 1024) return b + ' B';
+    if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+    return (b/1024/1024).toFixed(2) + ' MB';
+  }
+  function iconFor(file){
+    if (file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      return `<img src="${url}" alt="" />`;
+    }
+    return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  }
+  function render(){
+    filesEl.innerHTML = store.map((f, i) => `
+      <div class="file">
+        <div class="file-thumb">${iconFor(f)}</div>
+        <div class="file-body">
+          <div class="file-name">${f.name}</div>
+          <div class="file-meta">${fmt(f.size)} · ${f.type || 'archivo'}</div>
+        </div>
+        <button type="button" class="file-rm" data-i="${i}" aria-label="Quitar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    `).join('');
+    filesEl.querySelectorAll('.file-rm').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        const i = parseInt(b.dataset.i);
+        store.splice(i, 1);
+        render();
+      });
+    });
+  }
+  function add(list){
+    [...list].forEach(f => store.push(f));
+    render();
+  }
+  fileInput.addEventListener('change', e => add(e.target.files));
+
+  ['dragenter','dragover'].forEach(ev =>
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('dragover'); })
+  );
+  ['dragleave','drop'].forEach(ev =>
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('dragover'); })
+  );
+  drop.addEventListener('drop', e => {
+    if (e.dataTransfer?.files) add(e.dataTransfer.files);
+  });
+
+  // ===== Submit =====
+  const form = document.getElementById('recetaForm');
+  const formSide = document.getElementById('formSide');
+  const success = document.getElementById('success');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const folio = 'FD-2026-' + String(Math.floor(Math.random()*9000)+1000);
+    document.getElementById('folio').textContent = folio;
+    formSide.classList.add('done');
+    success.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

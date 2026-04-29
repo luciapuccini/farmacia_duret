@@ -33,11 +33,7 @@ export default function RootLayout({
 			<body>
 				<PromoBanner />
 				<Navbar />
-				<Container>
-					<PageHeader />
-					<Breadcrumb />
-					{children}
-				</Container>
+				<Container>{children}</Container>
 				<Footer />
 			</body>
 		</html>
