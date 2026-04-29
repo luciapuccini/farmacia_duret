@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="oklch(0.97 0.025 235)"></stop>
+      <stop offset="100%" stop-color="#fff"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#g)"></rect>
+  
+  <g transform="translate(200 130)">
+    <path d="M0 -30 c-30 -40 -80 0 -40 36 l40 36 l40 -36 c40 -36 -10 -76 -40 -36 z" fill="oklch(0.55 0.14 240)" opacity=".15"></path>
+    <path d="M0 -22 c-24 -32 -64 0 -32 28 l32 28 l32 -28 c32 -28 -8 -60 -32 -28 z" fill="#fff" stroke="oklch(0.55 0.14 240)" stroke-width="2"></path>
+    
+    <path d="M-50 0 L-26 0 L-18 -16 L-8 12 L2 -22 L12 8 L20 0 L50 0" fill="none" stroke="oklch(0.66 0.13 165)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+  
+  <circle cx="60" cy="60" r="14" fill="oklch(0.55 0.14 240)"></circle>
+  <circle cx="60" cy="60" r="14" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="2 4"></circle>
+  <rect x="320" y="200" width="46" height="16" rx="8" fill="oklch(0.66 0.13 165)"></rect>
+  <rect x="320" y="200" width="23" height="16" rx="8" fill="oklch(0.55 0.13 165)"></rect>
+
+</svg>

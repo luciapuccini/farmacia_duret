@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import styles from './subCategoryGrid.module.scss'
-import CtaButton from '@/components/CtaButton'
 import { nameToSlug } from '@/utils/nameToSlug'
 
 export interface SubCategory {
@@ -27,30 +26,35 @@ function SubCategoryGrid({ subcategories, categorySlug }: SubCategoryGridProps) 
     <div className={styles.grid}>
       {subcategories.map((sub, index) => {
         const slug = nameToSlug(sub.nombre)
-        const linkUrl = categorySlug ? `/${categorySlug}/${slug}` : `/${slug}`
+        const href = categorySlug ? `/${categorySlug}/${slug}` : `/${slug}`
 
         return (
-          <Link key={sub.nombre} href={linkUrl} className={styles.card}>
-            <div className={styles.imageWrapper}>
+          <Link key={sub.nombre} href={href} className={styles.card}>
+            <div className={styles.thumb}>
               <img
                 src={placeholderImages[index % placeholderImages.length]}
                 alt={sub.nombre}
                 className={styles.image}
               />
             </div>
-            <h3 className={styles.title}>{sub.nombre}</h3>
-            {sub.subcategorias && sub.subcategorias.length > 0 && (
-              <>
-                <ul className={styles.list}>
-                  {sub.subcategorias.slice(0, 3).map((item) => (
-                    <li key={item.nombre} className={styles.listItem}>
-                      {item.nombre}
-                    </li>
-                  ))}
-                </ul>
-                <CtaButton variant="card">Ver toda la categoría</CtaButton>
-              </>
-            )}
+            <div className={styles.meta}>
+              <h3 className={styles.title}>{sub.nombre}</h3>
+              <span className={styles.arrow} aria-hidden="true">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
           </Link>
         )
       })}

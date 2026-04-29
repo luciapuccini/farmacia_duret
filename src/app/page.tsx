@@ -1,15 +1,7 @@
 import Link from "next/link";
+import CatalogSection from "@/components/CatalogSection";
+import HeroVisual from "@/components/HeroVisual";
 import styles from "./home.module.scss";
-
-const mainCategories = [
-	{ name: "Dermocosmética", slug: "dermocosmetica" },
-	{ name: "Belleza", slug: "belleza" },
-	{ name: "Cuidado Personal", slug: "cuidado-personal" },
-	{ name: "Bebés", slug: "bebes" },
-	{ name: "Hogar y Alimentos", slug: "hogar-y-alimentos" },
-	{ name: "Salud y Farmacia", slug: "salud-y-farmacia" },
-	{ name: "Medicamentos", slug: "medicamentos" },
-];
 
 export default function HomePage() {
 	return (
@@ -102,98 +94,66 @@ export default function HomePage() {
 					</div>
 				</div>
 
-				<div className={styles.heroVisual} aria-hidden="true">
-					<div className={styles.heroPill}>
-						<span>imagen · farmacia / productos</span>
-					</div>
-
-					<div className={`${styles.floatCard} ${styles.fc1}`}>
-						<div className={styles.fcRow}>
-							<div className={styles.fcThumb} />
-							<div>
-								<div className={styles.fcTitle}>Vitamina D3</div>
-								<div className={styles.fcMeta}>60 cápsulas · $4.200</div>
-							</div>
-						</div>
-						<div className={styles.fcBar}>
-							<i style={{ width: "78%" }} />
-						</div>
-					</div>
-
-					<div className={`${styles.floatCard} ${styles.fc3}`}>
-						<div className={styles.fcRow}>
-							<span className={styles.fcPill}>−25%</span>
-							<div
-								className={styles.fcMeta}
-								style={{ fontWeight: 600, color: "var(--ink-900)" }}
-							>
-								Protección solar
-							</div>
-						</div>
-					</div>
-
-					<div className={`${styles.floatCard} ${styles.fc2}`}>
-						<div className={styles.fcRow}>
-							<div className={`${styles.fcThumb} ${styles.fcThumbGreen}`} />
-							<div>
-								<div className={styles.fcTitle}>Encargo listo en 2 h</div>
-								<div className={styles.fcMeta}>Villa Rosa · retirá hoy</div>
-							</div>
-						</div>
-					</div>
+				<div className={styles.heroVisual}>
+					<HeroVisual />
 				</div>
 			</section>
 
 			{/* ── Info strip ─────────────────────────────────────── */}
-			<section className={styles.infoStrip}>
-				<div className={styles.infoCard}>
-					<p className={styles.infoLabel}>Dirección</p>
-					<a
-						href="https://www.google.com/maps/place/Farmacia+Duret/@-34.4064716,-58.8588412,17z/data=!3m1!4b1!4m6!3m5!1s0x95bc9dc88cd56f9d:0x2f17665d565396da!8m2!3d-34.4064761!4d-58.8562663!16s%2Fg%2F11xkrnpz6y?entry=ttu&g_ep=EgoyMDI2MDIyNC4wIKXMDSoASAFQAw%3D%3D"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={styles.infoLink}
-					>
-						E. Casella 1743, B1631 Villa Rosa,
+			<div className={styles.infoStrip}>
+				<div className={styles.infoMsg}>
+					<span className={styles.infoIcon} aria-hidden="true">
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2.2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+							<circle cx="12" cy="10" r="3" />
+						</svg>
+					</span>
+					<span>
+						<b>Farmacia Duret</b> · Estamos en Villa Rosa,
 						<br />
 						Provincia de Buenos Aires
-					</a>
+					</span>
 				</div>
 
-				<div className={styles.infoCard}>
-					<p className={styles.infoLabel}>Horarios</p>
-					<p className={styles.infoValue}>
-						Lun–Sáb &nbsp;8:00–20:00
-						<br />
-						<span className={styles.infoClosed}>Domingo cerrado</span>
-					</p>
-				</div>
+				<div className={styles.infoStats}>
+					<div className={styles.infoStat}>
+						<a
+							href="https://www.google.com/maps/place/Farmacia+Duret/@-34.4064716,-58.8588412,17z/data=!3m1!4b1!4m6!3m5!1s0x95bc9dc88cd56f9d:0x2f17665d565396da!8m2!3d-34.4064761!4d-58.8562663!16s%2Fg%2F11xkrnpz6y?entry=ttu&g_ep=EgoyMDI2MDIyNC4wIKXMDSoASAFQAw%3D%3D"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={styles.infoStatN}
+						>
+							Villa Rosa
+						</a>
+						<div className={styles.infoStatL}>E. Casella 1743 · Ver mapa</div>
+					</div>
 
-				<div className={styles.infoCard}>
-					<p className={styles.infoLabel}>Teléfono</p>
-					<a href="tel:+541176231044" className={styles.infoLink}>
-						+54 11 7623-1044
-					</a>
+					<div className={styles.infoStat}>
+						<div className={styles.infoStatN}>8–20 h</div>
+						<div className={styles.infoStatL}>Lun–Sáb · Dom cerrado</div>
+					</div>
+
+					<div className={styles.infoStat}>
+						<a href="tel:+541176231044" className={styles.infoStatN}>
+							7623-1044
+						</a>
+						<div className={styles.infoStatL}>+54 11 · Llamanos</div>
+					</div>
 				</div>
-			</section>
+			</div>
 
 			{/* ── Categories ─────────────────────────────────────── */}
-			<section className={styles.categories}>
-				<h2 className={styles.sectionTitle}>Navegá por categoría</h2>
-				<div className={styles.categoryGrid}>
-					{mainCategories.map(({ name, slug }) => (
-						<Link key={slug} href={`/${slug}`} className={styles.categoryCard}>
-							{name}
-						</Link>
-					))}
-					<Link
-						href="/ofertas"
-						className={`${styles.categoryCard} ${styles.categoryCardAccent}`}
-					>
-						Ofertas
-					</Link>
-				</div>
-			</section>
+			<CatalogSection />
 		</div>
 	);
 }

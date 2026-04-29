@@ -1,0 +1,262 @@
+@use '@/globals' as g;
+
+/* ── Section wrapper ────────────────────────────────────── */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 1rem;
+}
+
+/* ── Section header ─────────────────────────────────────── */
+
+.sectHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sectLabel {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  margin: 0 0 8px;
+}
+
+.sectTitle {
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ink-900);
+  margin: 0 0 6px;
+
+  @include g.up(md) {
+    font-size: 1.625rem;
+  }
+}
+
+.sectSub {
+  font-size: 14px;
+  color: var(--ink-700);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+/* ── Filter chips ───────────────────────────────────────── */
+
+.filterRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: var(--radius-chip);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  background: white;
+  border: 1px solid var(--line);
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--blue-500);
+    color: var(--blue-700);
+  }
+}
+
+.chipActive {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+  color: white;
+
+  &:hover {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: white;
+  }
+
+  .chipCount {
+    background: oklch(1 0 0 / 0.15);
+    color: oklch(1 0 0 / 0.8);
+  }
+}
+
+.chipCount {
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--bg-soft);
+  color: var(--ink-500);
+  padding: 1px 7px;
+  border-radius: 3px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+/* ── Category grid ──────────────────────────────────────── */
+
+.catGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+
+  @include g.up(md) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+}
+
+/* ── Category card ──────────────────────────────────────── */
+
+.cat {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 180px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+  @include g.up(md) {
+    padding: 22px;
+    min-height: 220px;
+  }
+
+  &:hover {
+    border-color: oklch(0.62 0.13 235 / 0.4);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+
+    .catArrow {
+      background: var(--blue-600);
+      color: white;
+      transform: translateX(2px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ── Thumb ──────────────────────────────────────────────── */
+
+.catThumb {
+  aspect-ratio: 1.6 / 1;
+  border-radius: var(--radius);
+  background: var(--bg-blue);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+// Green striped — cuidado, bebes
+.catThumbGreen {
+  background: repeating-linear-gradient(
+    45deg,
+    oklch(0.66 0.13 165 / 0.16) 0 4px,
+    oklch(0.66 0.13 165 / 0.05) 4px 9px
+  );
+}
+
+// Blue striped — medicamentos
+.catThumbBlue {
+  background: repeating-linear-gradient(
+    45deg,
+    oklch(0.62 0.13 235 / 0.18) 0 4px,
+    oklch(0.62 0.13 235 / 0.06) 4px 9px
+  );
+}
+
+// Accent green striped — ofertas / skeleton without SVG with accent treatment
+.catThumbAccent {
+  background: repeating-linear-gradient(
+    45deg,
+    oklch(0.66 0.13 165 / 0.22) 0 4px,
+    oklch(0.66 0.13 165 / 0.08) 4px 9px
+  );
+}
+
+// Skeleton — no SVG, blue stripes (user-specified pattern)
+.catThumb:not(:has(img)):not(.catThumbGreen):not(.catThumbBlue):not(.catThumbAccent) {
+  background: repeating-linear-gradient(
+    45deg,
+    oklch(0.62 0.13 235 / 0.18) 0 4px,
+    oklch(0.62 0.13 235 / 0.08) 4px 8px
+  );
+}
+
+.catThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Badge tag ──────────────────────────────────────────── */
+
+.catTag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--green-100);
+  color: var(--green-700);
+  pointer-events: none;
+}
+
+/* ── Card meta row ──────────────────────────────────────── */
+
+.catMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.catName {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ink-900);
+}
+
+.catCount {
+  font-size: 12px;
+  color: var(--ink-500);
+  margin-top: 2px;
+}
+
+.catArrow {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  color: var(--ink-700);
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}

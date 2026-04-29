@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="oklch(0.97 0.025 235)"></stop>
+      <stop offset="100%" stop-color="#fff"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#g)"></rect>
+  
+  <g transform="translate(120 40)">
+    <rect x="6" y="6" width="160" height="190" rx="6" fill="oklch(0.85 0.07 235)" opacity=".4"></rect>
+    <rect x="0" y="0" width="160" height="190" rx="6" fill="#fff" stroke="oklch(0.85 0.07 235)"></rect>
+    <text x="16" y="40" font-family="Georgia, serif" font-size="34" font-weight="700" fill="oklch(0.55 0.14 240)">Rx</text>
+    <line x1="60" y1="36" x2="142" y2="36" stroke="oklch(0.85 0.07 235)" stroke-width="2"></line>
+    <line x1="16" y1="64" x2="142" y2="64" stroke="oklch(0.85 0.07 235)" stroke-width="2"></line>
+    <line x1="16" y1="84" x2="120" y2="84" stroke="oklch(0.85 0.07 235)" stroke-width="2"></line>
+    <line x1="16" y1="104" x2="130" y2="104" stroke="oklch(0.85 0.07 235)" stroke-width="2"></line>
+    <line x1="16" y1="124" x2="100" y2="124" stroke="oklch(0.85 0.07 235)" stroke-width="2"></line>
+    
+    <path d="M16 160 q12 -10 22 -2 t22 -2 t22 6" stroke="oklch(0.55 0.14 240)" stroke-width="2" fill="none" stroke-linecap="round"></path>
+    
+    <circle cx="130" cy="160" r="18" fill="none" stroke="oklch(0.66 0.13 165)" stroke-width="2" opacity=".7"></circle>
+    <text x="130" y="164" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="oklch(0.66 0.13 165)" opacity=".7">OK</text>
+  </g>
+
+</svg>
