@@ -15,9 +15,9 @@
 }
 
 .card {
-  background: g.palette(white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 1.5rem;
 }
 
@@ -32,7 +32,7 @@
   font-weight: var(--font-weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--ink-500);
   margin: 0 0 0.875rem;
 }
 
@@ -40,7 +40,7 @@
   font-style: normal;
   font-size: 0.9375rem;
   line-height: 1.7;
-  color: g.palette(black);
+  color: var(--ink-900);
 }
 
 .addressLink {
@@ -48,6 +48,7 @@
   text-decoration: none;
 
   &:hover {
+    color: var(--blue-700);
     text-decoration: underline;
   }
 }
@@ -55,10 +56,11 @@
 .phone {
   font-size: 1.125rem;
   font-weight: var(--font-weight-medium);
-  color: g.palette(black);
+  color: var(--ink-900);
   text-decoration: none;
 
   &:hover {
+    color: var(--blue-700);
     text-decoration: underline;
   }
 }
@@ -81,7 +83,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--line-2);
   font-size: 0.9rem;
 
   &:last-child {
@@ -90,5 +92,5 @@
 }
 
 .closed {
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--ink-400);
 }

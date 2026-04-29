@@ -18,9 +18,12 @@ export default function HomePage() {
       {/* ── Hero ───────────────────────────────────────────── */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <p className={styles.heroEyebrow}>Farmacia Duret · Villa Rosa</p>
+          <p className={styles.heroEyebrow}>
+            <span className={styles.heroEyebrowDot} aria-hidden="true" />
+            Farmacia Duret · Villa Rosa
+          </p>
           <h1 className={styles.heroTitle}>
-            Tu farmacia de<br />confianza, ahora online
+            Tu farmacia <em>de confianza</em>,<br />ahora online
           </h1>
           <p className={styles.heroSub}>
             Encontrá medicamentos, cuidado personal, productos para bebés y más.

@@ -10,11 +10,12 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
-    font-family: 'Montserrat', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
     font-weight: var(--font-weight-base);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     color: var(--text-color);
     background: var(--floral-white);
 }

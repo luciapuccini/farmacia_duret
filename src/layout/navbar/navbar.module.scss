@@ -3,8 +3,10 @@
 /* ── Shell ────────────────────────────────────────────── */
 
 .navbar {
-  background: g.palette(primary);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: oklch(0.995 0.003 220 / 0.88);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -21,16 +23,16 @@
 
   @include g.up(md) {
     padding: 0.875rem 2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    border-bottom: 1px solid var(--line);
   }
 }
 
 .brand {
-  font-size: 1rem;
-  font-weight: var(--font-weight-strong);
-  color: g.palette(black);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--ink-900);
   text-decoration: none;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
   flex-shrink: 0;
   line-height: 1;
   transition: opacity 0.15s ease;
@@ -56,10 +58,10 @@
   justify-content: center;
   background: transparent;
   border: none;
-  color: g.palette(black);
+  color: var(--ink-700);
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   transition: background-color 0.15s ease;
   flex-shrink: 0;
 
@@ -68,11 +70,12 @@
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--bg-blue);
+    color: var(--blue-700);
   }
 
   &:active {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--blue-100);
   }
 
   @include g.up(md) {
@@ -116,7 +119,7 @@
 
 .navItemButton {
   background: transparent;
-  color: g.palette(black);
+  color: var(--ink-700);
   border: none;
   padding: 0.625rem 0.875rem;
   cursor: pointer;
@@ -128,16 +131,18 @@
   white-space: nowrap;
   text-decoration: none;
   border-bottom: 2px solid transparent;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   line-height: 1;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
-    border-bottom-color: rgba(0, 0, 0, 0.2);
+    background: var(--bg-blue);
+    color: var(--blue-700);
+    border-bottom-color: var(--blue-300, oklch(0.82 0.06 235));
   }
 
   &[aria-expanded='true'] {
-    background: rgba(0, 0, 0, 0.04);
+    background: var(--bg-blue);
+    color: var(--blue-700);
 
     .chevron {
       transform: rotate(180deg);
@@ -146,7 +151,8 @@
 }
 
 .navItemButtonActive {
-  border-bottom-color: g.palette(black);
+  color: var(--blue-700);
+  border-bottom-color: var(--blue-700);
 }
 
 /* ── Chevron icons ────────────────────────────────────── */
@@ -154,14 +160,14 @@
 .chevron {
   display: inline-block;
   flex-shrink: 0;
-  opacity: 0.5;
+  opacity: 0.6;
   transition: transform 0.15s ease;
 }
 
 .chevronRight {
   display: inline-block;
   flex-shrink: 0;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /* ── Flyout submenu ───────────────────────────────────── */
@@ -173,18 +179,20 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: g.palette(white);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-top: 2px solid g.palette(black);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--ink-900);
+  box-shadow: var(--shadow-lg);
   z-index: 1001;
   min-width: 210px;
+  border-radius: 0 0 var(--radius) var(--radius);
 
   &[data-depth='1'],
   &[data-depth='2'] {
     left: 100%;
     top: -1px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--line);
+    border-radius: var(--radius);
   }
 
   /* Reset item layout inside menus */
@@ -193,7 +201,7 @@
     align-items: stretch;
 
     &:not(:last-child) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid var(--line-2);
     }
   }
 
@@ -206,13 +214,14 @@
     justify-content: space-between;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.05);
+      background: var(--bg-blue);
       border-bottom: none;
     }
   }
 
   .navItemButtonActive {
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--blue-100);
+    color: var(--blue-700);
     border-bottom: none;
   }
 }

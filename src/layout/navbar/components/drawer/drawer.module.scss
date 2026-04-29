@@ -5,7 +5,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: oklch(0.22 0.03 235 / 0.5);
   z-index: 999;
   animation: fadeIn 0.2s ease-out;
 }
@@ -24,11 +24,11 @@
   height: 100dvh;
   width: 82vw;
   max-width: 300px;
-  background: g.palette(white);
+  background: var(--bg);
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
   transform: translateX(-100%);
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
@@ -47,16 +47,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1rem 1rem 1.25rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--line);
   flex-shrink: 0;
 }
 
 .drawerBrand {
-  font-size: 0.975rem;
-  font-weight: var(--font-weight-strong);
-  color: g.palette(black);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ink-900);
   text-decoration: none;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
   transition: opacity 0.15s ease;
 
   &:hover {
@@ -70,10 +70,10 @@
   justify-content: center;
   background: none;
   border: none;
-  color: g.palette(black);
+  color: var(--ink-700);
   cursor: pointer;
   padding: 0.4rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   transition: background-color 0.15s ease;
   flex-shrink: 0;
 
@@ -82,11 +82,12 @@
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--bg-blue);
+    color: var(--blue-700);
   }
 
   &:active {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--blue-100);
   }
 }
 
@@ -97,14 +98,14 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  scrollbar-color: var(--line) transparent;
 
   &::-webkit-scrollbar {
     width: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--line);
     border-radius: 2px;
   }
 }
@@ -116,15 +117,15 @@
   flex-direction: column;
 
   &[data-depth='0'] {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    border-bottom: 1px solid var(--line);
   }
 
   &[data-depth='1'] {
-    background: rgba(0, 0, 0, 0.025);
+    background: var(--bg-soft);
   }
 
   &[data-depth='2'] {
-    background: rgba(0, 0, 0, 0.04);
+    background: var(--bg-blue);
   }
 }
 
@@ -138,7 +139,7 @@
 .drawerItemButton {
   background: transparent;
   border: none;
-  color: g.palette(black);
+  color: var(--ink-700);
   padding: 0.8rem 1.25rem;
   text-align: left;
   cursor: pointer;
@@ -148,18 +149,20 @@
   gap: 0.5rem;
   font-size: 0.9rem;
   font-weight: var(--font-weight-medium);
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   width: 100%;
   text-decoration: none;
   line-height: 1.3;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-blue);
+    color: var(--blue-700);
   }
 }
 
 .drawerItemButtonActive {
-  background: rgba(0, 0, 0, 0.07);
+  color: var(--blue-700);
+  background: var(--blue-100);
   font-weight: var(--font-weight-strong);
 }
 
@@ -168,8 +171,8 @@
 .drawerToggle {
   background: transparent;
   border: none;
-  border-left: 1px solid rgba(0, 0, 0, 0.07);
-  color: g.palette(black);
+  border-left: 1px solid var(--line);
+  color: var(--ink-500);
   padding: 0.75rem 1rem;
   cursor: pointer;
   display: flex;
@@ -183,11 +186,12 @@
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-blue);
+    color: var(--blue-700);
   }
 
   &:active {
-    background: rgba(0, 0, 0, 0.09);
+    background: var(--blue-100);
   }
 }
 
@@ -196,7 +200,7 @@
 .chevron {
   display: inline-block;
   flex-shrink: 0;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /* ── Submenu ──────────────────────────────────────────── */
@@ -222,7 +226,7 @@
 
 .drawerFooter {
   padding: 1rem 1.25rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--line);
   flex-shrink: 0;
 }
 
@@ -232,17 +236,17 @@
   justify-content: center;
   width: 100%;
   padding: 0.75rem 1rem;
-  background: g.palette(almond);
-  color: g.palette(black);
+  background: var(--blue-600);
+  color: white;
   font-size: 0.9rem;
   font-weight: var(--font-weight-strong);
   text-decoration: none;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: filter 0.15s ease, transform 0.15s ease;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-btn-primary);
+  transition: background 0.15s ease, transform 0.15s ease;
 
   &:hover {
-    filter: brightness(0.95);
+    background: var(--blue-700);
     transform: translateY(-1px);
   }
 

@@ -22,37 +22,37 @@
 }
 
 .separator {
-  color: #9ca3af;
+  color: var(--ink-300);
   font-size: 14px;
   margin: 0 4px;
 }
 
 .breadcrumbLink {
-  color: #666;
+  color: var(--ink-500);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
   padding: 6px 12px;
-  border-radius: 20px;
-  background: g.palette(almond);
-  transition: all 0.2s ease;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
+  border-radius: var(--radius-pill);
+  background: var(--bg-soft);
+  transition: all 0.15s ease;
+  border: 1px solid var(--line);
 
-.breadcrumbLink:hover {
-  background: linear-gradient(135deg, #ead7c3 0%, #dcc9b2 100%);
-  color: #333;
-  border-color: rgba(0, 0, 0, 0.15);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  &:hover {
+    background: var(--bg-blue);
+    color: var(--blue-700);
+    border-color: var(--blue-500);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
 
-.breadcrumbLink:active {
-  transform: translateY(0);
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .currentPage {
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--ink-500);
   font-size: 14px;
   font-weight: 500;
   padding: 6px 12px;

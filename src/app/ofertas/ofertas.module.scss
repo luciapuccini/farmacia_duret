@@ -10,13 +10,12 @@
 /* ── Banner ─────────────────────────────────────────────── */
 
 .banner {
-  background: g.palette(almond);
-  border-radius: 10px;
+  background: var(--bg-mint);
+  border-radius: var(--radius-lg);
   padding: 3rem 2rem;
   position: relative;
   overflow: hidden;
 
-  /* Decorative circle */
   &::after {
     content: '';
     position: absolute;
@@ -45,16 +44,17 @@
   font-weight: var(--font-weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--green-700);
   margin: 0 0 0.75rem;
 }
 
 .bannerHeadline {
   font-size: 2rem;
-  font-weight: var(--font-weight-strong);
-  color: g.palette(black);
+  font-weight: 800;
+  color: var(--ink-900);
   margin: 0 0 1rem;
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 
   @include g.up(md) {
     font-size: 2.5rem;
@@ -63,7 +63,7 @@
 
 .bannerSub {
   font-size: 0.9375rem;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--ink-700);
   margin: 0;
   line-height: 1.7;
 }
@@ -81,7 +81,7 @@
   font-weight: var(--font-weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--ink-500);
   margin: 0;
 }
 
@@ -96,14 +96,20 @@
 }
 
 .card {
-  background: g.palette(white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   position: relative;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    border-color: var(--blue-500);
+    box-shadow: var(--shadow);
+  }
 }
 
 .cardBadge {
@@ -113,17 +119,17 @@
   font-weight: var(--font-weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  background: g.palette(primary);
-  color: rgba(0, 0, 0, 0.6);
+  background: var(--green-100);
+  color: var(--green-700);
   padding: 0.2rem 0.6rem;
-  border-radius: 99px;
+  border-radius: var(--radius-pill);
   margin-bottom: 0.25rem;
 }
 
 .cardBrand {
   font-size: 0.8125rem;
   font-weight: var(--font-weight-strong);
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--ink-500);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -131,15 +137,16 @@
 
 .cardHeadline {
   font-size: 1.375rem;
-  font-weight: var(--font-weight-strong);
-  color: g.palette(black);
+  font-weight: 700;
+  color: var(--ink-900);
   margin: 0;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .cardDetail {
   font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--ink-500);
   margin: 0;
   line-height: 1.5;
 }

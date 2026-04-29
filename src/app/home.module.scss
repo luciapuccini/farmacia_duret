@@ -10,9 +10,8 @@
 /* ── Hero ──────────────────────────────────────────────────── */
 
 .hero {
-  /* bleed out of the container padding */
   margin: -1.5rem -1rem 0;
-  background: g.palette(almond);
+  background: var(--bg-mint);
   padding: 3.5rem 1rem 3rem;
   display: flex;
   align-items: center;
@@ -38,20 +37,44 @@
 }
 
 .heroEyebrow {
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green-100);
+  color: var(--green-700);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
   font-weight: var(--font-weight-strong);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(0, 0, 0, 0.45);
+  width: fit-content;
   margin: 0;
+}
+
+.heroEyebrowDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--green-600);
+  flex-shrink: 0;
 }
 
 .heroTitle {
   font-size: 2.25rem;
-  font-weight: var(--font-weight-strong);
-  color: g.palette(black);
+  font-weight: 800;
+  color: var(--ink-900);
   margin: 0;
-  line-height: 1.15;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+
+  em {
+    font-style: normal;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
   @include g.up(md) {
     font-size: 3rem;
@@ -59,8 +82,8 @@
 }
 
 .heroSub {
-  font-size: 0.9375rem;
-  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+  color: var(--ink-700);
   margin: 0;
   line-height: 1.7;
   max-width: 440px;
@@ -76,17 +99,19 @@
 .ctaPrimary {
   display: inline-flex;
   align-items: center;
-  padding: 0.7rem 1.5rem;
-  background: g.palette(black);
-  color: g.palette(white);
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: var(--font-weight-medium);
+  gap: 8px;
+  padding: 0.75rem 1.5rem;
+  background: var(--blue-600);
+  color: white;
+  border-radius: var(--radius-pill);
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-strong);
   text-decoration: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--shadow-btn-primary);
+  transition: background 0.15s ease, transform 0.15s ease;
 
   &:hover {
-    opacity: 0.85;
+    background: var(--blue-700);
     transform: translateY(-1px);
   }
 
@@ -98,19 +123,19 @@
 .ctaSecondary {
   display: inline-flex;
   align-items: center;
-  padding: 0.7rem 1.5rem;
-  background: transparent;
-  color: g.palette(black);
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: var(--font-weight-medium);
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: var(--ink-900);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-strong);
   text-decoration: none;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease;
 
   &:hover {
-    border-color: g.palette(black);
-    background: rgba(0, 0, 0, 0.04);
+    border-color: var(--blue-500);
+    color: var(--blue-700);
   }
 }
 
@@ -127,7 +152,7 @@
     width: 28rem;
     height: 28rem;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.25);
     flex-shrink: 0;
   }
 }
@@ -138,9 +163,9 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1px;
-  background: rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   overflow: hidden;
 
   @include g.up(md) {
@@ -149,7 +174,7 @@
 }
 
 .infoCard {
-  background: g.palette(white);
+  background: var(--bg);
   padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -161,30 +186,31 @@
   font-weight: var(--font-weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--ink-500);
   margin: 0;
 }
 
 .infoValue {
   font-size: 0.9rem;
-  color: g.palette(black);
+  color: var(--ink-900);
   line-height: 1.6;
   margin: 0;
 }
 
 .infoLink {
   font-size: 0.9rem;
-  color: g.palette(black);
+  color: var(--ink-900);
   line-height: 1.6;
   text-decoration: none;
 
   &:hover {
+    color: var(--blue-700);
     text-decoration: underline;
   }
 }
 
 .infoClosed {
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--ink-500);
 }
 
 /* ── Categories ────────────────────────────────────────────── */
@@ -201,7 +227,7 @@
   font-weight: var(--font-weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--ink-500);
   margin: 0;
 }
 
@@ -219,19 +245,20 @@
   display: flex;
   align-items: center;
   padding: 1.125rem 1.25rem;
-  background: g.palette(white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   font-size: 0.9rem;
   font-weight: var(--font-weight-medium);
-  color: g.palette(black);
+  color: var(--ink-900);
   text-decoration: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, color 0.15s ease;
 
   &:hover {
-    border-color: rgba(0, 0, 0, 0.18);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
+    border-color: var(--blue-500);
+    color: var(--blue-700);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
   }
 
   &:active {
@@ -240,11 +267,14 @@
 }
 
 .categoryCardAccent {
-  background: g.palette(almond);
+  background: var(--bg-mint);
   border-color: transparent;
+  color: var(--green-700);
+  font-weight: var(--font-weight-strong);
 
   &:hover {
-    border-color: transparent;
-    filter: brightness(0.97);
+    border-color: var(--green-600);
+    color: var(--green-700);
+    box-shadow: var(--shadow);
   }
 }

@@ -2,31 +2,39 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.625rem 1rem;
-    background: transparent;
-    border: 1px solid var(--text-color);
-    border-radius: 6px;
+    padding: 0.625rem 1.25rem;
+    background: var(--blue-600);
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
     font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-color);
+    font-weight: 600;
+    color: white;
     cursor: pointer;
-    transition: all 0.2s ease;
+    box-shadow: var(--shadow-btn-primary);
+    transition: background 0.15s ease, transform 0.15s ease;
     white-space: nowrap;
 
     &:hover {
-        background: var(--text-color);
-        color: white;
+        background: var(--blue-700);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
     }
 }
 
 .almond {
-    background: #ead7c3;
-    border-color: rgba(0, 0, 0, 0.08);
+    background: var(--bg-mint);
+    color: var(--green-700);
+    border-color: transparent;
+    box-shadow: none;
 
     &:hover {
-        background: #ead7c3;
-        filter: brightness(0.95);
-        color: var(--text-color);
+        background: var(--bg-mint);
+        filter: brightness(0.96);
+        transform: translateY(-1px);
+        color: var(--green-700);
     }
 }
 
