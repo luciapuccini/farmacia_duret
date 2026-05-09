@@ -2,8 +2,10 @@
 - SEO review
 - search categories
 - validate if https://whapi.cloud/ could automate with whatsapp
-- easy way to update categories/products async with other user. CMS?
 - progress with CMS
 - tests unit, e2e, visuals
-- analytics
+- analytics -maybe posthog - domain + Google SC
 - unify structure folders with clear client/server/ infra folders..
+- Add admin dashboard to centralize the daily work, recetas mamagement first. Open to extent to other features (CMS updates? stock management, ...?)
+- email service
+
