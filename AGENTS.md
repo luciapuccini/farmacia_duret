@@ -86,3 +86,17 @@ Structured data (JSON-LD) should be implemented for improved search engine visib
 - **LocalBusiness**: Include LocalBusiness schema with pharmacy location data
 
 When creating new pages that would benefit from structured data, proactively suggest implementing JSON-LD schemas.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues (`luciapuccini/farmacia_duret`). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout — `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
