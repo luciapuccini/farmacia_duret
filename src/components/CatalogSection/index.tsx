@@ -68,9 +68,9 @@ const CATEGORIES: CategoryConfig[] = [
 	},
 	{
 		name: "Ofertas",
-		slug: "ofertas",
+		slug: "offers",
 		svg: null,
-		tags: ["ofertas"],
+		tags: ["offers"],
 		thumbVariant: "accent",
 		badge: "Hasta −30%",
 	},
@@ -81,7 +81,7 @@ const CHIPS = [
 	{ label: "Medicamentos", filter: "medicamentos" },
 	{ label: "Cuidado personal", filter: "cuidado" },
 	{ label: "Bebés", filter: "bebes" },
-	{ label: "Ofertas", filter: "ofertas" },
+	{ label: "Ofertas", filter: "offers" },
 ];
 
 const THUMB_CLASS: Record<ThumbVariant, string> = {

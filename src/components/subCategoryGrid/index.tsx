@@ -3,8 +3,8 @@ import styles from './subCategoryGrid.module.scss'
 import { nameToSlug } from '@/utils/nameToSlug'
 
 export interface SubCategory {
-  nombre: string
-  subcategorias?: SubCategory[]
+  name: string
+  subcategories?: SubCategory[]
 }
 
 interface SubCategoryGridProps {
@@ -25,20 +25,20 @@ function SubCategoryGrid({ subcategories, categorySlug }: SubCategoryGridProps) 
   return (
     <div className={styles.grid}>
       {subcategories.map((sub, index) => {
-        const slug = nameToSlug(sub.nombre)
+        const slug = nameToSlug(sub.name)
         const href = categorySlug ? `/${categorySlug}/${slug}` : `/${slug}`
 
         return (
-          <Link key={sub.nombre} href={href} className={styles.card}>
+          <Link key={sub.name} href={href} className={styles.card}>
             <div className={styles.thumb}>
               <img
                 src={placeholderImages[index % placeholderImages.length]}
-                alt={sub.nombre}
+                alt={sub.name}
                 className={styles.image}
               />
             </div>
             <div className={styles.meta}>
-              <h3 className={styles.title}>{sub.nombre}</h3>
+              <h3 className={styles.title}>{sub.name}</h3>
               <span className={styles.arrow} aria-hidden="true">
                 <svg
                   width="14"

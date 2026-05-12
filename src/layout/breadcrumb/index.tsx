@@ -7,6 +7,11 @@ import styles from './breadcrumb.module.scss'
 const BASE_URL = 'https://www.farmaciaduret.com'
 
 const categoryNames: Record<string, string> = {
+  // static pages
+  'contact': 'Contacto',
+  'offers': 'Ofertas',
+  'orders': 'Reservas',
+  // dynamic category routes (slugs from Spanish data)
   'dermocosmetica': 'Dermocosmética',
   'belleza': 'Belleza',
   'cuidado-personal': 'Cuidado Personal',

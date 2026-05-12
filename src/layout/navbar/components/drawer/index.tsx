@@ -8,8 +8,8 @@ import categories from '@/data/categories.json'
 import { categoryNameToPath } from '@/helpers/routes'
 
 type Category = {
-  nombre: string
-  subcategorias?: Category[]
+  name: string
+  subcategories?: Category[]
 }
 
 interface DrawerProps {
@@ -47,8 +47,8 @@ function DrawerNavItem({
   pathname: string
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  const hasSubcategories = category.subcategorias && category.subcategorias.length > 0
-  const categoryPath = categoryNameToPath(category.nombre)
+  const hasSubcategories = category.subcategories && category.subcategories.length > 0
+  const categoryPath = categoryNameToPath(category.name)
   const isTopLevel = depth === 0
 
   const isActiveLink = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
@@ -66,7 +66,7 @@ function DrawerNavItem({
             }
             onClick={onNavigate}
           >
-            {category.nombre}
+            {category.name}
           </Link>
 
           {hasSubcategories && (
@@ -74,7 +74,7 @@ function DrawerNavItem({
               type="button"
               className={styles.drawerToggle}
               onClick={() => setIsOpen(!isOpen)}
-              aria-label={`${isOpen ? 'Ocultar' : 'Mostrar'} ${category.nombre}`}
+              aria-label={`${isOpen ? 'Ocultar' : 'Mostrar'} ${category.name}`}
               aria-expanded={isOpen}
             >
               {isOpen ? <ChevronDown /> : <ChevronRight />}
@@ -91,16 +91,16 @@ function DrawerNavItem({
           }
           onClick={onNavigate}
         >
-          {category.nombre}
+          {category.name}
           {hasSubcategories && <ChevronRight />}
         </Link>
       ) : !hasSubcategories ? (
         <Link
-          href={category.nombre === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
+          href={category.name === 'Ver todos los productos' ? parentPath : `${parentPath}?f=${categoryPath.slice(1)}`}
           className={styles.drawerItemButton}
           onClick={onNavigate}
         >
-          {category.nombre}
+          {category.name}
         </Link>
       ) : (
         <button
@@ -109,16 +109,16 @@ function DrawerNavItem({
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
         >
-          {category.nombre}
+          {category.name}
           {isOpen ? <ChevronDown /> : <ChevronRight />}
         </button>
       )}
 
       {hasSubcategories && isOpen && (
         <div className={styles.drawerSubmenu}>
-          {category.subcategorias?.map((subcategory) => (
+          {category.subcategories?.map((subcategory) => (
             <DrawerNavItem
-              key={subcategory.nombre}
+              key={subcategory.name}
               category={subcategory}
               depth={depth + 1}
               onNavigate={onNavigate}
@@ -163,13 +163,13 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
         {/* Nav items */}
         <nav className={styles.drawerNav} aria-label="Categorías">
           {categories.map((category: Category) => (
-            <DrawerNavItem key={category.nombre} category={category} onNavigate={onClose} pathname={pathname} />
+            <DrawerNavItem key={category.name} category={category} onNavigate={onClose} pathname={pathname} />
           ))}
           <div className={styles.drawerItem} data-depth={0}>
             <Link
               href="/contacto"
               className={
-                pathname === '/contacto'
+                pathname === '/contact'
                   ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
                   : styles.drawerItemButton
               }

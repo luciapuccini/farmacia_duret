@@ -1,352 +1,352 @@
 [
   {
-    "nombre": "Ofertas"
+    "name": "Ofertas"
   },
   {
-    "nombre": "Dermocosmética",
-    "subcategorias": [
+    "name": "Dermocosmética",
+    "subcategories": [
       {
-        "nombre": "Rostro",
-        "subcategorias": [
-          { "nombre": "Anti Edad" },
-          { "nombre": "Anti Manchas" },
-          { "nombre": "Hidratación" },
-          { "nombre": "Limpieza" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Rostro",
+        "subcategories": [
+          { "name": "Anti Edad" },
+          { "name": "Anti Manchas" },
+          { "name": "Hidratación" },
+          { "name": "Limpieza" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Corporal",
-        "subcategorias": [
-          { "nombre": "Cicatrizantes" },
-          { "nombre": "Higiene" },
-          { "nombre": "Piel Atópica" },
-          { "nombre": "Piel Seca" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Corporal",
+        "subcategories": [
+          { "name": "Cicatrizantes" },
+          { "name": "Higiene" },
+          { "name": "Piel Atópica" },
+          { "name": "Piel Seca" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Pelo",
-        "subcategorias": [
-          { "nombre": "Shampoos y Acondicionadores" },
-          { "nombre": "Bálsamos y Tratamientos" }
+        "name": "Pelo",
+        "subcategories": [
+          { "name": "Shampoos y Acondicionadores" },
+          { "name": "Bálsamos y Tratamientos" }
         ]
       }
     ]
   },
   {
-    "nombre": "Belleza",
-    "subcategorias": [
+    "name": "Belleza",
+    "subcategories": [
       {
-        "nombre": "Maquillaje",
-        "subcategorias": [
-          { "nombre": "Labios" },
-          { "nombre": "Ojos" },
-          { "nombre": "Rostro" },
-          { "nombre": "Uñas" }
+        "name": "Maquillaje",
+        "subcategories": [
+          { "name": "Labios" },
+          { "name": "Ojos" },
+          { "name": "Rostro" },
+          { "name": "Uñas" }
         ]
       },
       {
-        "nombre": "Perfumes y Fragancias",
-        "subcategorias": [
-          { "nombre": "Hombres" },
-          { "nombre": "Mujeres" },
-          { "nombre": "Colonias y Body Splash" }
+        "name": "Perfumes y Fragancias",
+        "subcategories": [
+          { "name": "Hombres" },
+          { "name": "Mujeres" },
+          { "name": "Colonias y Body Splash" }
         ]
       },
       {
-        "nombre": "Cuidado de la Piel",
-        "subcategorias": [
-          { "nombre": "Cuidado Corporal" },
-          { "nombre": "Cuidado Facial" },
-          { "nombre": "Protección Solar" }
+        "name": "Cuidado de la Piel",
+        "subcategories": [
+          { "name": "Cuidado Corporal" },
+          { "name": "Cuidado Facial" },
+          { "name": "Protección Solar" }
         ]
       },
       {
-        "nombre": "Accesorios de Belleza",
-        "subcategorias": [
-          { "nombre": "Accesorios de Pelo" },
-          { "nombre": "Accesorios de Maquillaje" }
+        "name": "Accesorios de Belleza",
+        "subcategories": [
+          { "name": "Accesorios de Pelo" },
+          { "name": "Accesorios de Maquillaje" }
         ]
       },
       {
-        "nombre": "Electro Belleza",
-        "subcategorias": [
-          { "nombre": "Cortadoras y Afeitadoras" },
-          { "nombre": "Masajeadores y Exfoliadores" },
-          { "nombre": "Secadores" },
-          { "nombre": "Depiladoras" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Electro Belleza",
+        "subcategories": [
+          { "name": "Cortadoras y Afeitadoras" },
+          { "name": "Masajeadores y Exfoliadores" },
+          { "name": "Secadores" },
+          { "name": "Depiladoras" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Cuidado Capilar",
-        "subcategorias": [
-          { "nombre": "Shampoo y Acondicionador" },
-          { "nombre": "Reparación y Tratamiento" },
-          { "nombre": "Modelado y Peinado" },
-          { "nombre": "Coloración y Oxidantes" }
+        "name": "Cuidado Capilar",
+        "subcategories": [
+          { "name": "Shampoo y Acondicionador" },
+          { "name": "Reparación y Tratamiento" },
+          { "name": "Modelado y Peinado" },
+          { "name": "Coloración y Oxidantes" }
         ]
       },
       {
-        "nombre": "Moda",
-        "subcategorias": [
-          { "nombre": "Pequeña Marroquinería" },
-          { "nombre": "Textil" }
+        "name": "Moda",
+        "subcategories": [
+          { "name": "Pequeña Marroquinería" },
+          { "name": "Textil" }
         ]
       },
       {
-        "nombre": "Novedades y Sorteos",
-        "subcategorias": [
-          { "nombre": "Dove Oleos Corporales" },
-          { "nombre": "Colossal Bubble" }
+        "name": "Novedades y Sorteos",
+        "subcategories": [
+          { "name": "Dove Oleos Corporales" },
+          { "name": "Colossal Bubble" }
         ]
       }
     ]
   },
   {
-    "nombre": "Cuidado Personal",
-    "subcategorias": [
+    "name": "Cuidado Personal",
+    "subcategories": [
       {
-        "nombre": "Cuidado Capilar",
-        "subcategorias": [
-          { "nombre": "Shampoo y Acondicionador" },
-          { "nombre": "Reparación y Tratamiento" },
-          { "nombre": "Modelado y Peinado" },
-          { "nombre": "Coloración y Oxidantes" }
+        "name": "Cuidado Capilar",
+        "subcategories": [
+          { "name": "Shampoo y Acondicionador" },
+          { "name": "Reparación y Tratamiento" },
+          { "name": "Modelado y Peinado" },
+          { "name": "Coloración y Oxidantes" }
         ]
       },
       {
-        "nombre": "Cuidado Oral",
-        "subcategorias": [
-          { "nombre": "Pasta Dental" },
-          { "nombre": "Cepillos Dentales" },
-          { "nombre": "Enjuagues Bucales" },
-          { "nombre": "Tabletas Limpiadoras y Adhesivos" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Cuidado Oral",
+        "subcategories": [
+          { "name": "Pasta Dental" },
+          { "name": "Cepillos Dentales" },
+          { "name": "Enjuagues Bucales" },
+          { "name": "Tabletas Limpiadoras y Adhesivos" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Adultos",
-        "subcategorias": [
-          { "nombre": "Pañales para Adultos" },
-          { "nombre": "Protección para Incontinencia" },
-          { "nombre": "Toallas Húmedas" }
+        "name": "Adultos",
+        "subcategories": [
+          { "name": "Pañales para Adultos" },
+          { "name": "Protección para Incontinencia" },
+          { "name": "Toallas Húmedas" }
         ]
       },
       {
-        "nombre": "Higiene Personal",
-        "subcategorias": [
-          { "nombre": "Desodorantes" },
-          { "nombre": "Protección Femenina" },
-          { "nombre": "Jabones y Ducha" },
-          { "nombre": "Afeitado y Depilación" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Higiene Personal",
+        "subcategories": [
+          { "name": "Desodorantes" },
+          { "name": "Protección Femenina" },
+          { "name": "Jabones y Ducha" },
+          { "name": "Afeitado y Depilación" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Repelentes",
-        "subcategorias": [
-          { "nombre": "Adultos" },
-          { "nombre": "Infantiles" }
+        "name": "Repelentes",
+        "subcategories": [
+          { "name": "Adultos" },
+          { "name": "Infantiles" }
         ]
       },
       {
-        "nombre": "Novedades y Sorteos",
-        "subcategorias": [
-          { "nombre": "All Body Deo" },
-          { "nombre": "Dove UV Repair" }
+        "name": "Novedades y Sorteos",
+        "subcategories": [
+          { "name": "All Body Deo" },
+          { "name": "Dove UV Repair" }
         ]
       }
     ]
   },
   {
-    "nombre": "Bebes",
-    "subcategorias": [
+    "name": "Bebes",
+    "subcategories": [
       {
-        "nombre": "Nutrición Infantil",
-        "subcategorias": [
-          { "nombre": "Leches y Fórmulas" },
-          { "nombre": "Alimentos Infantiles" }
+        "name": "Nutrición Infantil",
+        "subcategories": [
+          { "name": "Leches y Fórmulas" },
+          { "name": "Alimentos Infantiles" }
         ]
       },
       {
-        "nombre": "Pañales",
-        "subcategorias": [
-          { "nombre": "Recién Nacido" },
-          { "nombre": "Pañales Descartables" },
-          { "nombre": "Pants" },
-          { "nombre": "Pañales de Agua" }
+        "name": "Pañales",
+        "subcategories": [
+          { "name": "Recién Nacido" },
+          { "name": "Pañales Descartables" },
+          { "name": "Pants" },
+          { "name": "Pañales de Agua" }
         ]
       },
       {
-        "nombre": "Lactancia",
-        "subcategorias": [
-          { "nombre": "Mamaderas y Tetinas" },
-          { "nombre": "Esterilizadores" },
-          { "nombre": "Extractores de Leche" }
+        "name": "Lactancia",
+        "subcategories": [
+          { "name": "Mamaderas y Tetinas" },
+          { "name": "Esterilizadores" },
+          { "name": "Extractores de Leche" }
         ]
       },
       {
-        "nombre": "Cuidado Materno",
-        "subcategorias": [
-          { "nombre": "Protectores Mamarios" },
-          { "nombre": "Cuidado de la Piel" }
+        "name": "Cuidado Materno",
+        "subcategories": [
+          { "name": "Protectores Mamarios" },
+          { "name": "Cuidado de la Piel" }
         ]
       },
       {
-        "nombre": "Higiene del Bebé",
-        "subcategorias": [
-          { "nombre": "Toallas Húmedas" },
-          { "nombre": "Óleos y Algodón" },
-          { "nombre": "Baño del Bebé" },
-          { "nombre": "Fragancias de Bebés y Niños" }
+        "name": "Higiene del Bebé",
+        "subcategories": [
+          { "name": "Toallas Húmedas" },
+          { "name": "Óleos y Algodón" },
+          { "name": "Baño del Bebé" },
+          { "name": "Fragancias de Bebés y Niños" }
         ]
       }
     ]
   },
   {
-    "nombre": "Hogar y Alimentos",
-    "subcategorias": [
+    "name": "Hogar y Alimentos",
+    "subcategories": [
       {
-        "nombre": "Desayuno y Merienda",
-        "subcategorias": [
-          { "nombre": "Infusiones" },
-          { "nombre": "Galletitas y Tostadas" },
-          { "nombre": "Dulces y Mermeladas" },
-          { "nombre": "Azúcar, Miel y Endulzantes" }
+        "name": "Desayuno y Merienda",
+        "subcategories": [
+          { "name": "Infusiones" },
+          { "name": "Galletitas y Tostadas" },
+          { "name": "Dulces y Mermeladas" },
+          { "name": "Azúcar, Miel y Endulzantes" }
         ]
       },
       {
-        "nombre": "Alimentación Saludable",
-        "subcategorias": [
-          { "nombre": "Snacks Saludables" },
-          { "nombre": "Bebidas" },
-          { "nombre": "Golosinas Saludables" },
-          { "nombre": "Otros Alimentos" }
+        "name": "Alimentación Saludable",
+        "subcategories": [
+          { "name": "Snacks Saludables" },
+          { "name": "Bebidas" },
+          { "name": "Golosinas Saludables" },
+          { "name": "Otros Alimentos" }
         ]
       },
       {
-        "nombre": "Limpieza y Desinfección",
-        "subcategorias": [
-          { "nombre": "Cuidado De La Ropa" },
-          { "nombre": "Desinfección" },
-          { "nombre": "Baño y Cocina" },
-          { "nombre": "Insecticidas" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Limpieza y Desinfección",
+        "subcategories": [
+          { "name": "Cuidado De La Ropa" },
+          { "name": "Desinfección" },
+          { "name": "Baño y Cocina" },
+          { "name": "Insecticidas" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Librería",
-        "subcategorias": [
-          { "nombre": "Librería" },
-          { "nombre": "Libros" }
+        "name": "Librería",
+        "subcategories": [
+          { "name": "Librería" },
+          { "name": "Libros" }
         ]
       },
       {
-        "nombre": "Electrónica y Pilas",
-        "subcategorias": [
-          { "nombre": "Pilas" },
-          { "nombre": "Tecnología" }
+        "name": "Electrónica y Pilas",
+        "subcategories": [
+          { "name": "Pilas" },
+          { "name": "Tecnología" }
         ]
       },
       {
-        "nombre": "Hogar y Deco",
-        "subcategorias": [
-          { "nombre": "Accesorios de Baño" },
-          { "nombre": "Accesorios de Cocina" },
-          { "nombre": "Accesorios del Hogar" },
-          { "nombre": "Deco Hogar" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Hogar y Deco",
+        "subcategories": [
+          { "name": "Accesorios de Baño" },
+          { "name": "Accesorios de Cocina" },
+          { "name": "Accesorios del Hogar" },
+          { "name": "Deco Hogar" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Papeles",
-        "subcategorias": [
-          { "nombre": "Pañuelos Descartables" },
-          { "nombre": "Papel Higiénico" },
-          { "nombre": "Rollos De Cocina y Servilletas" },
-          { "nombre": "Descartables" }
+        "name": "Papeles",
+        "subcategories": [
+          { "name": "Pañuelos Descartables" },
+          { "name": "Papel Higiénico" },
+          { "name": "Rollos De Cocina y Servilletas" },
+          { "name": "Descartables" }
         ]
       }
     ]
   },
   {
-    "nombre": "Salud y Farmacia",
-    "subcategorias": [
+    "name": "Salud y Farmacia",
+    "subcategories": [
       {
-        "nombre": "Servicios de Salud",
-        "subcategorias": [
-          { "nombre": "Reserva de Medicamentos" },
-          { "nombre": "Blog de Salud" },
-          { "nombre": "Buscador de Sucursales" },
-          { "nombre": "Reservá tu Turno" },
-          { "nombre": "Gabinetes de Salud" }
+        "name": "Servicios de Salud",
+        "subcategories": [
+          { "name": "Reserva de Medicamentos" },
+          { "name": "Blog de Salud" },
+          { "name": "Buscador de Sucursales" },
+          { "name": "Reservá tu Turno" },
+          { "name": "Gabinetes de Salud" }
         ]
       },
       {
-        "nombre": "Farmacia",
-        "subcategorias": [
-          { "nombre": "Primeros auxilios" },
-          { "nombre": "Óptica" },
-          { "nombre": "Pediculosis" },
-          { "nombre": "Pédicos" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Farmacia",
+        "subcategories": [
+          { "name": "Primeros auxilios" },
+          { "name": "Óptica" },
+          { "name": "Pediculosis" },
+          { "name": "Pédicos" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Nutricion y Deportes",
-        "subcategorias": [
-          { "nombre": "Suplementos Dietarios" },
-          { "nombre": "Suplementos Nutricionales" },
-          { "nombre": "Suplementos Deportivos" },
-          { "nombre": "Protección y Recuperación" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Nutricion y Deportes",
+        "subcategories": [
+          { "name": "Suplementos Dietarios" },
+          { "name": "Suplementos Nutricionales" },
+          { "name": "Suplementos Deportivos" },
+          { "name": "Protección y Recuperación" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Nutrición Infantil",
-        "subcategorias": [
-          { "nombre": "Leches y Fórmulas" },
-          { "nombre": "Alimentos Infantiles" }
+        "name": "Nutrición Infantil",
+        "subcategories": [
+          { "name": "Leches y Fórmulas" },
+          { "name": "Alimentos Infantiles" }
         ]
       },
       {
-        "nombre": "Bienestar Sexual",
-        "subcategorias": [
-          { "nombre": "Preservativos" },
-          { "nombre": "Lubricantes" },
-          { "nombre": "Estimuladores Sexuales" }
+        "name": "Bienestar Sexual",
+        "subcategories": [
+          { "name": "Preservativos" },
+          { "name": "Lubricantes" },
+          { "name": "Estimuladores Sexuales" }
         ]
       },
       {
-        "nombre": "Electrosalud",
-        "subcategorias": [
-          { "nombre": "Tensiómetros" },
-          { "nombre": "Nebulizadores" },
-          { "nombre": "Balanzas" },
-          { "nombre": "Almohadillas Térmicas" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Electrosalud",
+        "subcategories": [
+          { "name": "Tensiómetros" },
+          { "name": "Nebulizadores" },
+          { "name": "Balanzas" },
+          { "name": "Almohadillas Térmicas" },
+          { "name": "Ver todos los productos" }
         ]
       }
     ]
   },
   {
-    "nombre": "Medicamentos",
-    "subcategorias": [
+    "name": "Medicamentos",
+    "subcategories": [
       {
-        "nombre": "Venta Libre",
-        "subcategorias": [
-          { "nombre": "Analgésicos" },
-          { "nombre": "Digestivos" },
-          { "nombre": "Antialérgicos" },
-          { "nombre": "Gripe y Resfrío" },
-          { "nombre": "Antimicóticos" },
-          { "nombre": "Ver todos los productos" }
+        "name": "Venta Libre",
+        "subcategories": [
+          { "name": "Analgésicos" },
+          { "name": "Digestivos" },
+          { "name": "Antialérgicos" },
+          { "name": "Gripe y Resfrío" },
+          { "name": "Antimicóticos" },
+          { "name": "Ver todos los productos" }
         ]
       },
       {
-        "nombre": "Venta Bajo Receta"
+        "name": "Venta Bajo Receta"
       }
     ]
   }

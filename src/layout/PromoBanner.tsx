@@ -14,7 +14,7 @@ export default function PromoBanner() {
             Cómo llegar
           </Link>
           <span className={styles.sep} aria-hidden="true" />
-          <Link href="/contacto">Contacto</Link>
+          <Link href="/contact">Contacto</Link>
         </div>
       </div>
     </div>

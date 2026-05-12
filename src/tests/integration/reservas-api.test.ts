@@ -10,7 +10,7 @@ vi.mock('@opennextjs/cloudflare', () => ({
   }),
 }))
 
-const { POST } = await import('@/app/api/reservas/route')
+const { POST } = await import('@/app/api/orders/route')
 
 function makeRequest(fields: Record<string, string>, image?: File): Request {
   const formData = new FormData()
@@ -20,7 +20,7 @@ function makeRequest(fields: Record<string, string>, image?: File): Request {
   if (image) {
     formData.append('imagen', image, image.name)
   }
-  return new Request('http://localhost/api/reservas', {
+  return new Request('http://localhost/api/orders', {
     method: 'POST',
     body: formData,
   })
@@ -29,11 +29,11 @@ function makeRequest(fields: Record<string, string>, image?: File): Request {
 const validFields = {
   name: 'Test User',
   email: 'test@example.com',
-  telefono: '+54 11 1234-5678',
-  encargo: 'Ibuprofeno 400mg',
+  phone: '+54 11 1234-5678',
+  notes: 'Ibuprofeno 400mg',
 }
 
-describe('POST /api/reservas', () => {
+describe('POST /api/orders', () => {
   beforeEach(() => {
     global.fetch = vi.fn().mockResolvedValue(
       new Response(JSON.stringify(telegramSuccess), {
@@ -62,7 +62,7 @@ describe('POST /api/reservas', () => {
     expect(url).toContain('test-bot-token')
   })
 
-  it('includes name and encargo in the message body', async () => {
+  it('includes name and notes in the message body', async () => {
     await POST(makeRequest(validFields))
     const [, options] = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0] as [
       string,

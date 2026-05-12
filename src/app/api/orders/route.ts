@@ -24,8 +24,8 @@ export async function POST(request: Request) {
 
 	const name = (formData.get("name") as string) || "Sin nombre";
 	const email = (formData.get("email") as string) || "Sin email";
-	const telefono = (formData.get("telefono") as string) || "Sin teléfono";
-	const encargo = (formData.get("encargo") as string) || "(sin detalle)";
+	const phone = (formData.get("phone") as string) || "Sin teléfono";
+	const notes = (formData.get("notes") as string) || "(sin detalle)";
 	const imagen = formData.get("imagen") as File | null;
 	console.log("🚀 ~ POST ~ imagen:", imagen);
 
@@ -34,9 +34,9 @@ export async function POST(request: Request) {
 		"",
 		`👤 ${name}`,
 		`📧 ${email}`,
-		`📞 ${telefono}`,
+		`📞 ${phone}`,
 		"",
-		`📝 ${encargo}`,
+		`📝 ${notes}`,
 	];
 
 	const date = new Date().toLocaleString("es-AR", {

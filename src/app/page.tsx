@@ -21,10 +21,10 @@ export default function HomePage() {
 						Encargá online y retirá en sucursal.
 					</p>
 					<div className={styles.heroCtas}>
-						<Link href="/ofertas" className={styles.ctaPrimary}>
+						<Link href="/offers" className={styles.ctaPrimary}>
 							Ver ofertas
 						</Link>
-						<Link href="/reservas" className={styles.ctaSecondary}>
+						<Link href="/orders" className={styles.ctaSecondary}>
 							Hacer un encargo
 						</Link>
 					</div>

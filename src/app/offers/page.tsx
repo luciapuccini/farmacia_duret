@@ -1,4 +1,4 @@
-import styles from './ofertas.module.scss'
+import styles from './offers.module.scss'
 
 const creditOffers = [
   {
