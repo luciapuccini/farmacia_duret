@@ -21,12 +21,12 @@ type Filter = { label: string; slug: string };
 
 function getFilters(categorySlug: string, subcategorySlug: string): Filter[] {
 	for (const cat of categories) {
-		if (nameToSlug(cat.nombre) !== categorySlug) continue;
-		for (const sub of cat.subcategorias ?? []) {
-			if (nameToSlug(sub.nombre) !== subcategorySlug) continue;
-			return (sub.subcategorias ?? [])
-				.filter((f) => f.nombre !== "Ver todos los productos")
-				.map((f) => ({ label: f.nombre, slug: nameToSlug(f.nombre) }));
+		if (nameToSlug(cat.name) !== categorySlug) continue;
+		for (const sub of cat.subcategories ?? []) {
+			if (nameToSlug(sub.name) !== subcategorySlug) continue;
+			return (sub.subcategories ?? [])
+				.filter((f) => f.name !== "Ver todos los productos")
+				.map((f) => ({ label: f.name, slug: nameToSlug(f.name) }));
 		}
 	}
 	return [];

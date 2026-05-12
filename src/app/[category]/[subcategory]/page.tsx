@@ -11,12 +11,12 @@ export default async function SubcategoryPage({ params }: Props) {
 	const { category, subcategory } = await params;
 
 	const matchedCategory = categories.find(
-		(c) => nameToSlug(c.nombre) === category,
+		(c) => nameToSlug(c.name) === category,
 	);
 	if (!matchedCategory) notFound();
 
-	const matchedSub = matchedCategory.subcategorias?.find(
-		(s) => nameToSlug(s.nombre) === subcategory,
+	const matchedSub = matchedCategory.subcategories?.find(
+		(s) => nameToSlug(s.name) === subcategory,
 	);
 	if (!matchedSub) notFound();
 

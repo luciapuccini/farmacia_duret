@@ -1,4 +1,4 @@
-import styles from './contacto.module.scss'
+import styles from './contact.module.scss'
 
 const hours = [
   { day: 'Lunes',      time: '8:00 – 20:00' },

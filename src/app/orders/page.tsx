@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import styles from "./reservas.module.scss";
+import styles from "./orders.module.scss";
 import Dropzone from "./components/Dropzone";
 import InfoPanel from "./components/InfoPanel";
 
@@ -63,7 +63,7 @@ export default function ReservasPage() {
 		files.forEach((f) => { fd.append("imagen", f); });
 
 		try {
-			const response = await fetch("/api/reservas", {
+			const response = await fetch("/api/orders", {
 				method: "POST",
 				body: fd,
 			});
@@ -193,7 +193,7 @@ export default function ReservasPage() {
 
 						<div className={styles.row}>
 							<div className={styles.field}>
-								<label htmlFor="telefono" className={styles.label}>
+								<label htmlFor="phone" className={styles.label}>
 									Teléfono<span className={styles.req}>*</span>
 								</label>
 								<div className={styles.phoneRow}>
@@ -204,8 +204,8 @@ export default function ReservasPage() {
 										</svg>
 									</span>
 									<input
-										id="telefono"
-										name="telefono"
+										id="phone"
+										name="phone"
 										type="tel"
 										placeholder="11 1234-5678"
 										required
@@ -251,12 +251,12 @@ export default function ReservasPage() {
 							Notas <span className={styles.optional}>(opcional)</span>
 						</div>
 						<div className={styles.field}>
-							<label htmlFor="encargo" className={styles.label}>
+							<label htmlFor="notes" className={styles.label}>
 								Comentarios para el farmacéutico
 							</label>
 							<textarea
-								id="encargo"
-								name="encargo"
+								id="notes"
+								name="notes"
 								className={styles.textarea}
 								placeholder="Ej. necesito el genérico si está disponible, prefiero retirar mañana a la tarde…"
 								maxLength={300}

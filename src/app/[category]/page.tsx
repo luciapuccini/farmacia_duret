@@ -10,15 +10,15 @@ type Props = {
 export default async function CategoryPage({ params }: Props) {
 	const { category } = await params;
 
-	const matched = categories.find((c) => nameToSlug(c.nombre) === category);
+	const matched = categories.find((c) => nameToSlug(c.name) === category);
 
-	if (!matched || !matched.subcategorias?.length) {
+	if (!matched || !matched.subcategories?.length) {
 		notFound();
 	}
 
 	return (
 		<SubCategoryGrid
-			subcategories={matched.subcategorias}
+			subcategories={matched.subcategories}
 			categorySlug={category}
 		/>
 	);

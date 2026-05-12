@@ -12,8 +12,8 @@ import Drawer from "./components/drawer";
 import styles from "./navbar.module.scss";
 
 type Category = {
-	nombre: string;
-	subcategorias?: Category[];
+	name: string;
+	subcategories?: Category[];
 };
 
 function SubnavItem({
@@ -29,8 +29,8 @@ function SubnavItem({
 }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const hasSubcategories =
-		category.subcategorias && category.subcategorias.length > 0;
-	const categoryPath = categoryNameToPath(category.nombre);
+		category.subcategories && category.subcategories.length > 0;
+	const categoryPath = categoryNameToPath(category.name);
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
 
@@ -49,7 +49,7 @@ function SubnavItem({
 							: styles.subnavLink
 					}
 				>
-					{category.nombre}
+					{category.name}
 				</Link>
 			)}
 
@@ -62,20 +62,20 @@ function SubnavItem({
 							: styles.dropdownLink
 					}
 				>
-					{category.nombre}
+					{category.name}
 				</Link>
 			)}
 
 			{depth === 2 && (
 				<Link
 					href={
-						category.nombre === "Ver todos los productos"
+						category.name === "Ver todos los productos"
 							? parentPath
 							: `${parentPath}?f=${categoryPath.slice(1)}`
 					}
 					className={styles.dropdownLink}
 				>
-					{category.nombre}
+					{category.name}
 				</Link>
 			)}
 
@@ -87,9 +87,9 @@ function SubnavItem({
 							: `${styles.dropdown} ${styles.dropdownNested}`
 					}
 				>
-					{category.subcategorias?.map((sub) => (
+					{category.subcategories?.map((sub) => (
 						<SubnavItem
-							key={sub.nombre}
+							key={sub.name}
 							category={sub}
 							depth={depth + 1}
 							parentPath={
@@ -110,7 +110,7 @@ export default function Navbar() {
 	const pathname = usePathname();
 
 	const router = useRouter();
-	const subnavCategories = categories.filter((c) => c.nombre !== "Ofertas");
+	const subnavCategories = categories.filter((c) => c.name !== "Ofertas");
 
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
@@ -162,9 +162,9 @@ export default function Navbar() {
 							Catálogo
 						</Link>
 						<Link
-							href="/contacto"
+							href="/contact"
 							className={
-								isActive("/contacto")
+								isActive("/contact")
 									? `${styles.navLink} ${styles.navLinkActive}`
 									: styles.navLink
 							}
@@ -174,7 +174,7 @@ export default function Navbar() {
 					</nav>
 
 					<div className={styles.navActions}>
-						<Link href="/reservas" className={styles.navEncargo}>
+						<Link href="/orders" className={styles.navEncargo}>
 							<svg
 								width="15"
 								height="15"
@@ -230,13 +230,13 @@ export default function Navbar() {
 						<ul className={styles.subnavList}>
 							{subnavCategories.map((cat) => (
 								<SubnavItem
-									key={cat.nombre}
+									key={cat.name}
 									category={cat}
 									pathname={pathname}
 								/>
 							))}
 						</ul>
-						<Link href="/ofertas" className={styles.subnavCta}>
+						<Link href="/offers" className={styles.subnavCta}>
 							<span className={styles.subnavCtaDot} aria-hidden="true" />
 							Ofertas
 						</Link>
