@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./orders.module.scss";
-import Dropzone from "./components/Dropzone";
 import InfoPanel from "./components/InfoPanel";
+
+const TELEGRAM_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_USERNAME;
 
 // ── Rate-limit helpers ────────────────────────────────────
 const STORAGE_KEY = "reservas_submissions";
@@ -33,15 +34,27 @@ function incrementCount(): number {
 	return next;
 }
 
-// ── Component ─────────────────────────────────────────────
-type Status = "idle" | "submitting" | "success" | "error";
+function buildTelegramMessage(fd: FormData): string {
+	const name = ((fd.get("name") as string) || "").trim();
+	const phone = ((fd.get("phone") as string) || "").trim();
+	const email = ((fd.get("email") as string) || "").trim();
+	const notes = ((fd.get("notes") as string) || "").trim();
 
+	return [
+		"Nuevo encargo",
+		"",
+		`👤 Nombre: ${name}`,
+		`📞 Teléfono: +54 ${phone}`,
+		`📧 Email: ${email || "—"}`,
+		"",
+		`📝 Notas: ${notes || "—"}`,
+	].join("\n");
+}
+
+// ── Component ─────────────────────────────────────────────
 export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
-	const [files, setFiles] = useState<File[]>([]);
 	const [consent, setConsent] = useState(true);
-	const [folio, setFolio] = useState("");
-	const [status, setStatus] = useState<Status>("idle");
 	const [submissionCount, setSubmissionCount] = useState(0);
 
 	useEffect(() => {
@@ -51,41 +64,32 @@ export default function ReservasPage() {
 	const remaining = MAX_PER_DAY - submissionCount;
 	const isLimited = remaining <= 0;
 
-	async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+	function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
-		if (status === "submitting" || isLimited || !consent) return;
+		if (isLimited || !consent) return;
 
-		setStatus("submitting");
+		if (!TELEGRAM_USERNAME) {
+			console.warn("[orders] NEXT_PUBLIC_TELEGRAM_USERNAME is not set");
+			return;
+		}
+
 		const form = e.currentTarget;
 		const fd = new FormData(form);
 
-		// attach multi-file uploads under existing field name
-		files.forEach((f) => { fd.append("imagen", f); });
+		// Honeypot — silently accept
+		if (fd.get("bot-field")) return;
 
-		try {
-			const response = await fetch("/api/orders", {
-				method: "POST",
-				body: fd,
-			});
+		const text = buildTelegramMessage(fd);
+		const url = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`;
 
-			if (!response.ok) throw new Error("Server error");
+		window.open(url, "_blank", "noopener");
 
-			const newCount = incrementCount();
-			setSubmissionCount(newCount);
-			setFolio(`FD-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`);
-			setStatus("success");
-			form.reset();
-			setCharCount(0);
-			setFiles([]);
-		} catch (err) {
-			console.error("Error submitting form", err);
-			setStatus("error");
-		}
+		setSubmissionCount(incrementCount());
+		form.reset();
+		setCharCount(0);
 	}
 
 	function resetForm() {
-		setStatus("idle");
-		setFiles([]);
 		setCharCount(0);
 	}
 
@@ -110,36 +114,6 @@ export default function ReservasPage() {
 		);
 	}
 
-	// ── Success ───────────────────────────────────────────
-	if (status === "success") {
-		return (
-			<div className={styles.layout}>
-				<InfoPanel />
-				<section className={styles.formSide}>
-					<div className={styles.successBox}>
-						<span className={styles.successIcon}>
-							<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-								<polyline points="20 6 9 17 4 12" />
-							</svg>
-						</span>
-						<h3 className={styles.successTitle}>¡Receta recibida!</h3>
-						<p className={styles.successText}>
-							Te escribimos por WhatsApp en menos de 30 minutos con la confirmación.
-						</p>
-						<span className={styles.folioTag}>
-							Folio: <b>{folio}</b>
-						</span>
-						{remaining > 1 && (
-							<button type="button" className={styles.btnPrimary} onClick={resetForm}>
-								Hacer otro encargo
-							</button>
-						)}
-					</div>
-				</section>
-			</div>
-		);
-	}
-
 	// ── Form ──────────────────────────────────────────────
 	return (
 		<div className={styles.layout}>
@@ -153,7 +127,7 @@ export default function ReservasPage() {
 					</p>
 				</div>
 
-				<form className={styles.form} onSubmit={handleSubmit} noValidate>
+				<form className={styles.form} onSubmit={handleSubmit}>
 					{/* Honeypot */}
 					<input
 						name="bot-field"
@@ -235,19 +209,10 @@ export default function ReservasPage() {
 						</div>
 					</div>
 
-					{/* Group 2: Tu receta */}
+					{/* Group 2: Notas */}
 					<div className={styles.group}>
 						<div className={styles.groupTitle}>
 							<span className={styles.num}>2</span>
-							Tu receta
-						</div>
-						<Dropzone files={files} onFilesChange={setFiles} />
-					</div>
-
-					{/* Group 3: Notas */}
-					<div className={styles.group}>
-						<div className={styles.groupTitle}>
-							<span className={styles.num}>3</span>
 							Notas <span className={styles.optional}>(opcional)</span>
 						</div>
 						<div className={styles.field}>
@@ -281,12 +246,6 @@ export default function ReservasPage() {
 						</span>
 					</label>
 
-					{status === "error" && (
-						<p className={styles.errorMsg}>
-							Hubo un error al enviar. Por favor intentá de nuevo.
-						</p>
-					)}
-
 					<div className={styles.actions}>
 						<button type="button" className={styles.btnGhost} onClick={resetForm}>
 							Cancelar
@@ -294,21 +253,13 @@ export default function ReservasPage() {
 						<button
 							type="submit"
 							className={styles.btnPrimary}
-							disabled={status === "submitting" || !consent}
+							disabled={!consent}
 						>
-							{status === "submitting" ? "Enviando…" : "Enviar receta"}
-							{status !== "submitting" && (
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-									<path d="M5 12h14M13 5l7 7-7 7" />
-								</svg>
-							)}
-						</button>
-						<span className={styles.actionsMeta}>
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+							Enviar por Telegram
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+								<path d="M5 12h14M13 5l7 7-7 7" />
 							</svg>
-							Conexión cifrada
-						</span>
+						</button>
 					</div>
 
 					<span className={styles.remainingHint}>
