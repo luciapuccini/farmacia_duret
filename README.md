@@ -39,6 +39,14 @@ NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER=5491178942852
 WHATSAPP_WEBHOOK_VERIFY_TOKEN=generate_a_private_random_token
 ```
 
+Generate the webhook verification token with:
+
+```bash
+npm run whatsapp:token:generate
+```
+
+Use the generated value in both `.env.local` and Cloudflare's `WHATSAPP_WEBHOOK_VERIFY_TOKEN` secret. This value is chosen by us, not by Meta, and Meta sends it back during webhook verification.
+
 ---
 
 ## Deploy to production
@@ -74,6 +82,8 @@ In the Meta WhatsApp Business Platform setup, use:
 - Verify token: the value of `WHATSAPP_WEBHOOK_VERIFY_TOKEN`
 
 After verification, subscribe the WhatsApp Business Account webhook to the `messages` field so incoming messages and status updates reach the app.
+
+To rotate the verify token, generate a new value, update Cloudflare, update Meta's webhook configuration, update local `.env.local`, then verify the callback again in Meta.
 
 ---
 

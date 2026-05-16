@@ -8,6 +8,7 @@
 		"dev": "next dev",
 		"lint": "eslint .",
 		"start": "next start",
+		"whatsapp:token:generate": "node -e \"console.log(require('node:crypto').randomBytes(24).toString('hex'))\"",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
 		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
