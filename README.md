@@ -36,6 +36,7 @@ Create an `.env.local` file in the project root:
 
 ```
 NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER=5491178942852
+WHATSAPP_WEBHOOK_VERIFY_TOKEN=generate_a_private_random_token
 ```
 
 ---
@@ -65,6 +66,15 @@ The live site URL is `https://farmacia-duret.puccinilucia.workers.dev`.
 
 When a customer submits an order from `/orders`, the form opens WhatsApp with a prefilled message to the configured Business account. The customer reviews the draft and presses Send in WhatsApp.
 
+### Meta webhook setup
+
+In the Meta WhatsApp Business Platform setup, use:
+
+- Callback URL: `https://farmaciaduret.online/api/whatsapp/webhook`
+- Verify token: the value of `WHATSAPP_WEBHOOK_VERIFY_TOKEN`
+
+After verification, subscribe the WhatsApp Business Account webhook to the `messages` field so incoming messages and status updates reach the app.
+
 ---
 
 ## Project structure
@@ -72,6 +82,7 @@ When a customer submits an order from `/orders`, the form opens WhatsApp with a 
 ```
 src/
   app/                  # Next.js App Router pages and API routes
+    api/whatsapp/       # Meta webhook verification and event receiver
     orders/             # Order form page → WhatsApp click-to-chat
     [category]/         # Dynamic catalog pages
   components/           # Shared UI components
