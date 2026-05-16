@@ -4,10 +4,10 @@ import { useState } from "react";
 import InfoPanel from "./components/InfoPanel";
 import styles from "./orders.module.scss";
 
-
+const DEFAULT_WHATSAPP_PHONE_NUMBER = "5491178942852";
 const WHATSAPP_PHONE_NUMBER =
-	process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER || ""
-
+	process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER ||
+	DEFAULT_WHATSAPP_PHONE_NUMBER;
 
 // ── Rate-limit helpers ────────────────────────────────────
 const STORAGE_KEY = "orders_submissions";
