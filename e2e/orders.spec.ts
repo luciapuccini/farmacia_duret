@@ -56,6 +56,27 @@ test.describe('Orders form', () => {
     await expect(page.getByText('tocá Enviar')).toBeVisible()
   })
 
+  test('uses the selected country dial code in the WhatsApp message', async ({ page }) => {
+    await captureWindowOpen(page)
+    await page.goto('/orders')
+
+    await page.getByLabel('Código de país').selectOption('+598')
+    await page.getByLabel('Nombre completo').fill('Test User')
+    await page.getByLabel('Teléfono').fill('99 123 456')
+    await page.getByLabel('Comentarios para el farmacéutico').fill('Paracetamol')
+    await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
+
+    const openedUrl = await page.evaluate(() => {
+      const win = window as typeof window & { __openedWhatsAppUrl?: string }
+      return win.__openedWhatsAppUrl
+    })
+
+    expect(openedUrl).toBeTruthy()
+    if (!openedUrl) return
+    const message = new URL(openedUrl).searchParams.get('text')
+    expect(message).toContain('Teléfono: +598 99 123 456')
+  })
+
   test('does not submit while privacy consent is unchecked', async ({ page }) => {
     await captureWindowOpen(page)
     await page.goto('/orders')

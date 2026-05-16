@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from "@/utils/countryCodes";
 import InfoPanel from "./components/InfoPanel";
 import styles from "./orders.module.scss";
 
@@ -42,15 +43,19 @@ function buildWhatsAppMessage(fd: FormData): string {
 	const phone = ((fd.get("phone") as string) || "").trim();
 	const email = ((fd.get("email") as string) || "").trim();
 	const notes = ((fd.get("notes") as string) || "").trim();
+	const countryDial = (
+		(fd.get("countryDial") as string) || DEFAULT_COUNTRY_DIAL
+	).trim();
+	const cleanPhone = phone.replace(/^\+?\s*/, "").replace(/^0+/, "");
 
 	return [
 		"Nuevo encargo",
 		"",
-		`👤 Nombre: ${name}`,
-		`📞 Teléfono: +54 ${phone}`,
-		`📧 Email: ${email || "—"}`,
+		`\u{1F464} Nombre: ${name}`,
+		`\u{1F4DE} Teléfono: ${countryDial} ${cleanPhone}`,
+		`\u{1F4E7} Email: ${email || "—"}`,
 		"",
-		`📝 Notas: ${notes || "—"}`,
+		`\u{1F4DD} Notas: ${notes || "—"}`,
 	].join("\n");
 }
 
@@ -203,7 +208,18 @@ export default function ReservasPage() {
 								</label>
 								<div className={styles.phoneRow}>
 									<span className={styles.phoneCc}>
-										🇦🇷 +54
+										<select
+											name="countryDial"
+											aria-label="Código de país"
+											defaultValue={DEFAULT_COUNTRY_DIAL}
+											className={styles.phoneCcSelect}
+										>
+											{COUNTRY_CODES.map((c) => (
+												<option key={c.iso} value={c.dial}>
+													{c.flag} {c.dial}
+												</option>
+											))}
+										</select>
 										<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
 											<polyline points="6 9 12 15 18 9" />
 										</svg>

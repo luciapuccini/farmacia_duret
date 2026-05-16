@@ -251,6 +251,19 @@
   white-space: nowrap;
 }
 
+.phoneCcSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
 /* ── Consent ────────────────────────────────────────────── */
 
 .consent {
