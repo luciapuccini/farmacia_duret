@@ -36,6 +36,8 @@ For Meta production setup:
 - `GET` requests validate Meta's `hub.verify_token` and return `hub.challenge`.
 - `POST` requests acknowledge webhook events and log only a summary of the payload.
 
+Path 2, the production WhatsApp Cloud API track, is explicitly separate from the live click-to-chat form. A successful test-number send proves the API request shape and credentials flow, but it does not mean the production app is ready. Before the form should use API-driven messaging, the Meta app needs the production checklist completed: valid privacy and data-deletion URLs, required basic app settings, connected real WhatsApp Business phone number, production `WHATSAPP_PHONE_NUMBER_ID`, production access token, webhook subscription to `messages`, app publish/review steps as required by Meta, and approved message templates for any business-initiated conversations.
+
 ## Consequences
 
 - Telegram configuration, copy, fixtures, and tests are removed.
@@ -43,10 +45,13 @@ For Meta production setup:
 - Production webhook verification requires setting `WHATSAPP_WEBHOOK_VERIFY_TOKEN` in Cloudflare before using "Verify and save" in Meta.
 - Rotating the webhook verification token requires updating Cloudflare, Meta's webhook configuration, and local `.env.local` to the same generated value.
 - While the Meta app is unpublished, only dashboard test webhooks are expected; production customer messages require publishing the app and subscribing to the relevant WhatsApp webhook fields, especially `messages`.
+- The `/orders` form stays on Path 1 until Path 2 has production credentials, legal URLs, templates, and a durable order workflow.
 - Access tokens, phone number IDs, and business account IDs must stay in local or Cloudflare secrets, never in committed files.
 
 ## Future Work
 
+- Add public privacy and data-deletion pages for Meta production readiness.
+- Complete Meta production setup for the real Farmacia WhatsApp Business number, including production credentials and approved templates.
 - Add signature verification for incoming Meta webhook requests using the Meta app secret before processing customer data.
 - Store incoming messages and statuses in a durable order pipeline when the admin workflow is designed.
 - Add outbound WhatsApp Cloud API messaging only after template, consent, retry, and audit requirements are defined.

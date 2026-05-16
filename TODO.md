@@ -23,6 +23,9 @@ AuthN/AuthZ design, RBAC, edge-DB tradeoffs, server actions vs API routes, prote
 Today, /orders opens a WhatsApp click-to-chat draft and does not persist order state. Real pharmacies need: order → confirmed → preparing → ready → picked up / canceled, with audit trail. Implement with XState (or a typed reducer), an idempotency key in the request (prevent double-submit), and Cloudflare Queues / Workflows for durable side effects (WhatsApp, email, SMS). Add a retry policy with exponential backoff.
 Senior signal: Distributed systems hygiene, durability under failure, idempotency, queue semantics 
 
+### WhatsApp Cloud API production path
+Keep the live form on click-to-chat until Meta production setup is complete. Next steps: add public privacy and data-deletion pages; complete Meta app basic settings; connect the real Farmacia WhatsApp Business phone number; generate production credentials (`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_BUSINESS_ACCOUNT_ID`); publish/review the app as required by Meta; subscribe webhooks to `messages`; create approved templates for business-initiated messages; then decide how API sends fit into the durable order pipeline.
+
 ## Observability
 
 Observability + performance budget enforced in CI
