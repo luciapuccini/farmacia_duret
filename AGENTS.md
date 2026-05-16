@@ -9,10 +9,9 @@ Pages live in the `app/` directory using Next.js file-system routing:
 - `app/page.tsx` — Home page
 - `app/contacto/page.tsx` — Static page
 - `app/ofertas/page.tsx` — Static page
-- `app/reservas/page.tsx` — Client component (`'use client'`) with form
+- `app/orders/page.tsx` — Client component (`'use client'`) with WhatsApp handoff form
 - `app/[category]/page.tsx` — Dynamic category page (renders SubCategoryGrid)
 - `app/[category]/[subcategory]/page.tsx` — Dynamic subcategory page (renders ProductCatalog)
-- `app/api/reservas/route.ts` — API route for form submission + Telegram notification
 - `app/not-found.tsx` — 404 page
 
 Each page has its `.module.scss` file alongside it in the same directory.

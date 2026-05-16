@@ -7,7 +7,7 @@ declare global {
 
   namespace NodeJS {
     interface ProcessEnv {
-      NEXT_PUBLIC_TELEGRAM_USERNAME?: string
+      NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER?: string
     }
   }
 }

@@ -20,7 +20,7 @@ Add an /admin area gated by Auth.js with role-based access (admin, staff).
 AuthN/AuthZ design, RBAC, edge-DB tradeoffs, server actions vs API routes, protected route patterns.
 
 ### Order pipeline
-Today, POST /api/reservas fires a Telegram message and forgets. Real pharmacies need: order → confirmed → preparing → ready → picked up / canceled, with audit trail. Implement with XState (or a typed reducer), an idempotency key in the request (prevent double-submit), and Cloudflare Queues / Workflows for durable side effects (Telegram, email, SMS). Add a retry policy with exponential backoff.
+Today, /orders opens a WhatsApp click-to-chat draft and does not persist order state. Real pharmacies need: order → confirmed → preparing → ready → picked up / canceled, with audit trail. Implement with XState (or a typed reducer), an idempotency key in the request (prevent double-submit), and Cloudflare Queues / Workflows for durable side effects (WhatsApp, email, SMS). Add a retry policy with exponential backoff.
 Senior signal: Distributed systems hygiene, durability under failure, idempotency, queue semantics 
 
 ## Observability

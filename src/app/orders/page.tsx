@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from "./orders.module.scss";
+import { useState } from "react";
 import InfoPanel from "./components/InfoPanel";
+import styles from "./orders.module.scss";
 
-const TELEGRAM_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_USERNAME;
+
+const WHATSAPP_PHONE_NUMBER =
+	process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER || ""
+
 
 // ── Rate-limit helpers ────────────────────────────────────
-const STORAGE_KEY = "reservas_submissions";
+const STORAGE_KEY = "orders_submissions";
 const MAX_PER_DAY = 6;
 
 function todayKey() {
@@ -34,7 +37,7 @@ function incrementCount(): number {
 	return next;
 }
 
-function buildTelegramMessage(fd: FormData): string {
+function buildWhatsAppMessage(fd: FormData): string {
 	const name = ((fd.get("name") as string) || "").trim();
 	const phone = ((fd.get("phone") as string) || "").trim();
 	const email = ((fd.get("email") as string) || "").trim();
@@ -51,15 +54,17 @@ function buildTelegramMessage(fd: FormData): string {
 	].join("\n");
 }
 
+function buildWhatsAppUrl(text: string): string {
+	const phoneNumber = WHATSAPP_PHONE_NUMBER.replace(/\D/g, "");
+	return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+}
+
 // ── Component ─────────────────────────────────────────────
 export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
 	const [consent, setConsent] = useState(true);
-	const [submissionCount, setSubmissionCount] = useState(0);
-
-	useEffect(() => {
-		setSubmissionCount(getCount());
-	}, []);
+	const [submissionCount, setSubmissionCount] = useState(getCount);
+	const [sent, setSent] = useState(false);
 
 	const remaining = MAX_PER_DAY - submissionCount;
 	const isLimited = remaining <= 0;
@@ -68,8 +73,8 @@ export default function ReservasPage() {
 		e.preventDefault();
 		if (isLimited || !consent) return;
 
-		if (!TELEGRAM_USERNAME) {
-			console.warn("[orders] NEXT_PUBLIC_TELEGRAM_USERNAME is not set");
+		if (!WHATSAPP_PHONE_NUMBER.replace(/\D/g, "")) {
+			console.warn("[orders] NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER is not set");
 			return;
 		}
 
@@ -79,18 +84,44 @@ export default function ReservasPage() {
 		// Honeypot — silently accept
 		if (fd.get("bot-field")) return;
 
-		const text = buildTelegramMessage(fd);
-		const url = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`;
+		const text = buildWhatsAppMessage(fd);
+		const url = buildWhatsAppUrl(text);
 
 		window.open(url, "_blank", "noopener");
 
 		setSubmissionCount(incrementCount());
+		setSent(true);
 		form.reset();
 		setCharCount(0);
 	}
 
 	function resetForm() {
 		setCharCount(0);
+		setSent(false);
+	}
+
+	if (sent) {
+		return (
+			<div className={styles.layout}>
+				<InfoPanel />
+				<section className={styles.formSide}>
+					<div className={styles.sentBox}>
+						<p className={styles.sentTitle}>Mensaje listo en WhatsApp</p>
+						<p className={styles.sentText}>
+							Se abrió WhatsApp con tu encargo preparado. Revisá el mensaje y
+							tocá Enviar para que podamos responderte.
+						</p>
+						<button
+							type="button"
+							className={styles.btnPrimary}
+							onClick={() => setSent(false)}
+						>
+							Hacer otro encargo
+						</button>
+					</div>
+				</section>
+			</div>
+		);
 	}
 
 	// ── Limit reached ─────────────────────────────────────
@@ -255,7 +286,7 @@ export default function ReservasPage() {
 							className={styles.btnPrimary}
 							disabled={!consent}
 						>
-							Enviar por Telegram
+							Enviar por WhatsApp
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
 								<path d="M5 12h14M13 5l7 7-7 7" />
 							</svg>
