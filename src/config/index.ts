@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/config/site";
+
 type AppEnv = "development" | "production";
 
 const appEnv: AppEnv =
@@ -26,6 +28,7 @@ const base = appEnv === "production" ? production : development;
 
 const config = {
 	...base,
+	siteUrl: SITE_URL,
 };
 
 export default config;

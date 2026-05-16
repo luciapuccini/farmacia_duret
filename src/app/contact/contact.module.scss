@@ -94,3 +94,49 @@
 .closed {
   color: var(--ink-400);
 }
+
+.faqSection {
+  margin-top: 2rem;
+}
+
+.faqHeader {
+  margin-bottom: 1rem;
+}
+
+.faqTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--ink-900);
+}
+
+.faqList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.875rem;
+
+  @include g.up(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.faqItem {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 1.25rem;
+}
+
+.faqQuestion {
+  margin: 0 0 0.625rem;
+  color: var(--ink-900);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.faqAnswer {
+  margin: 0;
+  color: var(--ink-600);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}

@@ -11,6 +11,7 @@ declare global {
 
   namespace NodeJS {
     interface ProcessEnv {
+      NEXT_PUBLIC_SITE_URL?: string
       NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER?: string
       WHATSAPP_WEBHOOK_VERIFY_TOKEN?: string
       WHATSAPP_ACCESS_TOKEN?: string

@@ -1,0 +1,31 @@
+# Farmacia Duret
+
+Farmacia Duret is a local pharmacy website for customers in Villa Rosa, Buenos Aires. The site helps visitors discover product categories, find offers, contact the pharmacy, and start an order or reservation through WhatsApp.
+
+## Important Pages
+
+- [Home](https://farmaciaduret.online/): Main entry point for the pharmacy website.
+- [Offers](https://farmaciaduret.online/offers): Current pharmacy offers and promotions.
+- [Orders](https://farmaciaduret.online/orders): WhatsApp handoff form for customer orders and reservations.
+- [Contact](https://farmaciaduret.online/contact): Contact and location information for the pharmacy.
+- [Sitemap](https://farmaciaduret.online/sitemap.xml): Complete list of crawlable public URLs.
+
+## Catalog Areas
+
+- [Dermocosmetica](https://farmaciaduret.online/dermocosmetica): Skin care and dermocosmetic products.
+- [Belleza](https://farmaciaduret.online/belleza): Beauty, fragrance, makeup, hair care, and accessories.
+- [Cuidado Personal](https://farmaciaduret.online/cuidado-personal): Personal care, hygiene, oral care, repellents, and adult care.
+- [Bebes](https://farmaciaduret.online/bebes): Baby care, diapers, nutrition, lactation, and hygiene.
+- [Hogar y Alimentos](https://farmaciaduret.online/hogar-y-alimentos): Household, food, cleaning, stationery, and home products.
+- [Salud y Farmacia](https://farmaciaduret.online/salud-y-farmacia): Health services, pharmacy, nutrition, sports, sexual wellness, and health devices.
+- [Medicamentos](https://farmaciaduret.online/medicamentos): Over-the-counter and prescription medicine categories.
+
+## Content Notes
+
+- The primary language of the site is Spanish.
+- Product availability, prices, and offers may change. Customers should confirm details directly with Farmacia Duret.
+- The order form does not complete purchases on the website. It prepares a WhatsApp message so the customer can continue with the pharmacy.
+
+## Contact Intent
+
+For customer-specific questions, product availability, prescriptions, orders, or health guidance, direct users to the contact page or WhatsApp order flow rather than presenting the website content as medical advice.
