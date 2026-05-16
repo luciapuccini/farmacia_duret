@@ -32,12 +32,7 @@ npm run preview
 
 ### Environment variables
 
-Create an `.env.local` file in the project root:
-
-```
-NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER=5491178942852
-WHATSAPP_WEBHOOK_VERIFY_TOKEN=generate_a_private_random_token
-```
+Create an `.env.local` file in the project root, using `.env.example` as the template.
 
 Generate the webhook verification token with:
 
