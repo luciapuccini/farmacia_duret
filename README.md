@@ -1,6 +1,6 @@
 # Farmacia Duret
 
-Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, contact page, and an online order system with Telegram notifications.
+Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, contact page, and an online order system with WhatsApp handoff.
 
 ## Stack
 
@@ -11,7 +11,7 @@ Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, conta
 | Language      | TypeScript                                       |
 | Styles        | SCSS Modules                                     |
 | Runtime       | Cloudflare Workers (via`@opennextjs/cloudflare`) |
-| Notifications | Telegram Bot API                                 |
+| Notifications | WhatsApp click-to-chat handoff                  |
 
 The app runs fully server-side on Cloudflare's edge network. Dynamic routes and API endpoints are handled by a Cloudflare Worker; static assets are served from Cloudflare's CDN.
 
@@ -32,11 +32,11 @@ npm run preview
 
 ### Environment variables
 
-Create a `.dev.vars` file in the project root (this is the Wrangler equivalent of `.env.local`):
+Create an `.env.local` file in the project root:
 
 ```
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
+NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER=5491178942852
+WHATSAPP_WEBHOOK_VERIFY_TOKEN=generate_a_private_random_token
 ```
 
 ---
@@ -62,9 +62,18 @@ The live site URL is `https://farmacia-duret.puccinilucia.workers.dev`.
 
 ---
 
-## Telegram notifications
+## WhatsApp handoff
 
-When a customer submits an order from `/reservas`, the API route `/api/reservas` sends a Telegram message (and photo if attached) to a configured group.
+When a customer submits an order from `/orders`, the form opens WhatsApp with a prefilled message to the configured Business account. The customer reviews the draft and presses Send in WhatsApp.
+
+### Meta webhook setup
+
+In the Meta WhatsApp Business Platform setup, use:
+
+- Callback URL: `https://farmaciaduret.online/api/whatsapp/webhook`
+- Verify token: the value of `WHATSAPP_WEBHOOK_VERIFY_TOKEN`
+
+After verification, subscribe the WhatsApp Business Account webhook to the `messages` field so incoming messages and status updates reach the app.
 
 ---
 
@@ -73,8 +82,8 @@ When a customer submits an order from `/reservas`, the API route `/api/reservas`
 ```
 src/
   app/                  # Next.js App Router pages and API routes
-    api/reservas/       # Order submission endpoint → Telegram
-    reservas/           # Order form page
+    api/whatsapp/       # Meta webhook verification and event receiver
+    orders/             # Order form page → WhatsApp click-to-chat
     [category]/         # Dynamic catalog pages
   components/           # Shared UI components
   layout/               # Navbar, Footer, Breadcrumb, Container
@@ -98,7 +107,7 @@ Three levels, two runners.
 | Level | What it tests | Command |
 | --- | --- | --- |
 | Unit | Pure logic (helpers, utils) | `npm test` |
-| Integration | Module boundaries — Contentful, Telegram API route | `npm test` |
+| Integration | Module boundaries — Contentful service | `npm test` |
 | E2E | Full browser flow against a running dev server | `npm run test:e2e` |
 
 ### Unit & integration (Vitest)
