@@ -1,3 +1,5 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 type AppEnv = "development" | "production";
 
 const appEnv: AppEnv =
@@ -26,6 +28,15 @@ const base = appEnv === "production" ? production : development;
 
 const config = {
 	...base,
+	// Read lazily from the Cloudflare Worker binding on each access.
+	// Only callable inside a request handler (getCloudflareContext needs request scope).
+	get telegram() {
+		const { env } = getCloudflareContext();
+		return {
+			botToken: env.TELEGRAM_BOT_TOKEN,
+			chatId: env.TELEGRAM_CHAT_ID,
+		};
+	},
 };
 
 export default config;

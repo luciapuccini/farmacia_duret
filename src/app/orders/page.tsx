@@ -1,16 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import InfoPanel from "./components/InfoPanel";
+import { useState, useEffect } from "react";
 import styles from "./orders.module.scss";
-
-
-const WHATSAPP_PHONE_NUMBER =
-	process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER || ""
-
+import Dropzone from "./components/Dropzone";
+import InfoPanel from "./components/InfoPanel";
 
 // ── Rate-limit helpers ────────────────────────────────────
-const STORAGE_KEY = "orders_submissions";
+const STORAGE_KEY = "reservas_submissions";
 const MAX_PER_DAY = 6;
 
 function todayKey() {
@@ -37,91 +33,60 @@ function incrementCount(): number {
 	return next;
 }
 
-function buildWhatsAppMessage(fd: FormData): string {
-	const name = ((fd.get("name") as string) || "").trim();
-	const phone = ((fd.get("phone") as string) || "").trim();
-	const email = ((fd.get("email") as string) || "").trim();
-	const notes = ((fd.get("notes") as string) || "").trim();
-
-	return [
-		"Nuevo encargo",
-		"",
-		`👤 Nombre: ${name}`,
-		`📞 Teléfono: +54 ${phone}`,
-		`📧 Email: ${email || "—"}`,
-		"",
-		`📝 Notas: ${notes || "—"}`,
-	].join("\n");
-}
-
-function buildWhatsAppUrl(text: string): string {
-	const phoneNumber = WHATSAPP_PHONE_NUMBER.replace(/\D/g, "");
-	return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
-}
-
 // ── Component ─────────────────────────────────────────────
+type Status = "idle" | "submitting" | "success" | "error";
+
 export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
+	const [files, setFiles] = useState<File[]>([]);
 	const [consent, setConsent] = useState(true);
-	const [submissionCount, setSubmissionCount] = useState(getCount);
-	const [sent, setSent] = useState(false);
+	const [folio, setFolio] = useState("");
+	const [status, setStatus] = useState<Status>("idle");
+	const [submissionCount, setSubmissionCount] = useState(0);
+
+	useEffect(() => {
+		setSubmissionCount(getCount());
+	}, []);
 
 	const remaining = MAX_PER_DAY - submissionCount;
 	const isLimited = remaining <= 0;
 
-	function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+	async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
 		e.preventDefault();
-		if (isLimited || !consent) return;
+		if (status === "submitting" || isLimited || !consent) return;
 
-		if (!WHATSAPP_PHONE_NUMBER.replace(/\D/g, "")) {
-			console.warn("[orders] NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER is not set");
-			return;
-		}
-
+		setStatus("submitting");
 		const form = e.currentTarget;
 		const fd = new FormData(form);
 
-		// Honeypot — silently accept
-		if (fd.get("bot-field")) return;
+		// attach multi-file uploads under existing field name
+		files.forEach((f) => { fd.append("imagen", f); });
 
-		const text = buildWhatsAppMessage(fd);
-		const url = buildWhatsAppUrl(text);
+		try {
+			const response = await fetch("/api/orders", {
+				method: "POST",
+				body: fd,
+			});
 
-		window.open(url, "_blank", "noopener");
+			if (!response.ok) throw new Error("Server error");
 
-		setSubmissionCount(incrementCount());
-		setSent(true);
-		form.reset();
-		setCharCount(0);
+			const newCount = incrementCount();
+			setSubmissionCount(newCount);
+			setFolio(`FD-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`);
+			setStatus("success");
+			form.reset();
+			setCharCount(0);
+			setFiles([]);
+		} catch (err) {
+			console.error("Error submitting form", err);
+			setStatus("error");
+		}
 	}
 
 	function resetForm() {
+		setStatus("idle");
+		setFiles([]);
 		setCharCount(0);
-		setSent(false);
-	}
-
-	if (sent) {
-		return (
-			<div className={styles.layout}>
-				<InfoPanel />
-				<section className={styles.formSide}>
-					<div className={styles.sentBox}>
-						<p className={styles.sentTitle}>Mensaje listo en WhatsApp</p>
-						<p className={styles.sentText}>
-							Se abrió WhatsApp con tu encargo preparado. Revisá el mensaje y
-							tocá Enviar para que podamos responderte.
-						</p>
-						<button
-							type="button"
-							className={styles.btnPrimary}
-							onClick={() => setSent(false)}
-						>
-							Hacer otro encargo
-						</button>
-					</div>
-				</section>
-			</div>
-		);
 	}
 
 	// ── Limit reached ─────────────────────────────────────
@@ -145,6 +110,36 @@ export default function ReservasPage() {
 		);
 	}
 
+	// ── Success ───────────────────────────────────────────
+	if (status === "success") {
+		return (
+			<div className={styles.layout}>
+				<InfoPanel />
+				<section className={styles.formSide}>
+					<div className={styles.successBox}>
+						<span className={styles.successIcon}>
+							<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+								<polyline points="20 6 9 17 4 12" />
+							</svg>
+						</span>
+						<h3 className={styles.successTitle}>¡Receta recibida!</h3>
+						<p className={styles.successText}>
+							Te escribimos por WhatsApp en menos de 30 minutos con la confirmación.
+						</p>
+						<span className={styles.folioTag}>
+							Folio: <b>{folio}</b>
+						</span>
+						{remaining > 1 && (
+							<button type="button" className={styles.btnPrimary} onClick={resetForm}>
+								Hacer otro encargo
+							</button>
+						)}
+					</div>
+				</section>
+			</div>
+		);
+	}
+
 	// ── Form ──────────────────────────────────────────────
 	return (
 		<div className={styles.layout}>
@@ -158,7 +153,7 @@ export default function ReservasPage() {
 					</p>
 				</div>
 
-				<form className={styles.form} onSubmit={handleSubmit}>
+				<form className={styles.form} onSubmit={handleSubmit} noValidate>
 					{/* Honeypot */}
 					<input
 						name="bot-field"
@@ -240,10 +235,19 @@ export default function ReservasPage() {
 						</div>
 					</div>
 
-					{/* Group 2: Notas */}
+					{/* Group 2: Tu receta */}
 					<div className={styles.group}>
 						<div className={styles.groupTitle}>
 							<span className={styles.num}>2</span>
+							Tu receta
+						</div>
+						<Dropzone files={files} onFilesChange={setFiles} />
+					</div>
+
+					{/* Group 3: Notas */}
+					<div className={styles.group}>
+						<div className={styles.groupTitle}>
+							<span className={styles.num}>3</span>
 							Notas <span className={styles.optional}>(opcional)</span>
 						</div>
 						<div className={styles.field}>
@@ -277,6 +281,12 @@ export default function ReservasPage() {
 						</span>
 					</label>
 
+					{status === "error" && (
+						<p className={styles.errorMsg}>
+							Hubo un error al enviar. Por favor intentá de nuevo.
+						</p>
+					)}
+
 					<div className={styles.actions}>
 						<button type="button" className={styles.btnGhost} onClick={resetForm}>
 							Cancelar
@@ -284,13 +294,21 @@ export default function ReservasPage() {
 						<button
 							type="submit"
 							className={styles.btnPrimary}
-							disabled={!consent}
+							disabled={status === "submitting" || !consent}
 						>
-							Enviar por WhatsApp
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-								<path d="M5 12h14M13 5l7 7-7 7" />
-							</svg>
+							{status === "submitting" ? "Enviando…" : "Enviar receta"}
+							{status !== "submitting" && (
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+									<path d="M5 12h14M13 5l7 7-7 7" />
+								</svg>
+							)}
 						</button>
+						<span className={styles.actionsMeta}>
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+							</svg>
+							Conexión cifrada
+						</span>
 					</div>
 
 					<span className={styles.remainingHint}>

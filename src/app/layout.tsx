@@ -1,7 +1,9 @@
 import "./reset.scss";
+import Breadcrumb from "@/layout/breadcrumb";
 import Container from "@/layout/container";
 import Footer from "@/layout/footer";
 import Navbar from "@/layout/navbar";
+import PageHeader from "@/layout/PageHeader";
 import PromoBanner from "@/layout/PromoBanner";
 
 export const metadata = {
