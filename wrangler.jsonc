@@ -35,6 +35,17 @@
 		"binding": "IMAGES"
 	},
 
+	"routes": [
+		{
+			"pattern": "farmaciaduret.online",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.farmaciaduret.online",
+			"custom_domain": true
+		}
+	],
+
 	"observability": {
 		"enabled": false,
 		"head_sampling_rate": 1,
