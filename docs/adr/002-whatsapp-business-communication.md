@@ -12,7 +12,7 @@ There are two different WhatsApp integration levels:
 - A low-friction click-to-chat handoff, where the customer opens WhatsApp with a prefilled message and sends it manually.
 - The Meta WhatsApp Business Platform API, where the app can receive webhooks and later send automated/template messages.
 
-For the current site, the priority is to replace Telegram immediately without introducing order persistence, an admin inbox, or automated outbound messaging before the business process is ready.
+For the current site, the priority is to replace Telegram immediately and support prescription/reference image handoff without introducing order persistence or an admin inbox before the business process is ready.
 
 ## Decision
 
@@ -20,12 +20,14 @@ Use WhatsApp as the single communication channel for orders.
 
 For the customer-facing order form:
 
-- `/orders` uses WhatsApp click-to-chat.
+- `/orders` posts to `src/app/api/whatsapp/orders/route.ts`.
 - The destination number is Farmacia Duret's WhatsApp Business number: `+54 9 11 7894-2852`.
-- The `wa.me` number format is `5491178942852`.
-- The public configuration key is `NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER`.
-- The form opens `https://wa.me/<number>?text=<encoded-message>` with the customer's name, phone, email, and notes.
-- After opening WhatsApp, the page shows a confirmation reminding the customer to press Send in WhatsApp.
+- The public configuration key `NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER` remains available for display/click-to-chat links.
+- The form sends the customer's name, phone, email, notes, and optional image through the WhatsApp Cloud API.
+- Uploaded images are limited to JPG, PNG, or WebP up to 5 MB, and are uploaded directly to Meta before sending the configured template.
+- The order template receives four body variables: customer name, customer phone, customer email, and notes.
+- If an image is present, the image media id is included as the template header image. `WHATSAPP_ORDER_IMAGE_TEMPLATE_NAME` may point to a separate approved template with the same body variables plus an image header.
+- After sending the template, the page shows a confirmation that the order was sent by WhatsApp.
 
 For Meta production setup:
 
@@ -36,16 +38,16 @@ For Meta production setup:
 - `GET` requests validate Meta's `hub.verify_token` and return `hub.challenge`.
 - `POST` requests acknowledge webhook events and log only a summary of the payload.
 
-Path 2, the production WhatsApp Cloud API track, is explicitly separate from the live click-to-chat form. A successful test-number send proves the API request shape and credentials flow, but it does not mean the production app is ready. Before the form should use API-driven messaging, the Meta app needs the production checklist completed: valid privacy and data-deletion URLs, required basic app settings, connected real WhatsApp Business phone number, production `WHATSAPP_PHONE_NUMBER_ID`, production access token, webhook subscription to `messages`, app publish/review steps as required by Meta, and approved message templates for any business-initiated conversations.
+The order form now uses the production WhatsApp Cloud API track. Before this is enabled in production, the Meta app needs the production checklist completed: valid privacy and data-deletion URLs, required basic app settings, connected real WhatsApp Business phone number, production `WHATSAPP_PHONE_NUMBER_ID`, production access token, webhook subscription to `messages`, app publish/review steps as required by Meta, and approved order templates.
 
 ## Consequences
 
 - Telegram configuration, copy, fixtures, and tests are removed.
-- The current order flow remains customer-initiated and manual; the app does not yet send outbound WhatsApp API messages.
+- The current order flow sends outbound WhatsApp API template messages from the app.
 - Production webhook verification requires setting `WHATSAPP_WEBHOOK_VERIFY_TOKEN` in Cloudflare before using "Verify and save" in Meta.
 - Rotating the webhook verification token requires updating Cloudflare, Meta's webhook configuration, and local `.env.local` to the same generated value.
 - While the Meta app is unpublished, only dashboard test webhooks are expected; production customer messages require publishing the app and subscribing to the relevant WhatsApp webhook fields, especially `messages`.
-- The `/orders` form stays on Path 1 until Path 2 has production credentials, legal URLs, templates, and a durable order workflow.
+- `/orders` requires production credentials, a recipient phone number, and approved templates before production sends can succeed.
 - Access tokens, phone number IDs, and business account IDs must stay in local or Cloudflare secrets, never in committed files.
 
 ## Future Work
@@ -54,4 +56,4 @@ Path 2, the production WhatsApp Cloud API track, is explicitly separate from the
 - Complete Meta production setup for the real Farmacia WhatsApp Business number, including production credentials and approved templates.
 - Add signature verification for incoming Meta webhook requests using the Meta app secret before processing customer data.
 - Store incoming messages and statuses in a durable order pipeline when the admin workflow is designed.
-- Add outbound WhatsApp Cloud API messaging only after template, consent, retry, and audit requirements are defined.
+- Add durable order storage, retry, and audit requirements if the pharmacy needs traceability beyond WhatsApp delivery.
