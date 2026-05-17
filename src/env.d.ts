@@ -1,5 +1,8 @@
 declare global {
   interface CloudflareEnv {
+    NEXTJS_ENV?: 'development' | 'production'
+    NEXT_PUBLIC_SITE_URL?: string
+    NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER?: string
     CONTENTFUL_SPACE_ID: string
     CONTENTFUL_DELIVERY_TOKEN: string
     CONTENTFUL_ENVIRONMENT?: string
@@ -11,8 +14,12 @@ declare global {
 
   namespace NodeJS {
     interface ProcessEnv {
+      NEXTJS_ENV?: 'development' | 'production'
       NEXT_PUBLIC_SITE_URL?: string
       NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER?: string
+      CONTENTFUL_SPACE_ID?: string
+      CONTENTFUL_DELIVERY_TOKEN?: string
+      CONTENTFUL_ENVIRONMENT?: string
       WHATSAPP_WEBHOOK_VERIFY_TOKEN?: string
       WHATSAPP_ACCESS_TOKEN?: string
       WHATSAPP_PHONE_NUMBER_ID?: string
