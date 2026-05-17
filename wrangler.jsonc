@@ -60,5 +60,17 @@
 			"persist": false,
 			"head_sampling_rate": 1
 		}
+	},
+
+	"env": {
+		"dev": {
+			"name": "farmacia-duret-dev",
+			"services": [
+				{
+					"binding": "WORKER_SELF_REFERENCE",
+					"service": "farmacia-duret-dev"
+				}
+			]
+		}
 	}
 }
