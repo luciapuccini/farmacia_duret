@@ -2,17 +2,6 @@ import { test, expect } from '@playwright/test'
 
 const STORAGE_KEY = 'orders_submissions'
 const MAX_PER_DAY = 6
-const WHATSAPP_PHONE_NUMBER = '5491178942852'
-
-async function captureWindowOpen(page: Parameters<typeof test.beforeEach>[0]['page']) {
-  await page.addInitScript(() => {
-    const win = window as typeof window & { __openedWhatsAppUrl?: string }
-    win.open = ((url?: string | URL) => {
-      win.__openedWhatsAppUrl = url?.toString()
-      return null
-    }) as typeof window.open
-  })
-}
 
 test.describe('Orders form', () => {
   test('shows the form on load', async ({ page }) => {
@@ -22,11 +11,19 @@ test.describe('Orders form', () => {
     await expect(page.getByLabel('Teléfono')).toBeVisible()
     await expect(page.getByLabel('Email')).toBeVisible()
     await expect(page.getByLabel('Comentarios para el farmacéutico')).toBeVisible()
+    await expect(page.getByLabel('Imagen de referencia (opcional)')).toBeVisible()
     await expect(page.getByRole('button', { name: 'Enviar por WhatsApp' })).toBeVisible()
   })
 
-  test('opens WhatsApp with a prefilled order message after a valid submission', async ({ page }) => {
-    await captureWindowOpen(page)
+  test('sends the order through the WhatsApp API after a valid submission', async ({ page }) => {
+    let submittedBody: string | undefined
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      submittedBody = route.request().postData() ?? undefined
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, messageId: 'wamid.test', hasImage: false }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByLabel('Nombre completo').fill('Test User')
@@ -35,60 +32,52 @@ test.describe('Orders form', () => {
     await page.getByLabel('Comentarios para el farmacéutico').fill('Ibuprofeno 400mg')
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
 
-    const openedUrl = await page.evaluate(() => {
-      const win = window as typeof window & { __openedWhatsAppUrl?: string }
-      return win.__openedWhatsAppUrl
-    })
-
-    expect(openedUrl).toBeTruthy()
-    const whatsappUrl = new URL(openedUrl!)
-    expect(whatsappUrl.origin).toBe('https://wa.me')
-    expect(whatsappUrl.pathname).toBe(`/${WHATSAPP_PHONE_NUMBER}`)
-
-    const message = whatsappUrl.searchParams.get('text')
-    expect(message).toContain('Nuevo encargo')
-    expect(message).toContain('Nombre: Test User')
-    expect(message).toContain('Teléfono: +54 11 1234-5678')
-    expect(message).toContain('Email: test@example.com')
-    expect(message).toContain('Notas: Ibuprofeno 400mg')
-
-    await expect(page.getByText('Mensaje listo en WhatsApp')).toBeVisible()
-    await expect(page.getByText('tocá Enviar')).toBeVisible()
+    expect(submittedBody).toContain('Test User')
+    expect(submittedBody).toContain('Ibuprofeno 400mg')
+    await expect(page.getByText('Encargo enviado por WhatsApp')).toBeVisible()
   })
 
-  test('uses the selected country dial code in the WhatsApp message', async ({ page }) => {
-    await captureWindowOpen(page)
+  test('submits the selected country dial code and image', async ({ page }) => {
+    let submittedBody: string | undefined
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      submittedBody = route.request().postData() ?? undefined
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, messageId: 'wamid.test', hasImage: true }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByLabel('Código de país').selectOption('+598')
     await page.getByLabel('Nombre completo').fill('Test User')
     await page.getByLabel('Teléfono').fill('99 123 456')
     await page.getByLabel('Comentarios para el farmacéutico').fill('Paracetamol')
+    await page.getByLabel('Imagen de referencia (opcional)').setInputFiles({
+      name: 'receta.png',
+      mimeType: 'image/png',
+      buffer: Buffer.from('image'),
+    })
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
 
-    const openedUrl = await page.evaluate(() => {
-      const win = window as typeof window & { __openedWhatsAppUrl?: string }
-      return win.__openedWhatsAppUrl
-    })
-
-    expect(openedUrl).toBeTruthy()
-    if (!openedUrl) return
-    const message = new URL(openedUrl).searchParams.get('text')
-    expect(message).toContain('Teléfono: +598 99 123 456')
+    expect(submittedBody).toContain('+598')
+    expect(submittedBody).toContain('receta.png')
+    await expect(page.getByText('Encargo enviado por WhatsApp')).toBeVisible()
   })
 
   test('does not submit while privacy consent is unchecked', async ({ page }) => {
-    await captureWindowOpen(page)
+    let requestCount = 0
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      requestCount += 1
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByRole('checkbox').uncheck()
     await expect(page.getByRole('button', { name: 'Enviar por WhatsApp' })).toBeDisabled()
-
-    const openedUrl = await page.evaluate(() => {
-      const win = window as typeof window & { __openedWhatsAppUrl?: string }
-      return win.__openedWhatsAppUrl
-    })
-    expect(openedUrl).toBeUndefined()
+    expect(requestCount).toBe(0)
   })
 
   test('shows rate-limit screen when daily limit is reached', async ({ page }) => {
@@ -103,18 +92,20 @@ test.describe('Orders form', () => {
     await expect(page.getByText(`${MAX_PER_DAY} encargos por día`)).toBeVisible()
   })
 
-  test('browser validates required fields before opening WhatsApp', async ({ page }) => {
-    await captureWindowOpen(page)
+  test('browser validates required fields before sending to WhatsApp', async ({ page }) => {
+    let requestCount = 0
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      requestCount += 1
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
 
-    await expect(page.getByText('Mensaje listo en WhatsApp')).not.toBeVisible()
-
-    const openedUrl = await page.evaluate(() => {
-      const win = window as typeof window & { __openedWhatsAppUrl?: string }
-      return win.__openedWhatsAppUrl
-    })
-    expect(openedUrl).toBeUndefined()
+    await expect(page.getByText('Encargo enviado por WhatsApp')).not.toBeVisible()
+    expect(requestCount).toBe(0)
   })
 })
