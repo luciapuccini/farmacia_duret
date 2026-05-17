@@ -78,6 +78,7 @@
 
 	"env": {
 		"dev": {
+			"name": "farmacia-duret-dev",
 			// Deploys as "farmacia-duret-dev".
 			"workers_dev": true,
 			"routes": [],
