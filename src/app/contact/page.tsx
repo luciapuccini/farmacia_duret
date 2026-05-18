@@ -1,5 +1,6 @@
 import styles from './contact.module.scss'
 import type { Metadata } from 'next'
+import { safeJsonLd } from '@/utils/safeJsonLd'
 
 export const metadata: Metadata = {
   title: 'Contacto | Farmacia Duret',
@@ -68,7 +69,7 @@ export default function ContactoPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }}
       />
       <div className={styles.container}>
         <div className={styles.grid}>
