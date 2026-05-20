@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/config/site";
+
 type AppEnv = "development" | "production";
 
 const appEnv: AppEnv =
@@ -9,7 +11,7 @@ const development = {
 	contentful: {
 		space: process.env.CONTENTFUL_SPACE_ID ?? "",
 		accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN ?? "",
-		environment: "master",
+		environment: process.env.CONTENTFUL_ENVIRONMENT ?? "master",
 	},
 };
 
@@ -18,7 +20,7 @@ const production = {
 	contentful: {
 		space: process.env.CONTENTFUL_SPACE_ID ?? "",
 		accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN ?? "",
-		environment: "master",
+		environment: process.env.CONTENTFUL_ENVIRONMENT ?? "master",
 	},
 };
 
@@ -26,6 +28,7 @@ const base = appEnv === "production" ? production : development;
 
 const config = {
 	...base,
+	siteUrl: SITE_URL,
 };
 
 export default config;

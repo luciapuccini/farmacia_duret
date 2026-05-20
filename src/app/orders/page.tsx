@@ -5,10 +5,12 @@ import { COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from "@/utils/countryCodes";
 import InfoPanel from "./components/InfoPanel";
 import styles from "./orders.module.scss";
 
-const DEFAULT_WHATSAPP_PHONE_NUMBER = "5491178942852";
-const WHATSAPP_PHONE_NUMBER =
-	process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER ||
-	DEFAULT_WHATSAPP_PHONE_NUMBER;
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set([
+	"image/jpeg",
+	"image/png",
+	"image/webp",
+]);
 
 // ── Rate-limit helpers ────────────────────────────────────
 const STORAGE_KEY = "orders_submissions";
@@ -38,48 +40,52 @@ function incrementCount(): number {
 	return next;
 }
 
-function buildWhatsAppMessage(fd: FormData): string {
-	const name = ((fd.get("name") as string) || "").trim();
-	const phone = ((fd.get("phone") as string) || "").trim();
-	const email = ((fd.get("email") as string) || "").trim();
-	const notes = ((fd.get("notes") as string) || "").trim();
-	const countryDial = (
-		(fd.get("countryDial") as string) || DEFAULT_COUNTRY_DIAL
-	).trim();
-	const cleanPhone = phone.replace(/^\+?\s*/, "").replace(/^0+/, "");
-
-	return [
-		"Nuevo encargo",
-		"",
-		`\u{1F464} Nombre: ${name}`,
-		`\u{1F4DE} Teléfono: ${countryDial} ${cleanPhone}`,
-		`\u{1F4E7} Email: ${email || "—"}`,
-		"",
-		`\u{1F4DD} Notas: ${notes || "—"}`,
-	].join("\n");
-}
-
-function buildWhatsAppUrl(text: string): string {
-	const phoneNumber = WHATSAPP_PHONE_NUMBER.replace(/\D/g, "");
-	return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
-}
+type Status = "idle" | "submitting" | "sent" | "error";
 
 // ── Component ─────────────────────────────────────────────
 export default function ReservasPage() {
 	const [charCount, setCharCount] = useState(0);
 	const [consent, setConsent] = useState(true);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [fileName, setFileName] = useState<string | null>(null);
+	const [fileError, setFileError] = useState("");
 	const [submissionCount, setSubmissionCount] = useState(getCount);
-	const [sent, setSent] = useState(false);
+	const [status, setStatus] = useState<Status>("idle");
 
 	const remaining = MAX_PER_DAY - submissionCount;
 	const isLimited = remaining <= 0;
 
-	function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-		e.preventDefault();
-		if (isLimited || !consent) return;
+	function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const image = e.target.files?.[0];
+		setErrorMessage("");
 
-		if (!WHATSAPP_PHONE_NUMBER.replace(/\D/g, "")) {
-			console.warn("[orders] NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER is not set");
+		if (!image) {
+			setFileName(null);
+			setFileError("");
+			return;
+		}
+
+		if (!ALLOWED_IMAGE_TYPES.has(image.type)) {
+			e.target.value = "";
+			setFileName(null);
+			setFileError("La imagen debe ser JPG, PNG o WebP.");
+			return;
+		}
+
+		if (image.size > MAX_IMAGE_SIZE_BYTES) {
+			e.target.value = "";
+			setFileName(null);
+			setFileError("La imagen debe pesar hasta 5 MB.");
+			return;
+		}
+
+		setFileName(image.name);
+		setFileError("");
+	}
+
+	async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+		e.preventDefault();
+		if (isLimited || !consent || status === "submitting") {
 			return;
 		}
 
@@ -89,37 +95,61 @@ export default function ReservasPage() {
 		// Honeypot — silently accept
 		if (fd.get("bot-field")) return;
 
-		const text = buildWhatsAppMessage(fd);
-		const url = buildWhatsAppUrl(text);
+		setStatus("submitting");
+		setErrorMessage("");
 
-		window.open(url, "_blank", "noopener");
+		try {
+			const response = await fetch("/api/whatsapp/orders", {
+				method: "POST",
+				body: fd,
+			});
+			const payload = (await response.json().catch(() => null)) as {
+				error?: string;
+			} | null;
 
-		setSubmissionCount(incrementCount());
-		setSent(true);
-		form.reset();
-		setCharCount(0);
+			if (!response.ok) {
+				throw new Error(payload?.error || "No pudimos enviar el encargo.");
+			}
+
+			setSubmissionCount(incrementCount());
+			setStatus("sent");
+			form.reset();
+			setCharCount(0);
+			setFileName(null);
+			setFileError("");
+		} catch (error) {
+			setStatus("error");
+			setErrorMessage(
+				error instanceof Error
+					? error.message
+					: "No pudimos enviar el encargo. Intentá de nuevo.",
+			);
+		}
 	}
 
 	function resetForm() {
 		setCharCount(0);
-		setSent(false);
+		setErrorMessage("");
+		setFileName(null);
+		setFileError("");
+		setStatus("idle");
 	}
 
-	if (sent) {
+	if (status === "sent") {
 		return (
 			<div className={styles.layout}>
 				<InfoPanel />
 				<section className={styles.formSide}>
 					<div className={styles.sentBox}>
-						<p className={styles.sentTitle}>Mensaje listo en WhatsApp</p>
+						<p className={styles.sentTitle}>Encargo enviado por WhatsApp</p>
 						<p className={styles.sentText}>
-							Se abrió WhatsApp con tu encargo preparado. Revisá el mensaje y
-							tocá Enviar para que podamos responderte.
+							Recibimos tus datos y la imagen adjunta si la agregaste. Te
+							confirmamos disponibilidad, precio y horario de retiro por WhatsApp.
 						</p>
 						<button
 							type="button"
 							className={styles.btnPrimary}
-							onClick={() => setSent(false)}
+							onClick={() => setStatus("idle")}
 						>
 							Hacer otro encargo
 						</button>
@@ -260,7 +290,7 @@ export default function ReservasPage() {
 					<div className={styles.group}>
 						<div className={styles.groupTitle}>
 							<span className={styles.num}>2</span>
-							Notas <span className={styles.optional}>(opcional)</span>
+							Encargo <span className={styles.optional}>(opcional)</span>
 						</div>
 						<div className={styles.field}>
 							<label htmlFor="notes" className={styles.label}>
@@ -276,6 +306,37 @@ export default function ReservasPage() {
 								onChange={(e) => setCharCount(e.target.value.length)}
 							/>
 							<span className={styles.charCount}>{charCount} / 300</span>
+						</div>
+
+						<div className={styles.field}>
+							<label htmlFor="image" className={styles.label}>
+								Imagen de referencia{" "}
+								<span className={styles.optional}>(opcional)</span>
+							</label>
+							<label htmlFor="image" className={styles.fileLabel}>
+								<span className={styles.fileIcon} aria-hidden="true">
+									<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+										<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+										<polyline points="17 8 12 3 7 8" />
+										<line x1="12" x2="12" y1="3" y2="15" />
+									</svg>
+								</span>
+								<span className={styles.fileName}>
+									{fileName ?? "Subir imagen"}
+								</span>
+								<span className={styles.fileHint}>JPG, PNG o WebP hasta 5 MB</span>
+								<input
+									id="image"
+									name="image"
+									type="file"
+									accept="image/png, image/jpeg, image/webp"
+									className={styles.fileInput}
+									onChange={handleImageChange}
+								/>
+							</label>
+							{fileError ? (
+								<span className={styles.fieldError}>{fileError}</span>
+							) : null}
 						</div>
 					</div>
 
@@ -293,6 +354,10 @@ export default function ReservasPage() {
 						</span>
 					</label>
 
+					{status === "error" ? (
+						<p className={styles.errorMsg}>{errorMessage}</p>
+					) : null}
+
 					<div className={styles.actions}>
 						<button type="button" className={styles.btnGhost} onClick={resetForm}>
 							Cancelar
@@ -300,9 +365,9 @@ export default function ReservasPage() {
 						<button
 							type="submit"
 							className={styles.btnPrimary}
-							disabled={!consent}
+							disabled={!consent || status === "submitting" || Boolean(fileError)}
 						>
-							Enviar por WhatsApp
+							{status === "submitting" ? "Enviando..." : "Enviar por WhatsApp"}
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
 								<path d="M5 12h14M13 5l7 7-7 7" />
 							</svg>

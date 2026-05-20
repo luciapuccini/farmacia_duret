@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { SITE_URL } from '@/config/site'
+import { safeJsonLd } from '@/utils/safeJsonLd'
 import styles from './breadcrumb.module.scss'
 
-const BASE_URL = 'https://www.farmaciaduret.com'
 
 const categoryNames: Record<string, string> = {
   // static pages
@@ -99,9 +100,9 @@ export default function Breadcrumb() {
   const subcategoryName = subcategory ? formatSubcategoryName(category, subcategory) : null
 
   const breadcrumbItems = [
-    { name: 'Inicio', url: BASE_URL },
-    ...(categoryName ? [{ name: categoryName, url: `${BASE_URL}/${category}` }] : []),
-    ...(subcategoryName ? [{ name: subcategoryName, url: `${BASE_URL}/${category}/${subcategory}` }] : []),
+    { name: 'Inicio', url: SITE_URL },
+    ...(categoryName ? [{ name: categoryName, url: `${SITE_URL}/${category}` }] : []),
+    ...(subcategoryName ? [{ name: subcategoryName, url: `${SITE_URL}/${category}/${subcategory}` }] : []),
   ]
 
   const jsonLd = {
@@ -119,33 +120,33 @@ export default function Breadcrumb() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-      <ol className={styles.breadcrumbList}>
-        <li className={styles.breadcrumbItem}>
-          <Link href="/" className={styles.breadcrumbLink}>
-            Inicio
-          </Link>
-        </li>
-
-        {categoryName && (
+        <ol className={styles.breadcrumbList}>
           <li className={styles.breadcrumbItem}>
-            <span className={styles.separator}>›</span>
-            <Link href={`/${category}`} className={styles.breadcrumbLink}>
-              {categoryName}
+            <Link href="/" className={styles.breadcrumbLink}>
+              Inicio
             </Link>
           </li>
-        )}
 
-        {subcategoryName && (
-          <li className={styles.breadcrumbItem}>
-            <span className={styles.separator}>›</span>
-            <span className={styles.currentPage}>{subcategoryName}</span>
-          </li>
-        )}
-      </ol>
-    </nav>
+          {categoryName && (
+            <li className={styles.breadcrumbItem}>
+              <span className={styles.separator}>›</span>
+              <Link href={`/${category}`} className={styles.breadcrumbLink}>
+                {categoryName}
+              </Link>
+            </li>
+          )}
+
+          {subcategoryName && (
+            <li className={styles.breadcrumbItem}>
+              <span className={styles.separator}>›</span>
+              <span className={styles.currentPage}>{subcategoryName}</span>
+            </li>
+          )}
+        </ol>
+      </nav>
     </>
   )
 }

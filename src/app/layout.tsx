@@ -3,8 +3,11 @@ import Container from "@/layout/container";
 import Footer from "@/layout/footer";
 import Navbar from "@/layout/navbar";
 import PromoBanner from "@/layout/PromoBanner";
+import { SITE_URL } from "@/config/site";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
+	metadataBase: new URL(SITE_URL),
 	title: "Farmacia Duret",
 	icons: { icon: "/favicon.ico" },
 };

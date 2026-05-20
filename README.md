@@ -12,7 +12,7 @@ Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, conta
 | Language      | TypeScript                                       |
 | Styles        | SCSS Modules                                     |
 | Runtime       | Cloudflare Workers (via`@opennextjs/cloudflare`) |
-| Notifications | WhatsApp click-to-chat handoff                  |
+| Notifications | WhatsApp Cloud API templates                  |
 
 The app runs fully server-side on Cloudflare's edge network. Dynamic routes and API endpoints are handled by a Cloudflare Worker; static assets are served from Cloudflare's CDN.
 
@@ -33,7 +33,9 @@ npm run preview
 
 ### Environment variables
 
-Create an `.env.local` file in the project root, using `.env.example` as the template.
+Create an `.env.local` file in the project root, using `.env.example` as the template. Local development should use development/test values for the same variable names used in every environment. For example, use a test WhatsApp number as `NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER`; do not introduce separate test-only aliases.
+
+`.env.prod` documents the production variable shape, but production values should be configured in Cloudflare rather than committed to the repo.
 
 Generate the webhook verification token with:
 
@@ -66,9 +68,21 @@ The live site URL is `https://farmacia-duret.puccinilucia.workers.dev`.
 
 ---
 
-## WhatsApp handoff
+## WhatsApp orders
 
-When a customer submits an order from `/orders`, the form opens WhatsApp with a prefilled message to the configured Business account. The customer reviews the draft and presses Send in WhatsApp.
+When a customer submits an order from `/orders`, the form posts to `/api/whatsapp/orders`. That route uploads the optional image to Meta and sends the configured WhatsApp template, using the uploaded media id as the template header image.
+
+Required order-send variables:
+
+- `WHATSAPP_ACCESS_TOKEN`
+- `WHATSAPP_PHONE_NUMBER_ID`
+- `WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER`
+- `WHATSAPP_ORDER_TEMPLATE_NAME`
+- `WHATSAPP_ORDER_IMAGE_TEMPLATE_NAME` (optional; falls back to `WHATSAPP_ORDER_TEMPLATE_NAME`)
+- `WHATSAPP_ORDER_TEMPLATE_LANGUAGE` (defaults to `es_AR`)
+- `WHATSAPP_GRAPH_API_VERSION` (defaults to `v25.0`)
+
+The approved order template should have four body variables in this order: customer name, customer phone, customer email, and notes. If the image template is separate, it should use the same body variables plus an image header.
 
 ### Meta webhook setup
 
@@ -88,8 +102,8 @@ To rotate the verify token, generate a new value, update Cloudflare, update Meta
 ```
 src/
   app/                  # Next.js App Router pages and API routes
-    api/whatsapp/       # Meta webhook verification and event receiver
-    orders/             # Order form page → WhatsApp click-to-chat
+    api/whatsapp/       # Meta order send route, webhook verification, and event receiver
+    orders/             # Order form page
     [category]/         # Dynamic catalog pages
   components/           # Shared UI components
   layout/               # Navbar, Footer, Breadcrumb, Container
