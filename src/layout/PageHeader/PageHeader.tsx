@@ -1,8 +1,8 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { categoryNames, subcategoryNames } from './breadcrumb'
-import styles from './layout.module.scss'
+import { categoryNames, subcategoryNames } from '../breadcrumb/breadcrumb'
+import styles from './PageHeader.module.scss'
 
 export default function PageHeader() {
   const pathname = usePathname()

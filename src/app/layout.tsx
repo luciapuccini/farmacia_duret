@@ -1,8 +1,8 @@
 import "./reset.scss";
-import Container from "@/layout/container";
-import Footer from "@/layout/footer";
-import Navbar from "@/layout/navbar";
-import PromoBanner from "@/layout/PromoBanner";
+import Container from "@/layout/container/container";
+import Footer from "@/layout/footer/footer";
+import Navbar from "@/layout/navbar/navbar";
+import PromoBanner from "@/layout/PromoBanner/PromoBanner";
 import { SITE_URL } from "@/config/site";
 import type { Metadata } from "next";
 

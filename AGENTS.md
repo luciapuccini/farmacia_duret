@@ -18,33 +18,34 @@ Pages live in the `app/` directory using Next.js file-system routing:
 Each page has its `.module.scss` file alongside it in the same directory.
 
 ## Component Structure
+Every component follows the same named-folder structure:
 
-Reusable components live in `src/components/`. Layout components in `src/layout/`.
+- Create a folder named after the component.
+- Inside that folder, create `<component_name>.tsx` for the React component.
+- Inside that folder, create `<component_name>.module.scss` for the component styles.
+- Import the CSS module from the component's own folder.
+
+This rule applies to reusable components, layout components, and page-local nested components under a route's `components/` folder.
 
 For parent components with sub-components:
 
 - A `components` folder immediately within the parent component's directory contains all sub-components.
-- Each sub-component follows the same folder structure:
-  - `index.tsx`: The React component.
-  - `.module.scss`: The CSS module for styling.
+- Each sub-component follows the same named-folder structure.
 
 Example:
 
 ```
 src/layout/navbar/
-  index.tsx
+  navbar.tsx
   navbar.module.scss
   components/
     drawer/
-      index.tsx
+      drawer.tsx
       drawer.module.scss
 ```
 
-## Client vs Server Components
+Next.js route files are the exception to this naming rule: pages, layouts, route handlers, metadata files, and special files keep their framework-required names such as `page.tsx`, `layout.tsx`, `route.ts`, `not-found.tsx`, `robots.ts`, and `sitemap.ts`. Route-level `.module.scss` files may stay alongside the route file.
 
-- Components using hooks (`useState`, `useEffect`, `usePathname`, `useSearchParams`) must have `'use client'` at the top.
-- Pages that are purely presentational can be Server Components (the default).
-- The Navbar, Drawer, Breadcrumb, PageHeader, and ProductCatalog are client components.
 
 ## Helper Hooks and Utilities
 

@@ -8,7 +8,7 @@ import categories from "@/data/categories.json";
 import { useMediaQuery } from "@/helpers/hooks";
 import { categoryNameToPath } from "@/helpers/routes";
 
-import Drawer from "./components/drawer";
+import Drawer from "./components/drawer/drawer";
 import styles from "./navbar.module.scss";
 
 type Category = {
