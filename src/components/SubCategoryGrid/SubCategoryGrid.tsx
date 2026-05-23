@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import styles from './subCategoryGrid.module.scss'
 import { nameToSlug } from '@/utils/nameToSlug'
+import styles from './SubCategoryGrid.module.scss'
 
 export interface SubCategory {
   name: string

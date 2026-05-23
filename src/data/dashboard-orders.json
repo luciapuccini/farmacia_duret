@@ -1,0 +1,252 @@
+{
+	"orders": [
+		{
+			"id": "FD-1024",
+			"created_at": "2026-05-17T08:55:00-03:00",
+			"updated_at": "2026-05-17T10:24:00-03:00",
+			"status": "ready_to_pick_up",
+			"version": 4,
+			"closure_reason": null,
+			"fulfillment_method": "pickup",
+			"patient_name": "María Laura Gómez",
+			"patient_phone": "(11) 3456-7890",
+			"patient_email": "marialgomez@email.com",
+			"prescription_url": "r2://prescriptions/fd-1024.pdf",
+			"coverage": { "id": "osde", "name": "OSDE" },
+			"coverage_member_num": "45877123",
+			"subtotal": 58200,
+			"delivery_fee": 0,
+			"total": 58200,
+			"pricing_locked_at": "2026-05-17T10:18:00-03:00",
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1024-1", "product_name": "Losartán 50 mg", "quantity": 1, "unit_price": 17800, "line_total": 17800, "status": "accepted" },
+				{ "id": "item-1024-2", "product_name": "Metformina 850 mg", "quantity": 2, "unit_price": 20200, "line_total": 40400, "status": "accepted" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-17T08:55:00-03:00" },
+				{ "from_status": "created", "to_status": "confirmed_by_pharmacy", "actor": "Ana Medina", "created_at": "2026-05-17T09:08:00-03:00" },
+				{ "from_status": "confirmed_by_pharmacy", "to_status": "in_progress", "actor": "Ana Medina", "created_at": "2026-05-17T09:23:00-03:00" },
+				{ "from_status": "in_progress", "to_status": "ready_to_pick_up", "actor": "Ana Medina", "created_at": "2026-05-17T10:24:00-03:00" }
+			],
+			"notes": "Paciente prefiere retiro por la tarde."
+		},
+		{
+			"id": "FD-1023",
+			"created_at": "2026-05-17T08:40:00-03:00",
+			"updated_at": "2026-05-17T09:15:00-03:00",
+			"status": "in_progress",
+			"version": 3,
+			"closure_reason": null,
+			"fulfillment_method": "delivery",
+			"patient_name": "Jorge Luis Pereyra",
+			"patient_phone": "(11) 6980-2214",
+			"patient_email": null,
+			"prescription_url": "r2://prescriptions/fd-1023.pdf",
+			"coverage": { "id": "pami", "name": "PAMI" },
+			"coverage_member_num": "11567340",
+			"subtotal": 0,
+			"delivery_fee": 1800,
+			"total": 0,
+			"pricing_locked_at": null,
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1023-1", "product_name": "Atorvastatina 20 mg", "quantity": 1, "unit_price": 0, "line_total": 0, "status": "pending" },
+				{ "id": "item-1023-2", "product_name": "Aspirina prevent", "quantity": 1, "unit_price": 0, "line_total": 0, "status": "pending" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-17T08:40:00-03:00" },
+				{ "from_status": "created", "to_status": "confirmed_by_pharmacy", "actor": "Lucía Ruiz", "created_at": "2026-05-17T08:53:00-03:00" },
+				{ "from_status": "confirmed_by_pharmacy", "to_status": "in_progress", "actor": "Lucía Ruiz", "created_at": "2026-05-17T09:15:00-03:00" }
+			],
+			"notes": "Confirmar disponibilidad antes de presupuestar."
+		},
+		{
+			"id": "FD-1022",
+			"created_at": "2026-05-16T17:58:00-03:00",
+			"updated_at": "2026-05-16T18:42:00-03:00",
+			"status": "confirmed_by_pharmacy",
+			"version": 2,
+			"closure_reason": null,
+			"fulfillment_method": null,
+			"patient_name": "Lucía Fernández",
+			"patient_phone": "(11) 5654-9830",
+			"patient_email": "lucia.fernandez@email.com",
+			"prescription_url": "r2://prescriptions/fd-1022.pdf",
+			"coverage": { "id": "swiss-medical", "name": "Swiss Medical" },
+			"coverage_member_num": "99018212",
+			"subtotal": 0,
+			"delivery_fee": null,
+			"total": 0,
+			"pricing_locked_at": null,
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1022-1", "product_name": "Amoxicilina 875 mg", "quantity": 1, "unit_price": 0, "line_total": 0, "status": "pending" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-16T17:58:00-03:00" },
+				{ "from_status": "created", "to_status": "confirmed_by_pharmacy", "actor": "Ana Medina", "created_at": "2026-05-16T18:42:00-03:00" }
+			],
+			"notes": "Receta visible, falta iniciar preparación."
+		},
+		{
+			"id": "FD-1021",
+			"created_at": "2026-05-16T15:30:00-03:00",
+			"updated_at": "2026-05-16T15:30:00-03:00",
+			"status": "created",
+			"version": 1,
+			"closure_reason": null,
+			"fulfillment_method": null,
+			"patient_name": "Carlos Alberto Ruiz",
+			"patient_phone": "(11) 3022-4077",
+			"patient_email": null,
+			"prescription_url": "r2://prescriptions/fd-1021.pdf",
+			"coverage": null,
+			"coverage_member_num": null,
+			"subtotal": 0,
+			"delivery_fee": null,
+			"total": 0,
+			"pricing_locked_at": null,
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1021-1", "product_name": "Medicamento a validar", "quantity": 1, "unit_price": 0, "line_total": 0, "status": "pending" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-16T15:30:00-03:00" }
+			],
+			"notes": "Imagen de receta pendiente de revisión."
+		},
+		{
+			"id": "FD-1020",
+			"created_at": "2026-05-16T10:15:00-03:00",
+			"updated_at": "2026-05-16T12:05:00-03:00",
+			"status": "delivery",
+			"version": 5,
+			"closure_reason": null,
+			"fulfillment_method": "delivery",
+			"patient_name": "Silvia Mabel Torres",
+			"patient_phone": "(11) 4412-9002",
+			"patient_email": "silviatorres@email.com",
+			"prescription_url": "r2://prescriptions/fd-1020.pdf",
+			"coverage": { "id": "osde", "name": "OSDE" },
+			"coverage_member_num": "31124500",
+			"subtotal": 31800,
+			"delivery_fee": 1800,
+			"total": 33600,
+			"pricing_locked_at": "2026-05-16T11:20:00-03:00",
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1020-1", "product_name": "Levotiroxina 100 mcg", "quantity": 1, "unit_price": 31800, "line_total": 31800, "status": "accepted" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-16T10:15:00-03:00" },
+				{ "from_status": "created", "to_status": "confirmed_by_pharmacy", "actor": "Ana Medina", "created_at": "2026-05-16T10:24:00-03:00" },
+				{ "from_status": "confirmed_by_pharmacy", "to_status": "in_progress", "actor": "Ana Medina", "created_at": "2026-05-16T10:50:00-03:00" },
+				{ "from_status": "in_progress", "to_status": "ready_to_pick_up", "actor": "Ana Medina", "created_at": "2026-05-16T11:24:00-03:00" },
+				{ "from_status": "ready_to_pick_up", "to_status": "delivery", "actor": "Ana Medina", "created_at": "2026-05-16T12:05:00-03:00" }
+			],
+			"notes": "Mandar por moto al domicilio habitual."
+		},
+		{
+			"id": "FD-1019",
+			"created_at": "2026-05-15T16:50:00-03:00",
+			"updated_at": "2026-05-15T17:20:00-03:00",
+			"status": "rejected_by_pharmacy",
+			"version": 2,
+			"closure_reason": "rejected_by_pharmacy",
+			"fulfillment_method": null,
+			"patient_name": "Martín Ignacio Sosa",
+			"patient_phone": "(11) 2920-7550",
+			"patient_email": null,
+			"prescription_url": "r2://prescriptions/fd-1019.pdf",
+			"coverage": null,
+			"coverage_member_num": null,
+			"subtotal": 0,
+			"delivery_fee": null,
+			"total": 0,
+			"pricing_locked_at": null,
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1019-1", "product_name": "Receta ilegible", "quantity": 1, "unit_price": 0, "line_total": 0, "status": "rejected" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-15T16:50:00-03:00" },
+				{ "from_status": "created", "to_status": "rejected_by_pharmacy", "actor": "Lucía Ruiz", "created_at": "2026-05-15T17:20:00-03:00" }
+			],
+			"notes": "Receta borrosa. Solicitar nueva imagen."
+		},
+		{
+			"id": "FD-1018",
+			"created_at": "2026-05-15T10:03:00-03:00",
+			"updated_at": "2026-05-15T11:48:00-03:00",
+			"status": "payment",
+			"version": 6,
+			"closure_reason": null,
+			"fulfillment_method": "pickup",
+			"patient_name": "Ana Paula Medina",
+			"patient_phone": "(11) 6221-4833",
+			"patient_email": "ana.medina@email.com",
+			"prescription_url": "r2://prescriptions/fd-1018.pdf",
+			"coverage": { "id": "galeno", "name": "Galeno" },
+			"coverage_member_num": "8824012",
+			"subtotal": 12900,
+			"delivery_fee": 0,
+			"total": 12900,
+			"pricing_locked_at": "2026-05-15T10:52:00-03:00",
+			"payment_method": null,
+			"payment_confirmed_at": null,
+			"items": [
+				{ "id": "item-1018-1", "product_name": "Ibuprofeno 600 mg", "quantity": 1, "unit_price": 12900, "line_total": 12900, "status": "accepted" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-15T10:03:00-03:00" },
+				{ "from_status": "created", "to_status": "confirmed_by_pharmacy", "actor": "Ana Medina", "created_at": "2026-05-15T10:10:00-03:00" },
+				{ "from_status": "confirmed_by_pharmacy", "to_status": "in_progress", "actor": "Ana Medina", "created_at": "2026-05-15T10:25:00-03:00" },
+				{ "from_status": "in_progress", "to_status": "ready_to_pick_up", "actor": "Ana Medina", "created_at": "2026-05-15T10:55:00-03:00" },
+				{ "from_status": "ready_to_pick_up", "to_status": "pickup_by_patient", "actor": "Ana Medina", "created_at": "2026-05-15T11:30:00-03:00" },
+				{ "from_status": "pickup_by_patient", "to_status": "payment", "actor": "Ana Medina", "created_at": "2026-05-15T11:48:00-03:00" }
+			],
+			"notes": "Paciente abonará al retirar."
+		},
+		{
+			"id": "FD-1017",
+			"created_at": "2026-05-14T13:05:00-03:00",
+			"updated_at": "2026-05-14T16:30:00-03:00",
+			"status": "closed",
+			"version": 7,
+			"closure_reason": "completed",
+			"fulfillment_method": "delivery",
+			"patient_name": "Esteban Ferrer",
+			"patient_phone": "(11) 5700-1044",
+			"patient_email": null,
+			"prescription_url": "r2://prescriptions/fd-1017.pdf",
+			"coverage": { "id": "pami", "name": "PAMI" },
+			"coverage_member_num": "7844001",
+			"subtotal": 25900,
+			"delivery_fee": 1800,
+			"total": 27700,
+			"pricing_locked_at": "2026-05-14T14:00:00-03:00",
+			"payment_method": "cash",
+			"payment_confirmed_at": "2026-05-14T16:30:00-03:00",
+			"items": [
+				{ "id": "item-1017-1", "product_name": "Enalapril 10 mg", "quantity": 1, "unit_price": 25900, "line_total": 25900, "status": "accepted" }
+			],
+			"transitions": [
+				{ "from_status": null, "to_status": "created", "actor": "Sistema", "created_at": "2026-05-14T13:05:00-03:00" },
+				{ "from_status": "created", "to_status": "confirmed_by_pharmacy", "actor": "Lucía Ruiz", "created_at": "2026-05-14T13:12:00-03:00" },
+				{ "from_status": "confirmed_by_pharmacy", "to_status": "in_progress", "actor": "Lucía Ruiz", "created_at": "2026-05-14T13:35:00-03:00" },
+				{ "from_status": "in_progress", "to_status": "ready_to_pick_up", "actor": "Lucía Ruiz", "created_at": "2026-05-14T14:02:00-03:00" },
+				{ "from_status": "ready_to_pick_up", "to_status": "delivery", "actor": "Lucía Ruiz", "created_at": "2026-05-14T15:10:00-03:00" },
+				{ "from_status": "delivery", "to_status": "payment", "actor": "Lucía Ruiz", "created_at": "2026-05-14T16:15:00-03:00" },
+				{ "from_status": "payment", "to_status": "closed", "actor": "Lucía Ruiz", "created_at": "2026-05-14T16:30:00-03:00" }
+			],
+			"notes": "Entregado y cobrado."
+		}
+	]
+}

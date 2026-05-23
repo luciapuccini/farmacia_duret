@@ -8,13 +8,38 @@ import categories from "@/data/categories.json";
 import { useMediaQuery } from "@/helpers/hooks";
 import { categoryNameToPath } from "@/helpers/routes";
 
-import Drawer from "./components/drawer";
+import Drawer from "./components/drawer/drawer";
 import styles from "./navbar.module.scss";
 
 type Category = {
 	name: string;
 	subcategories?: Category[];
 };
+
+function subnavLinkClass(depth: number, isActive: boolean) {
+	if (depth === 0) {
+		return isActive
+			? `${styles.subnavLink} ${styles.subnavLinkActive}`
+			: styles.subnavLink;
+	}
+
+	return isActive
+		? `${styles.dropdownLink} ${styles.dropdownLinkActive}`
+		: styles.dropdownLink;
+}
+
+function subnavHref(category: Category, categoryPath: string, depth: number, parentPath: string) {
+	if (depth === 0) return categoryPath;
+	if (depth === 1) return `${parentPath}/${categoryPath}`;
+	if (category.name === "Ver todos los productos") return parentPath;
+	return `${parentPath}?f=${categoryPath.slice(1)}`;
+}
+
+function dropdownClass(depth: number) {
+	return depth === 0
+		? styles.dropdown
+		: `${styles.dropdown} ${styles.dropdownNested}`;
+}
 
 function SubnavItem({
 	category,
@@ -33,6 +58,9 @@ function SubnavItem({
 	const categoryPath = categoryNameToPath(category.name);
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
+	const href = subnavHref(category, categoryPath, depth, parentPath);
+	const linkClass = depth === 2 ? styles.dropdownLink : subnavLinkClass(depth, isActive(href));
+	const childParentPath = depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
 
 	return (
 		<li
@@ -40,61 +68,18 @@ function SubnavItem({
 			onMouseEnter={() => hasSubcategories && setIsOpen(true)}
 			onMouseLeave={() => setIsOpen(false)}
 		>
-			{depth === 0 && (
-				<Link
-					href={categoryPath}
-					className={
-						isActive(categoryPath)
-							? `${styles.subnavLink} ${styles.subnavLinkActive}`
-							: styles.subnavLink
-					}
-				>
-					{category.name}
-				</Link>
-			)}
-
-			{depth === 1 && (
-				<Link
-					href={`${parentPath}/${categoryPath}`}
-					className={
-						isActive(`${parentPath}/${categoryPath}`)
-							? `${styles.dropdownLink} ${styles.dropdownLinkActive}`
-							: styles.dropdownLink
-					}
-				>
-					{category.name}
-				</Link>
-			)}
-
-			{depth === 2 && (
-				<Link
-					href={
-						category.name === "Ver todos los productos"
-							? parentPath
-							: `${parentPath}?f=${categoryPath.slice(1)}`
-					}
-					className={styles.dropdownLink}
-				>
-					{category.name}
-				</Link>
-			)}
+			<Link href={href} className={linkClass}>
+				{category.name}
+			</Link>
 
 			{hasSubcategories && isOpen && (
-				<ul
-					className={
-						depth === 0
-							? styles.dropdown
-							: `${styles.dropdown} ${styles.dropdownNested}`
-					}
-				>
+				<ul className={dropdownClass(depth)}>
 					{category.subcategories?.map((sub) => (
 						<SubnavItem
 							key={sub.name}
 							category={sub}
 							depth={depth + 1}
-							parentPath={
-								depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`
-							}
+							parentPath={childParentPath}
 							pathname={pathname}
 						/>
 					))}

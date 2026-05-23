@@ -1,6 +1,6 @@
 import Link from "next/link";
-import CatalogSection from "@/components/CatalogSection";
-import HeroVisual from "@/components/HeroVisual";
+import CatalogSection from "@/components/CatalogSection/CatalogSection";
+import HeroVisual from "@/components/HeroVisual/HeroVisual";
 import styles from "./home.module.scss";
 
 export default function HomePage() {

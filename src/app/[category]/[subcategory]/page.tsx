@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import ProductCatalog from "@/components/ProductCatalog";
+import ProductCatalog from "@/components/ProductCatalog/ProductCatalog";
 import categories from "@/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 

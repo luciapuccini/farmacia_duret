@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from "@/utils/countryCodes";
-import InfoPanel from "./components/InfoPanel";
+import InfoPanel from "./components/InfoPanel/InfoPanel";
 import styles from "./orders.module.scss";
 
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;

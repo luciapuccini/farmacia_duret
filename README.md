@@ -1,6 +1,7 @@
 # Farmacia Duret
 
-Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, contact page, and an online order system backed by WhatsApp.
+Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, contact page, and an online order system with WhatsApp handoff.
+[website](https://farmaciaduret.online/)
 
 ## Stack
 

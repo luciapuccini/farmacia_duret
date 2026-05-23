@@ -8,6 +8,7 @@
 - unify structure folders with clear client/server/ infra folders..
 - Add admin dashboard to centralize the daily work, recetas mamagement first. Open to extent to other features (CMS updates? stock management, ...?)
 - email service
+- **[Future] Migrate catalog data from static JSON to Contentful**
 
 ## Features
 ### Admin dashboard with auth + DB-backed catalog
