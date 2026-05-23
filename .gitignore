@@ -36,3 +36,5 @@ dist-ssr
 # Test coverage
 coverage
 
+## fallow local cache
+./fallow

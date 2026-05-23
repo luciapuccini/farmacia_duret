@@ -43,18 +43,6 @@ type Order = {
 const orders = dashboardData.orders as Order[];
 const selectedOrder = orders[0];
 
-const statusLabels: Record<OrderStatus, string> = {
-	created: "Creada",
-	confirmed_by_pharmacy: "Confirmada",
-	rejected_by_pharmacy: "Rechazada",
-	in_progress: "En preparación",
-	ready_to_pick_up: "Lista",
-	delivery: "En entrega",
-	pickup_by_patient: "Retiro por paciente",
-	payment: "Pago pendiente",
-	closed: "Cerrada",
-};
-
 const nextActions: Record<OrderStatus, string> = {
 	created: "Confirmar",
 	confirmed_by_pharmacy: "Preparar",
@@ -66,17 +54,6 @@ const nextActions: Record<OrderStatus, string> = {
 	payment: "Cobrar",
 	closed: "Ver detalle",
 };
-
-const stateFlow: OrderStatus[] = [
-	"created",
-	"confirmed_by_pharmacy",
-	"in_progress",
-	"ready_to_pick_up",
-	"delivery",
-	"pickup_by_patient",
-	"payment",
-	"closed",
-];
 
 function countByStatus(status: OrderStatus) {
 	return orders.filter((order) => order.status === status).length;
