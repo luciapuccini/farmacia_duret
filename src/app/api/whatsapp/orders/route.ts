@@ -42,6 +42,15 @@ function getConfig(): WhatsAppConfig {
 		);
 	}
 
+	console.log("[whatsapp:orders] config", {
+		apiVersion: config.apiVersion,
+		phoneNumberId: config.phoneNumberId,
+		recipientPhoneNumber: config.recipientPhoneNumber,
+		templateName: config.templateName,
+		templateLanguage: config.templateLanguage,
+		accessTokenLength: config.accessToken.length,
+	});
+
 	return config;
 }
 
@@ -121,6 +130,11 @@ async function sendOrderTemplate(
 		},
 	};
 
+	console.log("[whatsapp:orders] sending template", {
+		template: config.templateName,
+		to: payload.to,
+	});
+
 	const response = await fetch(
 		`https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
 		{
@@ -135,6 +149,10 @@ async function sendOrderTemplate(
 	const responsePayload = await readGraphPayload(response);
 
 	if (!response.ok) {
+		console.error("[whatsapp:orders] graph response", {
+			status: response.status,
+			body: responsePayload,
+		});
 		throw new WhatsAppOrderError(
 			`WhatsApp template send failed: ${graphErrorMessage(responsePayload)}`,
 			502,
