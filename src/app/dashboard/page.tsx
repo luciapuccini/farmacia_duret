@@ -162,7 +162,7 @@ export default function DashboardPage() {
 			<section className={styles.workspace}>
 				<header className={styles.header}>
 					<div>
-						<p className={styles.eyebrow}>Prototipo sin auth</p>
+
 						<h1>Órdenes de farmacia</h1>
 						<p>Administrá recetas, preparación y estados de entrega.</p>
 					</div>
@@ -179,8 +179,7 @@ export default function DashboardPage() {
 							</span>
 							<div>
 								<p>{item.label}</p>
-								<strong>{item.value}</strong>
-								<small>{item.status}</small>
+
 							</div>
 						</article>
 					))}
@@ -191,7 +190,7 @@ export default function DashboardPage() {
 						<div className={styles.panelHeader}>
 							<div>
 								<h2>Órdenes recientes</h2>
-								<p>Mostrando {orders.length} órdenes de ejemplo.</p>
+								<p>Mostrando {orders.length} órdenes.</p>
 							</div>
 							<div className={styles.tableTools}>
 								<input
@@ -294,36 +293,7 @@ export default function DashboardPage() {
 					</aside>
 				</div>
 
-				<section className={styles.flowPanel} aria-label="Flujo de estados">
-					<div className={styles.panelHeader}>
-						<div>
-							<h2>Flujo de estados y transiciones permitidas</h2>
-							<p>Vista general del ciclo completo de la orden.</p>
-						</div>
-					</div>
 
-					<div className={styles.flow}>
-						{stateFlow.map((status) => (
-							<div className={styles.flowStep} data-status={status} key={status}>
-								<strong>{status}</strong>
-								<span>{statusLabels[status]}</span>
-							</div>
-						))}
-					</div>
-
-					<div className={styles.allowed}>
-						<span>created → confirmed_by_pharmacy</span>
-						<span>created → rejected_by_pharmacy</span>
-						<span>confirmed_by_pharmacy → in_progress</span>
-						<span>in_progress → ready_to_pick_up</span>
-						<span>ready_to_pick_up → delivery</span>
-						<span>ready_to_pick_up → pickup_by_patient</span>
-						<span>delivery → payment</span>
-						<span>pickup_by_patient → payment</span>
-						<span>payment → closed</span>
-						<span>rejected_by_pharmacy → closed</span>
-					</div>
-				</section>
 			</section>
 		</div>
 	);

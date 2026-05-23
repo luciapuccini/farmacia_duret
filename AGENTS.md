@@ -100,4 +100,32 @@ Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `
 
 ### Domain docs
 
-Single-context layout — `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+`docs/` at the repo root. See `docs/agents/domain.md`.
+
+
+### Future Ideal state 
+#### Mental Model
+- The public app is a storefront.
+- The dashboard is the back office.
+- The database/API is the shared order book.
+They do not need to call each other directly. They both work with the same order system.
+### Likely Future Architecture
+1. farmaciaduret.online
+  Public app
+  - catalog
+  - checkout
+  - order form
+  - customer-facing flow
+2. dashboard.farmaciaduret.online
+  Dashboard app
+  - staff auth
+  - order queue
+  - fulfillment
+  - transitions
+  - audit
+3. Shared backend/data
+  - Postgres
+  - R2
+  - payment provider
+  - Contentful
+  - WhatsApp integration
