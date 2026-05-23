@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { countProductsByCategory } from "@/utils/countProducts";
-import styles from "./CatalogSection.module.scss";
+import styles from "./catalog-section.module.scss";
 
 type ThumbVariant = "green" | "blue" | "accent" | "default";
 

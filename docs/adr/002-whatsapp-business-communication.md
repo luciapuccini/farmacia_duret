@@ -1,4 +1,4 @@
-# ADR 004 — WhatsApp Business communication
+# ADR 002 — WhatsApp Business communication
 
 **Date:** 2026-05-16
 **Status:** Accepted

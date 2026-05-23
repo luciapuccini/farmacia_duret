@@ -1,5 +1,4 @@
 import Image from "next/image";
-import styles from "./HeroVisual.module.scss";
 
 const AVATARS = [
 	{ bg: "var(--bg-blue)",  fg: "var(--blue-600)",  letter: "M" },
@@ -9,7 +8,7 @@ const AVATARS = [
 
 export default function HeroVisual() {
 	return (
-		<div className={styles.visual}>
+		<div style={{ position: "relative", aspectRatio: "1.05 / 1" }}>
 
 			{/* ── Photo ─────────────────────────────────────────── */}
 			<div

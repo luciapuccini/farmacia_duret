@@ -1,35 +1,7 @@
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 const STORAGE_KEY = 'orders_submissions'
 const MAX_PER_DAY = 6
-
-async function captureOrderRequest(page: Page, response: Record<string, unknown>) {
-  let submittedBody: string | undefined
-
-  await page.route('**/api/whatsapp/orders', async (route) => {
-    submittedBody = route.request().postData() ?? undefined
-    await route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify(response),
-    })
-  })
-
-  return () => submittedBody
-}
-
-async function countOrderRequests(page: Page) {
-  let requestCount = 0
-
-  await page.route('**/api/whatsapp/orders', async (route) => {
-    requestCount += 1
-    await route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify({ ok: true }),
-    })
-  })
-
-  return () => requestCount
-}
 
 test.describe('Orders form', () => {
   test('shows the form on load', async ({ page }) => {
@@ -44,7 +16,14 @@ test.describe('Orders form', () => {
   })
 
   test('sends the order through the WhatsApp API after a valid submission', async ({ page }) => {
-    const submittedBody = await captureOrderRequest(page, { ok: true, messageId: 'wamid.test', hasImage: false })
+    let submittedBody: string | undefined
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      submittedBody = route.request().postData() ?? undefined
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, messageId: 'wamid.test', hasImage: false }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByLabel('Nombre completo').fill('Test User')
@@ -53,13 +32,20 @@ test.describe('Orders form', () => {
     await page.getByLabel('Comentarios para el farmacéutico').fill('Ibuprofeno 400mg')
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
 
-    expect(submittedBody()).toContain('Test User')
-    expect(submittedBody()).toContain('Ibuprofeno 400mg')
+    expect(submittedBody).toContain('Test User')
+    expect(submittedBody).toContain('Ibuprofeno 400mg')
     await expect(page.getByText('Encargo enviado por WhatsApp')).toBeVisible()
   })
 
   test('submits the selected country dial code and image', async ({ page }) => {
-    const submittedBody = await captureOrderRequest(page, { ok: true, messageId: 'wamid.test', hasImage: true })
+    let submittedBody: string | undefined
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      submittedBody = route.request().postData() ?? undefined
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, messageId: 'wamid.test', hasImage: true }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByLabel('Código de país').selectOption('+598')
@@ -73,18 +59,25 @@ test.describe('Orders form', () => {
     })
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
 
-    expect(submittedBody()).toContain('+598')
-    expect(submittedBody()).toContain('receta.png')
+    expect(submittedBody).toContain('+598')
+    expect(submittedBody).toContain('receta.png')
     await expect(page.getByText('Encargo enviado por WhatsApp')).toBeVisible()
   })
 
   test('does not submit while privacy consent is unchecked', async ({ page }) => {
-    const requestCount = await countOrderRequests(page)
+    let requestCount = 0
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      requestCount += 1
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByRole('checkbox').uncheck()
     await expect(page.getByRole('button', { name: 'Enviar por WhatsApp' })).toBeDisabled()
-    expect(requestCount()).toBe(0)
+    expect(requestCount).toBe(0)
   })
 
   test('shows rate-limit screen when daily limit is reached', async ({ page }) => {
@@ -100,12 +93,19 @@ test.describe('Orders form', () => {
   })
 
   test('browser validates required fields before sending to WhatsApp', async ({ page }) => {
-    const requestCount = await countOrderRequests(page)
+    let requestCount = 0
+    await page.route('**/api/whatsapp/orders', async (route) => {
+      requestCount += 1
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      })
+    })
     await page.goto('/orders')
 
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click()
 
     await expect(page.getByText('Encargo enviado por WhatsApp')).not.toBeVisible()
-    expect(requestCount()).toBe(0)
+    expect(requestCount).toBe(0)
   })
 })

@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import categories from "@/data/categories.json";
 import productsData from "@/data/products.json";
 import { nameToSlug } from "@/utils/nameToSlug";
-import styles from "./ProductCatalog.module.scss";
+import styles from "./catalog.module.scss";
 
 type Product = {
 	id: string;

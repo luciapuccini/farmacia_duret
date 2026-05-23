@@ -18,34 +18,33 @@ Pages live in the `app/` directory using Next.js file-system routing:
 Each page has its `.module.scss` file alongside it in the same directory.
 
 ## Component Structure
-Every component follows the same named-folder structure:
 
-- Create a folder named after the component.
-- Inside that folder, create `<component_name>.tsx` for the React component.
-- Inside that folder, create `<component_name>.module.scss` for the component styles.
-- Import the CSS module from the component's own folder.
-
-This rule applies to reusable components, layout components, and page-local nested components under a route's `components/` folder.
+Reusable components live in `src/components/`. Layout components in `src/layout/`.
 
 For parent components with sub-components:
 
 - A `components` folder immediately within the parent component's directory contains all sub-components.
-- Each sub-component follows the same named-folder structure.
+- Each sub-component follows the same folder structure:
+  - `index.tsx`: The React component.
+  - `.module.scss`: The CSS module for styling.
 
 Example:
 
 ```
 src/layout/navbar/
-  navbar.tsx
+  index.tsx
   navbar.module.scss
   components/
     drawer/
-      drawer.tsx
+      index.tsx
       drawer.module.scss
 ```
 
-Next.js route files are the exception to this naming rule: pages, layouts, route handlers, metadata files, and special files keep their framework-required names such as `page.tsx`, `layout.tsx`, `route.ts`, `not-found.tsx`, `robots.ts`, and `sitemap.ts`. Route-level `.module.scss` files may stay alongside the route file.
+## Client vs Server Components
 
+- Components using hooks (`useState`, `useEffect`, `usePathname`, `useSearchParams`) must have `'use client'` at the top.
+- Pages that are purely presentational can be Server Components (the default).
+- The Navbar, Drawer, Breadcrumb, PageHeader, and ProductCatalog are client components.
 
 ## Helper Hooks and Utilities
 
@@ -100,32 +99,4 @@ Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `
 
 ### Domain docs
 
-`docs/` at the repo root. See `docs/agents/domain.md`.
-
-
-### Future Ideal state 
-#### Mental Model
-- The public app is a storefront.
-- The dashboard is the back office.
-- The database/API is the shared order book.
-They do not need to call each other directly. They both work with the same order system.
-### Likely Future Architecture
-1. farmaciaduret.online
-  Public app
-  - catalog
-  - checkout
-  - order form
-  - customer-facing flow
-2. dashboard.farmaciaduret.online
-  Dashboard app
-  - staff auth
-  - order queue
-  - fulfillment
-  - transitions
-  - audit
-3. Shared backend/data
-  - Postgres
-  - R2
-  - payment provider
-  - Contentful
-  - WhatsApp integration
+Single-context layout — `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
