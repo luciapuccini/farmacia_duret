@@ -1,16 +1,8 @@
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = new Set([
-	"image/jpeg",
-	"image/png",
-	"image/webp",
-]);
-
 type WhatsAppConfig = {
 	accessToken: string;
 	apiVersion: string;
 	phoneNumberId: string;
 	recipientPhoneNumber: string;
-	imageTemplateName: string;
 	templateLanguage: string;
 	templateName: string;
 };
@@ -35,12 +27,11 @@ function getConfig(): WhatsAppConfig {
 		apiVersion: env("WHATSAPP_GRAPH_API_VERSION") || "v25.0",
 		phoneNumberId: env("WHATSAPP_PHONE_NUMBER_ID"),
 		recipientPhoneNumber: env("WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER"),
-		imageTemplateName: env("WHATSAPP_ORDER_IMAGE_TEMPLATE_NAME"),
 		templateLanguage: env("WHATSAPP_ORDER_TEMPLATE_LANGUAGE") || "es_AR",
 		templateName: env("WHATSAPP_ORDER_TEMPLATE_NAME"),
 	};
 	const missing = Object.entries(config)
-		.filter(([key, value]) => key !== "imageTemplateName" && !value)
+		.filter(([, value]) => !value)
 		.map(([key]) => key);
 
 	if (missing.length) {
@@ -72,32 +63,6 @@ function getCustomerPhone(formData: FormData): string {
 	return normalizePhoneNumber(`${countryDial}${phone}`);
 }
 
-function getImage(formData: FormData): File | null {
-	const image = formData.get("image");
-
-	if (!(image instanceof File) || image.size === 0) {
-		return null;
-	}
-
-	if (!ALLOWED_IMAGE_TYPES.has(image.type)) {
-		throw new WhatsAppOrderError(
-			`Unsupported image type: ${image.type || "unknown"}`,
-			400,
-			"La imagen debe ser JPG, PNG o WebP.",
-		);
-	}
-
-	if (image.size > MAX_IMAGE_SIZE_BYTES) {
-		throw new WhatsAppOrderError(
-			`Image is too large: ${image.size} bytes`,
-			400,
-			"La imagen debe pesar hasta 5 MB.",
-		);
-	}
-
-	return image;
-}
-
 async function readGraphPayload(response: Response): Promise<unknown> {
 	try {
 		return await response.json();
@@ -117,85 +82,30 @@ function graphErrorMessage(payload: unknown): string {
 		: "Unknown WhatsApp API error";
 }
 
-async function uploadImageToWhatsApp(
-	config: WhatsAppConfig,
-	image: File,
-): Promise<string> {
-	const body = new FormData();
-	body.set("messaging_product", "whatsapp");
-	body.set("file", image, image.name || "order-image");
-
-	const response = await fetch(
-		`https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/media`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${config.accessToken}`,
-			},
-			body,
-		},
-	);
-	const payload = await readGraphPayload(response);
-
-	if (!response.ok) {
-		throw new WhatsAppOrderError(
-			`WhatsApp media upload failed: ${graphErrorMessage(payload)}`,
-			502,
-			"No pudimos adjuntar la imagen en WhatsApp.",
-		);
-	}
-
-	const mediaId = (payload as { id?: unknown } | null)?.id;
-	if (typeof mediaId !== "string") {
-		throw new WhatsAppOrderError(
-			"WhatsApp media upload did not return a media id",
-			502,
-			"No pudimos adjuntar la imagen en WhatsApp.",
-		);
-	}
-
-	return mediaId;
-}
-
 function buildTemplateComponents(
 	formData: FormData,
-	mediaId: string | null,
 ): Array<Record<string, unknown>> {
 	const name = getFormString(formData, "name");
 	const phone = getCustomerPhone(formData);
 	const email = getFormString(formData, "email") || "-";
 	const notes = getFormString(formData, "notes") || "-";
-	const components: Array<Record<string, unknown>> = [];
 
-	if (mediaId) {
-		components.push({
-			type: "header",
+	return [
+		{
+			type: "body",
 			parameters: [
-				{
-					type: "image",
-					image: { id: mediaId },
-				},
+				{ type: "text", text: name },
+				{ type: "text", text: phone },
+				{ type: "text", text: email },
+				{ type: "text", text: notes },
 			],
-		});
-	}
-
-	components.push({
-		type: "body",
-		parameters: [
-			{ type: "text", text: name },
-			{ type: "text", text: phone },
-			{ type: "text", text: email },
-			{ type: "text", text: notes },
-		],
-	});
-
-	return components;
+		},
+	];
 }
 
 async function sendOrderTemplate(
 	config: WhatsAppConfig,
 	formData: FormData,
-	mediaId: string | null,
 ): Promise<string | null> {
 	const payload = {
 		messaging_product: "whatsapp",
@@ -203,13 +113,11 @@ async function sendOrderTemplate(
 		to: normalizePhoneNumber(config.recipientPhoneNumber),
 		type: "template",
 		template: {
-			name: mediaId
-				? config.imageTemplateName || config.templateName
-				: config.templateName,
+			name: config.templateName,
 			language: {
 				code: config.templateLanguage,
 			},
-			components: buildTemplateComponents(formData, mediaId),
+			components: buildTemplateComponents(formData),
 		},
 	};
 
@@ -269,11 +177,9 @@ export async function POST(request: Request) {
 
 	try {
 		const config = getConfig();
-		const image = getImage(formData);
-		const mediaId = image ? await uploadImageToWhatsApp(config, image) : null;
-		const messageId = await sendOrderTemplate(config, formData, mediaId);
+		const messageId = await sendOrderTemplate(config, formData);
 
-		return Response.json({ ok: true, messageId, hasImage: Boolean(mediaId) });
+		return Response.json({ ok: true, messageId });
 	} catch (error) {
 		if (error instanceof WhatsAppOrderError) {
 			console.warn("[whatsapp:orders] send failed", error.message);
