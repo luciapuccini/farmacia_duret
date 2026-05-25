@@ -112,20 +112,6 @@
   }
 }
 
-.cardBadge {
-  display: inline-block;
-  align-self: flex-start;
-  font-size: 0.7rem;
-  font-weight: var(--font-weight-strong);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  background: var(--green-100);
-  color: var(--green-700);
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-pill);
-  margin-bottom: 0.25rem;
-}
-
 .cardBrand {
   font-size: 0.8125rem;
   font-weight: var(--font-weight-strong);

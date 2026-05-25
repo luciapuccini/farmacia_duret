@@ -171,8 +171,8 @@ export default function ReservasPage() {
 							Podés enviar hasta {MAX_PER_DAY} encargos por día. Volvé mañana o
 							comunicate con nosotros directamente por teléfono.
 						</p>
-						<a href="tel:+541176231044" className={styles.limitPhone}>
-							+54 11 7623-1044
+						<a href="tel:+541178942852" className={styles.limitPhone}>
+							+54 11 7894 2852
 						</a>
 					</div>
 				</section>

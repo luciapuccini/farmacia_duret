@@ -3,6 +3,8 @@ import CatalogSection from "@/components/CatalogSection/CatalogSection";
 import HeroVisual from "@/components/HeroVisual/HeroVisual";
 import styles from "./home.module.scss";
 
+const phone = "7894 2852"
+
 export default function HomePage() {
 	return (
 		<div className={styles.page}>
@@ -144,10 +146,10 @@ export default function HomePage() {
 					</div>
 
 					<div className={styles.infoStat}>
-						<a href="tel:+541176231044" className={styles.infoStatN}>
-							7623-1044
+						<a href={`tel:+54911${phone}`} className={styles.infoStatN}>
+							{phone}
 						</a>
-						<div className={styles.infoStatL}>+54 11 · Llamanos</div>
+						<div className={styles.infoStatL}>Llamanos</div>
 					</div>
 				</div>
 			</div>

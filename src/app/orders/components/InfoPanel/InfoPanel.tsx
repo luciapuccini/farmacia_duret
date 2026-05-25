@@ -72,7 +72,7 @@ export default function InfoPanel() {
 					</span>
 					<span>
 						<b>¿Preferís llamar?</b>
-						<a href="tel:+541176231044" className={styles.phone}>+54 11 7623-1044</a>
+						<a href="tel:+541178942852" className={styles.phone}>+54 11 7894 2852</a>
 					</span>
 				</div>
 

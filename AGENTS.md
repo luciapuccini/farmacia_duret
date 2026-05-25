@@ -1,9 +1,17 @@
-## Framework
+# AI Agent context for this project
 
-This is a **Next.js App Router** project (React 19 + TypeScript). Hosted on Cloudflare Pages via `@opennextjs/cloudflare`.
+## Project overview
 
-## Page Structure
+- This is a **Next.js App Router** project (React 19 + TypeScript). 
+- We style with plain sass modules. Design tokens and reusable mixins live in globals.scss
+- Hosted on Cloudflare Pages via `@opennextjs/cloudflare`.
+- Catalog data (products and categories) will come from a call to an API. [TBD] Rest with non relational data potentially -> R2
+- public customer facing flows only. No auth needed here
 
+
+## Structure to follow - where does each thing live?
+
+### Pages -- Routes
 Pages live in the `app/` directory using Next.js file-system routing:
 
 - `app/page.tsx` — Home page
@@ -17,7 +25,7 @@ Pages live in the `app/` directory using Next.js file-system routing:
 
 Each page has its `.module.scss` file alongside it in the same directory.
 
-## Component Structure
+### Component Structure
 Every component follows the same named-folder structure:
 
 - Create a folder named after the component.
@@ -47,8 +55,8 @@ src/layout/navbar/
 Next.js route files are the exception to this naming rule: pages, layouts, route handlers, metadata files, and special files keep their framework-required names such as `page.tsx`, `layout.tsx`, `route.ts`, `not-found.tsx`, `robots.ts`, and `sitemap.ts`. Route-level `.module.scss` files may stay alongside the route file.
 
 
-## Helper Hooks and Utilities
-
+### Helper Hooks and Utilities
+ <!-- legacy -->
 Custom React hooks and utility functions are in `src/helpers/`:
 
 - `hooks.ts` — Custom hooks like `useMediaQuery` (has `'use client'`)
@@ -56,7 +64,7 @@ Custom React hooks and utility functions are in `src/helpers/`:
 
 Import using absolute paths: `import { useMediaQuery } from '@/helpers/hooks'`
 
-## Sass Breakpoints
+### Sass Breakpoints
 
 - Use the global Sass utilities at `src/globals.scss` for responsive helpers and palette.
 - Import in SCSS files with: `@use "@/globals" as g;`
@@ -75,9 +83,27 @@ Example:
   }
 }
 ```
+### Typescript helpers
+Typescript types and utility functions are in `src/utils/`:
+[TBD] I'd like `src/types` in the future
+[TBD] need the schema definition -- will live close to this
+[TBD] add a schema validation layer to validate input data -- zod 
+
+### How does this project get data?
+Client - Server communication is under `src/services/`;
+Group in a folder the service connection and the related requests. 
+
+Example:
+```
+src/services/contentful/
+  client.ts --> connection setup and config to externa service
+  categories.ts --> group of requests related to a domain or resource
+```
+Exceptions:
+only exeption is the `src/app/api` routes, which is a temporary POC for a side-effect (pushing external messaging) 
+
 
 ## SEO Guidelines
-
 Structured data (JSON-LD) should be implemented for improved search engine visibility:
 
 - **Breadcrumbs**: Always include BreadcrumbList structured data when implementing breadcrumb navigation. See `src/layout/breadcrumb/index.tsx` for reference implementation.
@@ -87,6 +113,10 @@ Structured data (JSON-LD) should be implemented for improved search engine visib
 - **LocalBusiness**: Include LocalBusiness schema with pharmacy location data
 
 When creating new pages that would benefit from structured data, proactively suggest implementing JSON-LD schemas.
+
+## Content guidelines
+- This is a humble, friendly and people-first thustworthy pharmacy. Our wording should always reflect that
+- Content is in Spanish, ARG 
 
 ## Agent skills
 
@@ -102,30 +132,3 @@ Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `
 
 `docs/` at the repo root. See `docs/agents/domain.md`.
 
-
-### Future Ideal state 
-#### Mental Model
-- The public app is a storefront.
-- The dashboard is the back office.
-- The database/API is the shared order book.
-They do not need to call each other directly. They both work with the same order system.
-### Likely Future Architecture
-1. farmaciaduret.online
-  Public app
-  - catalog
-  - checkout
-  - order form
-  - customer-facing flow
-2. dashboard.farmaciaduret.online
-  Dashboard app
-  - staff auth
-  - order queue
-  - fulfillment
-  - transitions
-  - audit
-3. Shared backend/data
-  - Postgres
-  - R2
-  - payment provider
-  - Contentful
-  - WhatsApp integration
