@@ -2,9 +2,9 @@ import Image from "next/image";
 import styles from "./HeroVisual.module.scss";
 
 const AVATARS = [
-	{ bg: "var(--bg-blue)",  fg: "var(--blue-600)",  letter: "M" },
-	{ bg: "var(--bg-mint)",  fg: "var(--green-700)", letter: "A" },
-	{ bg: "var(--blue-100)", fg: "var(--blue-700)",  letter: "C" },
+	{ bg: "var(--bg-blue)", fg: "var(--blue-600)", letter: "M" },
+	{ bg: "var(--bg-mint)", fg: "var(--green-700)", letter: "A" },
+	{ bg: "var(--blue-100)", fg: "var(--blue-700)", letter: "C" },
 ];
 
 export default function HeroVisual() {
@@ -91,7 +91,7 @@ export default function HeroVisual() {
 						Atención personalizada
 					</p>
 					<p style={{ fontSize: 12, color: "var(--ink-500)", margin: "2px 0 0" }}>
-						Farmacéuticos certificados
+						Farmacéuticos matriculados
 					</p>
 				</div>
 			</div>
