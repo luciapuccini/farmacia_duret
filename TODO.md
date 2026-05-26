@@ -38,16 +38,16 @@ Execution order for implementation passes. Run validation after each pass unless
 - Validate with `npm run build`
 
 ### Pass 3 - Redirect and legacy route cleanup
-- [ ] Update internal links that still rely on removed Spanish routes
-- [ ] Update `src/layout/navbar/components/drawer/drawer.tsx`
-- [ ] Review tests that encode old Spanish route assumptions
-- [ ] Review `src/tests/unit/routes.test.ts`
-- [ ] Remove legacy redirects from `next.config.ts`
-- [ ] Remove `/contacto -> /contact` from `next.config.ts`
-- [ ] Remove `/ofertas -> /offers` from `next.config.ts`
-- [ ] Remove `/reservas -> /orders` from `next.config.ts`
-- [ ] Remove `/medicamentos/venta-bajo-receta -> /orders` from `next.config.ts`
-- [ ] Review copy/docs for references to old route names and update as needed
+- [x] Update internal links that still rely on removed Spanish routes
+- [x] Update `src/layout/navbar/components/drawer/drawer.tsx`
+- [x] Review tests that encode old Spanish route assumptions
+- [x] Review `src/tests/unit/routes.test.ts`
+- [x] Remove legacy redirects from `next.config.ts`
+- [x] Remove `/contacto -> /contact` from `next.config.ts`
+- [x] Remove `/ofertas -> /offers` from `next.config.ts`
+- [x] Remove `/reservas -> /orders` from `next.config.ts`
+- [x] Remove `/medicamentos/venta-bajo-receta -> /orders` from `next.config.ts`
+- [x] Review copy/docs for references to old route names and update as needed
 - Validate with `npm run fallow:audit`
 - Validate with `npm run lint`
 - Validate with `npm test`

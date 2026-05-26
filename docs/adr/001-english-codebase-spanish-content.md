@@ -5,7 +5,7 @@
 
 ## Context
 
-The site serves a Spanish-speaking community. The codebase accumulated a mix of Spanish and English identifiers because route folder names were kept in Spanish so URLs would read naturally to users (e.g. `/contacto`, `/reservas`). This bled into TypeScript types, variable names, JSON property keys, and form field names, making the code inconsistent and harder to follow for any developer who expects English identifiers.
+The site serves a Spanish-speaking community. The codebase accumulated a mix of Spanish and English identifiers because some route folder names were originally kept in Spanish so URLs would read naturally to users. This bled into TypeScript types, variable names, JSON property keys, and form field names, making the code inconsistent and harder to follow for any developer who expects English identifiers.
 
 A full i18n setup (e.g. `next-intl`) was evaluated but rejected as over-engineered for a project that will never serve a second language.
 

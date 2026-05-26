@@ -3,7 +3,7 @@ import { categoryNameToPath } from '@/helpers/routes'
 
 describe('categoryNameToPath', () => {
   it('lowercases plain ASCII names', () => {
-    expect(categoryNameToPath('Ofertas')).toBe('/ofertas')
+    expect(categoryNameToPath('Belleza')).toBe('/belleza')
   })
 
   it('removes Spanish diacritics', () => {

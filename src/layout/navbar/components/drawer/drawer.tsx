@@ -270,7 +270,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
           ))}
           <div className={styles.drawerItem} data-depth={0}>
             <Link
-              href="/contacto"
+              href="/contact"
               className={
                 pathname === '/contact'
                   ? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
@@ -285,7 +285,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
 
         {/* Footer CTA */}
         <div className={styles.drawerFooter}>
-          <Link href="/reservas" className={styles.drawerCta} onClick={onClose}>
+          <Link href="/orders" className={styles.drawerCta} onClick={onClose}>
             Hacer un encargo
           </Link>
         </div>
