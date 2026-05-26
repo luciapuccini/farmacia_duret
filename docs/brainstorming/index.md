@@ -24,7 +24,7 @@ They do not need to call each other directly. They both work with the same order
   - Postgres
   - R2
   - payment provider
-  - Contentful
+  - CMS
   - WhatsApp integration
 
 

@@ -6,7 +6,7 @@ function stubWhatsAppEnv() {
   vi.stubEnv('WHATSAPP_GRAPH_API_VERSION', 'v25.0')
   vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123456789')
   vi.stubEnv('WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER', '+54 9 11 1111-2222')
-  vi.stubEnv('WHATSAPP_ORDER_TEMPLATE_NAME', 'order_with_image')
+  vi.stubEnv('WHATSAPP_ORDER_TEMPLATE_NAME', 'send_order')
   vi.stubEnv('WHATSAPP_ORDER_TEMPLATE_LANGUAGE', 'es_AR')
 }
 
@@ -19,6 +19,16 @@ function orderFormData() {
   formData.set('notes', 'Necesito este producto')
 
   return formData
+}
+
+function stubGraphSuccess() {
+  const fetchMock = vi.fn().mockResolvedValue(
+    Response.json({
+      messages: [{ id: 'wamid.test' }],
+    }),
+  )
+  vi.stubGlobal('fetch', fetchMock)
+  return fetchMock
 }
 
 describe('WhatsApp order route', () => {
@@ -42,27 +52,11 @@ describe('WhatsApp order route', () => {
     })
   })
 
-  it('uploads the image and sends it as the template header', async () => {
+  it('sends the order template with submitted customer data', async () => {
     stubWhatsAppEnv()
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce(
-        Response.json({
-          id: 'media-id-123',
-        }),
-      )
-      .mockResolvedValueOnce(
-        Response.json({
-          messages: [{ id: 'wamid.test' }],
-        }),
-      )
-    vi.stubGlobal('fetch', fetchMock)
+    const fetchMock = stubGraphSuccess()
 
     const formData = orderFormData()
-    formData.set(
-      'image',
-      new File(['image'], 'receta.png', { type: 'image/png' }),
-    )
 
     const response = await POST(
       new Request('https://farmaciaduret.online/api/whatsapp/orders', {
@@ -74,24 +68,22 @@ describe('WhatsApp order route', () => {
     await expect(response.json()).resolves.toEqual({
       ok: true,
       messageId: 'wamid.test',
-      hasImage: true,
     })
-    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
 
-    const [uploadUrl, uploadInit] = fetchMock.mock.calls[0] as [
+    const [messageUrl, messageInit] = fetchMock.mock.calls[0] as [
       string,
       RequestInit,
     ]
-    expect(uploadUrl).toBe(
-      'https://graph.facebook.com/v25.0/123456789/media',
+    expect(messageUrl).toBe(
+      'https://graph.facebook.com/v25.0/123456789/messages',
     )
-    expect(uploadInit.method).toBe('POST')
-    expect(uploadInit.headers).toEqual({
+    expect(messageInit.method).toBe('POST')
+    expect(messageInit.headers).toEqual({
       Authorization: 'Bearer test-access-token',
+      'Content-Type': 'application/json',
     })
-    expect(uploadInit.body).toBeInstanceOf(FormData)
 
-    const [, messageInit] = fetchMock.mock.calls[1] as [string, RequestInit]
     const messageBody = JSON.parse(String(messageInit.body)) as {
       to: string
       template: {
@@ -109,29 +101,22 @@ describe('WhatsApp order route', () => {
     }
 
     expect(messageBody.to).toBe('5491111112222')
-    expect(messageBody.template.name).toBe('order_with_image')
+    expect(messageBody.template.name).toBe('send_order')
     expect(messageBody.template.language.code).toBe('es_AR')
     expect(messageBody.template.components[0]).toEqual({
-      type: 'header',
+      type: 'body',
       parameters: [
-        {
-          type: 'image',
-          image: { id: 'media-id-123' },
-        },
+        { type: 'text', text: 'Juan Perez' },
+        { type: 'text', text: '541133334444' },
+        { type: 'text', text: 'juan@example.com' },
+        { type: 'text', text: 'Necesito este producto' },
       ],
     })
-    expect(messageBody.template.components[1]?.parameters).toEqual([
-      { type: 'text', text: 'Juan Perez' },
-      { type: 'text', text: '541133334444' },
-      { type: 'text', text: 'juan@example.com' },
-      { type: 'text', text: 'Necesito este producto' },
-    ])
   })
 
-  it('rejects unsupported image types before calling WhatsApp', async () => {
+  it('ignores an attached image file and still sends the template', async () => {
     stubWhatsAppEnv()
-    const fetchMock = vi.fn()
-    vi.stubGlobal('fetch', fetchMock)
+    const fetchMock = stubGraphSuccess()
 
     const formData = orderFormData()
     formData.set(
@@ -146,11 +131,11 @@ describe('WhatsApp order route', () => {
       }),
     )
 
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(200)
     await expect(response.json()).resolves.toEqual({
-      ok: false,
-      error: 'La imagen debe ser JPG, PNG o WebP.',
+      ok: true,
+      messageId: 'wamid.test',
     })
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

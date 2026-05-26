@@ -3,9 +3,6 @@ declare global {
     NEXTJS_ENV?: 'development' | 'production'
     NEXT_PUBLIC_SITE_URL?: string
     NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER?: string
-    CONTENTFUL_SPACE_ID?: string
-    CONTENTFUL_DELIVERY_TOKEN?: string
-    CONTENTFUL_ENVIRONMENT?: string
     WHATSAPP_WEBHOOK_VERIFY_TOKEN?: string
     WHATSAPP_ACCESS_TOKEN?: string
     WHATSAPP_GRAPH_API_VERSION?: string
@@ -14,12 +11,6 @@ declare global {
     WHATSAPP_ORDER_TEMPLATE_NAME?: string
     WHATSAPP_ORDER_TEMPLATE_LANGUAGE?: string
   }
-
-  interface CloudflareEnv extends RuntimeEnv {
-    CONTENTFUL_SPACE_ID: string
-    CONTENTFUL_DELIVERY_TOKEN: string
-  }
-
   namespace NodeJS {
     interface ProcessEnv extends RuntimeEnv {
       NODE_ENV?: 'development' | 'production' | 'test'

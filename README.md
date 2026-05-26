@@ -126,7 +126,7 @@ Three levels, two runners.
 | Level | What it tests | Command |
 | --- | --- | --- |
 | Unit | Pure logic (helpers, utils) | `npm test` |
-| Integration | Module boundaries — API and service modules | `npm test` |
+| Integration | Module boundaries — API modules | `npm test` |
 | E2E | Full browser flow against a running dev server | `npm run test:e2e` |
 
 ### Unit & integration (Vitest)

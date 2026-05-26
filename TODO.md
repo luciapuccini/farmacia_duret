@@ -21,17 +21,17 @@ Execution order for implementation passes. Run validation after each pass unless
 - Validate with `npm run build`
 
 ### Pass 2 - Contentful legacy cleanup
-- [ ] Delete `src/services/contentful/client.ts`
-- [ ] Delete `src/services/contentful/categories.ts`
-- [ ] Delete `src/tests/integration/contentful.test.ts`
-- [ ] Delete `src/tests/fixtures/contentful-categories.json`
-- [ ] Delete `src/config/index.ts` if no longer needed by any runtime code after Contentful removal
-- [ ] Remove Contentful env vars from `src/env.d.ts` if nothing references them anymore
-- [ ] Remove `contentful` from `package.json` dependencies
-- [ ] Check docs for any remaining Contentful references and remove or rewrite them
-- [ ] Review `TODO.md` for remaining Contentful references and remove or rewrite them
-- [ ] Review `README.md` for remaining Contentful references and remove or rewrite them
-- [ ] Review ADR/TODO notes that present Contentful as active work rather than discarded legacy
+- [x] Delete `src/services/contentful/client.ts`
+- [x] Delete `src/services/contentful/categories.ts`
+- [x] Delete `src/tests/integration/contentful.test.ts`
+- [x] Delete `src/tests/fixtures/contentful-categories.json`
+- [x] Delete `src/config/index.ts` if no longer needed by any runtime code after Contentful removal
+- [x] Remove Contentful env vars from `src/env.d.ts` if nothing references them anymore
+- [x] Remove `contentful` from `package.json` dependencies
+- [x] Check docs for any remaining Contentful references and remove or rewrite them
+- [x] Review `TODO.md` for remaining Contentful references and remove or rewrite them
+- [x] Review `README.md` for remaining Contentful references and remove or rewrite them
+- [x] Review ADR/TODO notes that present Contentful as active work rather than discarded legacy
 - Validate with `npm run fallow:audit`
 - Validate with `npm run lint`
 - Validate with `npm test`

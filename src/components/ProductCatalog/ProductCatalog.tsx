@@ -67,7 +67,6 @@ export default function ProductCatalog({ category, subcategory }: Props) {
 
 	const filters = getFilters(category, subcategory);
 
-	// TODO: replace with request to contentful
 	const products = (productsData as Product[]).filter((p) => {
 		if (p.category !== category || p.subcategory !== subcategory) return false;
 		if (activeFilter) return p.filter === activeFilter;
