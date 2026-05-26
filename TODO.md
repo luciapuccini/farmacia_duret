@@ -4,19 +4,19 @@
 Execution order for implementation passes. Run validation after each pass unless noted otherwise.
 
 ### Pass 1 - Docs and config drift
-- [ ] Update `AGENTS.md`
-- [ ] In `AGENTS.md`, fix route inventory to match `src/app/`
-- [ ] In `AGENTS.md`, replace old route names (`/contacto`, `/ofertas`) with current routes (`/contact`, `/offers`)
-- [ ] In `AGENTS.md`, remove references to nonexistent files such as `src/layout/breadcrumb/index.tsx` if still present
-- [ ] Update `README.md`
-- [ ] In `README.md`, remove outdated WhatsApp image-upload flow description
-- [ ] In `README.md`, remove `WHATSAPP_ORDER_IMAGE_TEMPLATE_NAME`
-- [ ] In `README.md`, update `/orders` behavior to match `src/app/api/whatsapp/orders/route.ts`
-- [ ] In `README.md`, keep deployment/runtime notes that still match the repo
-- [ ] Update `TODO.md` future notes that still describe click-to-chat as current behavior
-- [ ] Review `src/env.d.ts`
-- [ ] In `src/env.d.ts`, remove stale env declarations that are only tied to discarded legacy work
-- [ ] In `src/env.d.ts`, confirm remaining env vars match current runtime usage
+- [x] Update `AGENTS.md`
+- [x] In `AGENTS.md`, fix route inventory to match `src/app/`
+- [x] In `AGENTS.md`, replace old route names (`/contacto`, `/ofertas`) with current routes (`/contact`, `/offers`)
+- [x] In `AGENTS.md`, remove references to nonexistent files such as `src/layout/breadcrumb/index.tsx` if still present
+- [x] Update `README.md`
+- [x] In `README.md`, remove outdated WhatsApp image-upload flow description
+- [x] In `README.md`, remove `WHATSAPP_ORDER_IMAGE_TEMPLATE_NAME`
+- [x] In `README.md`, update `/orders` behavior to match `src/app/api/whatsapp/orders/route.ts`
+- [x] In `README.md`, keep deployment/runtime notes that still match the repo
+- [x] Update `TODO.md` future notes that still describe click-to-chat as current behavior
+- [x] Review `src/env.d.ts`
+- [x] In `src/env.d.ts`, remove stale env declarations that are only tied to discarded legacy work
+- [x] In `src/env.d.ts`, confirm remaining env vars match current runtime usage
 - Validate with `npm run lint`
 - Validate with `npm run build`
 

@@ -1,6 +1,6 @@
 # Farmacia Duret
 
-Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, contact page, and an online order system with WhatsApp handoff.
+Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, contact page, and an online order system with WhatsApp order submission.
 [website](https://farmaciaduret.online/)
 
 ## Stack
@@ -70,7 +70,7 @@ The live site URL is `https://farmacia-duret.puccinilucia.workers.dev`.
 
 ## WhatsApp orders
 
-When a customer submits an order from `/orders`, the form posts to `/api/whatsapp/orders`. That route uploads the optional image to Meta and sends the configured WhatsApp template, using the uploaded media id as the template header image.
+When a customer submits an order from `/orders`, the form posts to `/api/whatsapp/orders`. That route sends the configured WhatsApp template with the submitted customer details and notes.
 
 Required order-send variables:
 
@@ -78,11 +78,10 @@ Required order-send variables:
 - `WHATSAPP_PHONE_NUMBER_ID`
 - `WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER`
 - `WHATSAPP_ORDER_TEMPLATE_NAME`
-- `WHATSAPP_ORDER_IMAGE_TEMPLATE_NAME` (optional; falls back to `WHATSAPP_ORDER_TEMPLATE_NAME`)
 - `WHATSAPP_ORDER_TEMPLATE_LANGUAGE` (defaults to `es_AR`)
 - `WHATSAPP_GRAPH_API_VERSION` (defaults to `v25.0`)
 
-The approved order template should have four body variables in this order: customer name, customer phone, customer email, and notes. If the image template is separate, it should use the same body variables plus an image header.
+The approved order template should have four body variables in this order: customer name, customer phone, customer email, and notes.
 
 ### Meta webhook setup
 
@@ -106,8 +105,8 @@ src/
     orders/             # Order form page
     [category]/         # Dynamic catalog pages
   components/           # Shared UI components
-  layout/               # Navbar, Footer, Breadcrumb, Container
-  data/                 # categories.json — catalog structure
+  layout/               # Navbar, Footer, PromoBanner, Container
+  data/                 # Local JSON catalog fixtures
   helpers/              # Shared utilities and hooks
 ```
 
@@ -127,7 +126,7 @@ Three levels, two runners.
 | Level | What it tests | Command |
 | --- | --- | --- |
 | Unit | Pure logic (helpers, utils) | `npm test` |
-| Integration | Module boundaries — Contentful service | `npm test` |
+| Integration | Module boundaries — API and service modules | `npm test` |
 | E2E | Full browser flow against a running dev server | `npm run test:e2e` |
 
 ### Unit & integration (Vitest)

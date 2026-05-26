@@ -12,16 +12,18 @@
 ## Structure to follow - where does each thing live?
 
 ### Pages -- Routes
-Pages live in the `app/` directory using Next.js file-system routing:
+Pages live in the `src/app/` directory using Next.js file-system routing:
 
-- `app/page.tsx` — Home page
-- `app/contacto/page.tsx` — Static page
-- `app/ofertas/page.tsx` — Static page
-- `app/orders/page.tsx` — Client component (`'use client'`) with WhatsApp handoff form
-- `app/[category]/page.tsx` — Dynamic category page (renders SubCategoryGrid)
-- `app/[category]/[subcategory]/page.tsx` — Dynamic subcategory page (renders ProductCatalog)
-- `app/api/whatsapp/webhook/route.ts` — Meta WhatsApp webhook verification + event receiver
-- `app/not-found.tsx` — 404 page
+- `src/app/page.tsx` — Home page
+- `src/app/contact/page.tsx` — Static contact page
+- `src/app/offers/page.tsx` — Static offers page
+- `src/app/orders/page.tsx` — Client component (`'use client'`) with order submission form that posts to `/api/whatsapp/orders`
+- `src/app/dashboard/page.tsx` — Dashboard POC kept as internal reference for now
+- `src/app/[category]/page.tsx` — Dynamic category page (renders `SubCategoryGrid`)
+- `src/app/[category]/[subcategory]/page.tsx` — Dynamic subcategory page (renders `ProductCatalog`)
+- `src/app/api/whatsapp/orders/route.ts` — Sends WhatsApp order template messages
+- `src/app/api/whatsapp/webhook/route.ts` — Meta WhatsApp webhook verification + event receiver
+- `src/app/not-found.tsx` — 404 page
 
 Each page has its `.module.scss` file alongside it in the same directory.
 
@@ -56,7 +58,6 @@ Next.js route files are the exception to this naming rule: pages, layouts, route
 
 
 ### Helper Hooks and Utilities
- <!-- legacy -->
 Custom React hooks and utility functions are in `src/helpers/`:
 
 - `hooks.ts` — Custom hooks like `useMediaQuery` (has `'use client'`)
@@ -90,23 +91,15 @@ Typescript types and utility functions are in `src/utils/`:
 [TBD] add a schema validation layer to validate input data -- zod 
 
 ### How does this project get data?
-Client - Server communication is under `src/services/`;
-Group in a folder the service connection and the related requests. 
-
-Example:
-```
-src/services/contentful/
-  client.ts --> connection setup and config to externa service
-  categories.ts --> group of requests related to a domain or resource
-```
-Exceptions:
-only exeption is the `src/app/api` routes, which is a temporary POC for a side-effect (pushing external messaging) 
+- Static catalog data currently lives under `src/data/` as local JSON fixtures.
+- Client-server communication belongs under `src/services/` when we add external integrations.
+- `src/app/api` is used for route handlers such as the current WhatsApp integration.
 
 
 ## SEO Guidelines
 Structured data (JSON-LD) should be implemented for improved search engine visibility:
 
-- **Breadcrumbs**: Always include BreadcrumbList structured data when implementing breadcrumb navigation. See `src/layout/breadcrumb/index.tsx` for reference implementation.
+- **Breadcrumbs**: Always include BreadcrumbList structured data when implementing breadcrumb navigation.
 - **Product pages**: Include Product schema when displaying products
 - **Organization**: Include Organization schema in the footer or main layout
 - **FAQ**: Include FAQPage schema for FAQ sections
@@ -131,4 +124,3 @@ Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `
 ### Domain docs
 
 `docs/` at the repo root. See `docs/agents/domain.md`.
-
