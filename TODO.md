@@ -54,19 +54,19 @@ Execution order for implementation passes. Run validation after each pass unless
 - Validate with `npm run build`
 
 ### Pass 4 - Slug helper consolidation
-- [ ] Consolidate duplicate slug logic into one shared utility
-- [ ] Current duplicate files are `src/helpers/routes.ts` and `src/utils/nameToSlug.ts`
-- [ ] Update imports to use the chosen single source
-- [ ] Review `src/layout/navbar/navbar.tsx`
-- [ ] Review `src/layout/navbar/components/drawer/drawer.tsx`
-- [ ] Review `src/components/SubCategoryGrid/SubCategoryGrid.tsx`
-- [ ] Review `src/components/ProductCatalog/ProductCatalog.tsx`
-- [ ] Review `src/app/[category]/page.tsx`
-- [ ] Review `src/app/[category]/[subcategory]/page.tsx`
-- [ ] Review `src/app/sitemap.ts`
-- [ ] Delete the now-unused duplicate helper
-- [ ] Update related tests
-- [ ] Update `src/tests/unit/routes.test.ts`
+- [x] Consolidate duplicate slug logic into one shared utility
+- [x] Current duplicate files are `src/helpers/routes.ts` and `src/utils/nameToSlug.ts`
+- [x] Update imports to use the chosen single source
+- [x] Review `src/layout/navbar/navbar.tsx`
+- [x] Review `src/layout/navbar/components/drawer/drawer.tsx`
+- [x] Review `src/components/SubCategoryGrid/SubCategoryGrid.tsx`
+- [x] Review `src/components/ProductCatalog/ProductCatalog.tsx`
+- [x] Review `src/app/[category]/page.tsx`
+- [x] Review `src/app/[category]/[subcategory]/page.tsx`
+- [x] Review `src/app/sitemap.ts`
+- [x] Delete the now-unused duplicate helper
+- [x] Update related tests
+- [x] Update `src/tests/unit/routes.test.ts`
 - Validate with `npm run fallow:audit`
 - Validate with `npm run lint`
 - Validate with `npm test`

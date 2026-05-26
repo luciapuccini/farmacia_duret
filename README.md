@@ -107,7 +107,7 @@ src/
   components/           # Shared UI components
   layout/               # Navbar, Footer, PromoBanner, Container
   data/                 # Local JSON catalog fixtures
-  helpers/              # Shared utilities and hooks
+  utils/                # Shared utilities such as slug helpers and JSON-LD safety
 ```
 
 

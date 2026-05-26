@@ -8,6 +8,10 @@
   background: oklch(0.22 0.03 235 / 0.5);
   z-index: 999;
   animation: fadeIn 0.2s ease-out;
+
+  @include g.up(md) {
+    display: none;
+  }
 }
 
 @keyframes fadeIn {
@@ -33,6 +37,10 @@
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   will-change: transform;
+
+  @include g.up(md) {
+    display: none;
+  }
 
   &[data-open='true'] {
     transform: translateX(0);

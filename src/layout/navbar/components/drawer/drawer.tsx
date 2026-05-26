@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import styles from './drawer.module.scss'
 import categories from '@/data/categories.json'
-import { categoryNameToPath } from '@/helpers/routes'
+import { nameToSlug } from '@/utils/nameToSlug'
 
 type Category = {
   name: string
@@ -169,7 +169,7 @@ function DrawerNavItem({
 }: DrawerNavItemProps) {
   const [isOpen, setIsOpen] = useState(false)
   const hasSubcategories = category.subcategories && category.subcategories.length > 0
-  const categoryPath = categoryNameToPath(category.name)
+  const categoryPath = `/${nameToSlug(category.name)}`
   const isActiveLink = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
   const toggleOpen = () => setIsOpen((open) => !open)
   const childParentPath = depth === 0 ? categoryPath : `${parentPath}${categoryPath}`

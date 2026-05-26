@@ -57,13 +57,11 @@ src/layout/navbar/
 Next.js route files are the exception to this naming rule: pages, layouts, route handlers, metadata files, and special files keep their framework-required names such as `page.tsx`, `layout.tsx`, `route.ts`, `not-found.tsx`, `robots.ts`, and `sitemap.ts`. Route-level `.module.scss` files may stay alongside the route file.
 
 
-### Helper Hooks and Utilities
-Custom React hooks and utility functions are in `src/helpers/`:
+### Utilities
+Shared utility functions are in `src/utils/`.
 
-- `hooks.ts` — Custom hooks like `useMediaQuery` (has `'use client'`)
-- `routes.ts` — `categoryNameToPath()` slug helper
-
-Import using absolute paths: `import { useMediaQuery } from '@/helpers/hooks'`
+- `nameToSlug.ts` — slug helper for category and subcategory URLs
+- `safeJsonLd.ts` — JSON-LD escaping helper
 
 ### Sass Breakpoints
 
@@ -85,7 +83,7 @@ Example:
 }
 ```
 ### Typescript helpers
-Typescript types and utility functions are in `src/utils/`:
+Typescript utility functions are in `src/utils/`:
 [TBD] I'd like `src/types` in the future
 [TBD] need the schema definition -- will live close to this
 [TBD] add a schema validation layer to validate input data -- zod 

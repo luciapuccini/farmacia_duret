@@ -5,8 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import categories from "@/data/categories.json";
-import { useMediaQuery } from "@/helpers/hooks";
-import { categoryNameToPath } from "@/helpers/routes";
+import { nameToSlug } from "@/utils/nameToSlug";
 
 import Drawer from "./components/drawer/drawer";
 import styles from "./navbar.module.scss";
@@ -55,7 +54,7 @@ function SubnavItem({
 	const [isOpen, setIsOpen] = useState(false);
 	const hasSubcategories =
 		category.subcategories && category.subcategories.length > 0;
-	const categoryPath = categoryNameToPath(category.name);
+	const categoryPath = `/${nameToSlug(category.name)}`;
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
 	const href = subnavHref(category, categoryPath, depth, parentPath);
@@ -91,7 +90,6 @@ function SubnavItem({
 
 export default function Navbar() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const isMobile = useMediaQuery("(max-width: 767px)");
 	const pathname = usePathname();
 
 	const router = useRouter();
@@ -229,9 +227,7 @@ export default function Navbar() {
 				</nav>
 			</header>
 
-			{isMobile && (
-				<Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-			)}
+			<Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 		</>
 	);
 }
