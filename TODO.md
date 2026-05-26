@@ -86,11 +86,11 @@ Execution order for implementation passes. Run validation after each pass unless
 - Validate with `npm run build`
 
 ### Pass 6 - Optional tooling/config cleanup
-- [ ] Review whether these are still intentionally used
-- [ ] Review `package.json` script `deploy:dev`
-- [ ] Review `package.json` script `cf-typegen`
-- [ ] Review `wrangler.jsonc` entries that assume missing local setup
-- [ ] If unused, remove stale scripts/docs and keep only supported deploy flows
+- [x] Review whether these are still intentionally used
+- [x] Review `package.json` script `deploy:dev`
+- [x] Review `package.json` script `cf-typegen`
+- [x] Review `wrangler.jsonc` entries that assume missing local setup
+- [x] If unused, remove stale scripts/docs and keep only supported deploy flows
 - Validate with `npm run lint`
 - Validate with `npm run build`
 
