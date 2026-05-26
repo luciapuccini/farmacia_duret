@@ -73,15 +73,15 @@ Execution order for implementation passes. Run validation after each pass unless
 - Validate with `npm run build`
 
 ### Pass 5 - Unused asset cleanup
-- [ ] Reconfirm there are no runtime references to these category assets
-- [ ] Reconfirm `public/images/categories/cat-sun.svg` is unused
-- [ ] Reconfirm `public/images/categories/cat-protein.svg` is unused
-- [ ] Reconfirm `public/images/categories/cat-receta.svg` is unused
-- [ ] Reconfirm `public/images/categories/cat-diapers.svg` is unused
-- [ ] Reconfirm `public/images/categories/cat-firstaid.svg` is unused
-- [ ] Reconfirm `public/images/categories/cat-chronic.svg` is unused
-- [ ] Reconfirm `public/images/categories/cat-intimate.svg` is unused
-- [ ] Delete the confirmed-unused assets
+- [x] Reconfirm there are no runtime references to these category assets
+- [x] Reconfirm `public/images/categories/cat-sun.svg` is unused
+- [x] Reconfirm `public/images/categories/cat-protein.svg` is unused
+- [x] Reconfirm `public/images/categories/cat-receta.svg` is unused
+- [x] Reconfirm `public/images/categories/cat-diapers.svg` is unused
+- [x] Reconfirm `public/images/categories/cat-firstaid.svg` is unused
+- [x] Reconfirm `public/images/categories/cat-chronic.svg` is unused
+- [x] Reconfirm `public/images/categories/cat-intimate.svg` is unused
+- [x] Delete the confirmed-unused assets
 - Validate with `npm run fallow:audit`
 - Validate with `npm run build`
 
