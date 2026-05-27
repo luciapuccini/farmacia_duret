@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   fallow:
@@ -24,7 +25,9 @@ jobs:
         uses: fallow-rs/fallow@v2
         with:
           command: audit
+          comment: true
           review-comments: true
+          review-guidance: true
 
   verify:
     runs-on: ubuntu-latest
