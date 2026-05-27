@@ -6,7 +6,30 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
+  fallow:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fallow audit
+        uses: fallow-rs/fallow@v2
+        with:
+          command: audit
+          fail-on-issues: false
+          comment: true
+          review-comments: true
+          review-guidance: true
+
   verify:
     runs-on: ubuntu-latest
 
@@ -19,14 +42,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .node-version
           cache: npm
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Fallow PR audit
-        run: npm run fallow:audit
 
       - name: Lint
         run: npm run lint

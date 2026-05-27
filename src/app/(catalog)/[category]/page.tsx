@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import SubCategoryGrid from "@/components/SubCategoryGrid/SubCategoryGrid";
-import categories from "@/data/categories.json";
+import SubCategoryGrid from "@/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid";
+import categories from "@/services/catalog/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 
 type Props = {

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import categories from "@/data/categories.json";
 import { SITE_URL } from "@/config/site";
+import categories from "@/services/catalog/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 
 type CatalogCategory = {
@@ -52,11 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		const categorySlug = nameToSlug(category.name);
 
 		return category.subcategories.map((subcategory) =>
-			route(
-				`/${categorySlug}/${nameToSlug(subcategory.name)}`,
-				"weekly",
-				0.7,
-			),
+			route(`/${categorySlug}/${nameToSlug(subcategory.name)}`, "weekly", 0.7),
 		);
 	});
 

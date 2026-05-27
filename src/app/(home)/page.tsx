@@ -1,9 +1,9 @@
 import Link from "next/link";
-import CatalogSection from "@/components/CatalogSection/CatalogSection";
-import HeroVisual from "@/components/HeroVisual/HeroVisual";
+import CatalogSection from "@/app/(home)/components/CatalogSection/CatalogSection";
+import HeroVisual from "@/app/(home)/components/HeroVisual/HeroVisual";
 import styles from "./home.module.scss";
 
-const phone = "7894 2852"
+const phone = "7894 2852";
 
 export default function HomePage() {
 	return (
@@ -101,7 +101,6 @@ export default function HomePage() {
 				</div>
 			</section>
 
-			{/* ── Info strip ─────────────────────────────────────── */}
 			<div className={styles.infoStrip}>
 				<div className={styles.infoMsg}>
 					<span className={styles.infoIcon} aria-hidden="true">
@@ -154,7 +153,6 @@ export default function HomePage() {
 				</div>
 			</div>
 
-			{/* ── Categories ─────────────────────────────────────── */}
 			<CatalogSection />
 		</div>
 	);

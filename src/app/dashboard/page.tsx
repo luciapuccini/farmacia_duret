@@ -1,4 +1,4 @@
-import dashboardData from "@/data/dashboard-orders.json";
+import dashboardData from "@/services/catalog/data/dashboard-orders.json";
 import styles from "./dashboard.module.scss";
 
 export const metadata = {
@@ -112,7 +112,9 @@ export default function DashboardPage() {
 		<div className={styles.page}>
 			<aside className={styles.sidebar} aria-label="Panel de administración">
 				<div className={styles.brand}>
-					<span className={styles.brandMark} aria-hidden="true">+</span>
+					<span className={styles.brandMark} aria-hidden="true">
+						+
+					</span>
 					<div>
 						<strong>Farmacia Duret</strong>
 						<span>Panel de administración</span>
@@ -121,11 +123,15 @@ export default function DashboardPage() {
 
 				<nav className={styles.nav} aria-label="Secciones del panel">
 					<a href="#resumen">Resumen</a>
-					<a className={styles.navActive} href="#ordenes">Órdenes</a>
+					<a className={styles.navActive} href="#ordenes">
+						Órdenes
+					</a>
 					<a href="#pacientes">Pacientes</a>
 					<a href="#catalogo">Catálogo</a>
 					<a href="#inventario">Inventario</a>
-					<a href="#mensajes">Mensajes <span>3</span></a>
+					<a href="#mensajes">
+						Mensajes <span>3</span>
+					</a>
 					<a href="#configuracion">Configuración</a>
 				</nav>
 
@@ -139,7 +145,6 @@ export default function DashboardPage() {
 			<section className={styles.workspace}>
 				<header className={styles.header}>
 					<div>
-
 						<h1>Órdenes de farmacia</h1>
 						<p>Administrá recetas, preparación y estados de entrega.</p>
 					</div>
@@ -156,7 +161,6 @@ export default function DashboardPage() {
 							</span>
 							<div>
 								<p>{item.label}</p>
-
 							</div>
 						</article>
 					))}
@@ -196,13 +200,21 @@ export default function DashboardPage() {
 										<tr
 											key={order.id}
 											className={
-												order.id === selectedOrder.id ? styles.selectedRow : undefined
+												order.id === selectedOrder.id
+													? styles.selectedRow
+													: undefined
 											}
 										>
-											<td><strong>{order.id}</strong></td>
+											<td>
+												<strong>{order.id}</strong>
+											</td>
 											<td>{order.patient_name}</td>
 											<td>{fulfillmentLabel(order)}</td>
-											<td><span className={statusClass(order.status)}>{order.status}</span></td>
+											<td>
+												<span className={statusClass(order.status)}>
+													{order.status}
+												</span>
+											</td>
 											<td>{formatDateTime(order.updated_at)}</td>
 											<td>
 												<button
@@ -222,7 +234,9 @@ export default function DashboardPage() {
 
 					<aside className={styles.detailPanel} aria-label="Detalle del pedido">
 						<div className={styles.detailHeader}>
-							<h2>Detalle del pedido <span>#{selectedOrder.id}</span></h2>
+							<h2>
+								Detalle del pedido <span>#{selectedOrder.id}</span>
+							</h2>
 							<span className={statusClass(selectedOrder.status)}>
 								{selectedOrder.status}
 							</span>
@@ -241,7 +255,9 @@ export default function DashboardPage() {
 							<div>
 								<span>Cobertura</span>
 								<strong>{selectedOrder.coverage?.name ?? "Particular"}</strong>
-								<small>{selectedOrder.coverage_member_num ?? "Sin número"}</small>
+								<small>
+									{selectedOrder.coverage_member_num ?? "Sin número"}
+								</small>
 							</div>
 							<div>
 								<span>Tipo de entrega</span>
@@ -263,14 +279,16 @@ export default function DashboardPage() {
 
 						<div className={styles.transitions}>
 							<h3>Transiciones permitidas</h3>
-							<button type="button">delivery <small>Entregar a domicilio</small></button>
-							<button type="button">pickup_by_patient <small>Paciente retira en local</small></button>
+							<button type="button">
+								delivery <small>Entregar a domicilio</small>
+							</button>
+							<button type="button">
+								pickup_by_patient <small>Paciente retira en local</small>
+							</button>
 							<p>Cualquier transición no listada está prohibida.</p>
 						</div>
 					</aside>
 				</div>
-
-
 			</section>
 		</div>
 	);

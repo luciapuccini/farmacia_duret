@@ -3,10 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-
-import categories from "@/data/categories.json";
-import { useMediaQuery } from "@/helpers/hooks";
-import { categoryNameToPath } from "@/helpers/routes";
+import categories from "@/services/catalog/data/categories.json";
+import { nameToSlug } from "@/utils/nameToSlug";
 
 import Drawer from "./components/drawer/drawer";
 import styles from "./navbar.module.scss";
@@ -28,7 +26,12 @@ function subnavLinkClass(depth: number, isActive: boolean) {
 		: styles.dropdownLink;
 }
 
-function subnavHref(category: Category, categoryPath: string, depth: number, parentPath: string) {
+function subnavHref(
+	category: Category,
+	categoryPath: string,
+	depth: number,
+	parentPath: string,
+) {
 	if (depth === 0) return categoryPath;
 	if (depth === 1) return `${parentPath}/${categoryPath}`;
 	if (category.name === "Ver todos los productos") return parentPath;
@@ -55,12 +58,14 @@ function SubnavItem({
 	const [isOpen, setIsOpen] = useState(false);
 	const hasSubcategories =
 		category.subcategories && category.subcategories.length > 0;
-	const categoryPath = categoryNameToPath(category.name);
+	const categoryPath = `/${nameToSlug(category.name)}`;
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
 	const href = subnavHref(category, categoryPath, depth, parentPath);
-	const linkClass = depth === 2 ? styles.dropdownLink : subnavLinkClass(depth, isActive(href));
-	const childParentPath = depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
+	const linkClass =
+		depth === 2 ? styles.dropdownLink : subnavLinkClass(depth, isActive(href));
+	const childParentPath =
+		depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
 
 	return (
 		<li
@@ -91,7 +96,6 @@ function SubnavItem({
 
 export default function Navbar() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const isMobile = useMediaQuery("(max-width: 767px)");
 	const pathname = usePathname();
 
 	const router = useRouter();
@@ -114,7 +118,6 @@ export default function Navbar() {
 	return (
 		<>
 			<header className={styles.navbar}>
-				{/* ── Top row ─────────────────────────────────── */}
 				<div className={styles.navTop}>
 					<Link href="/" className={styles.brand}>
 						<span className={styles.logoMark} aria-hidden="true">
@@ -214,11 +217,7 @@ export default function Navbar() {
 						<span className={styles.subnavDivider} aria-hidden="true" />
 						<ul className={styles.subnavList}>
 							{subnavCategories.map((cat) => (
-								<SubnavItem
-									key={cat.name}
-									category={cat}
-									pathname={pathname}
-								/>
+								<SubnavItem key={cat.name} category={cat} pathname={pathname} />
 							))}
 						</ul>
 						<Link href="/offers" className={styles.subnavCta}>
@@ -229,9 +228,7 @@ export default function Navbar() {
 				</nav>
 			</header>
 
-			{isMobile && (
-				<Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-			)}
+			<Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 		</>
 	);
 }

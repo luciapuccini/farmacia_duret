@@ -86,7 +86,7 @@ NEXT_PUBLIC_SITE_URL=https://farmaciaduret.online
 6. Confirm pull requests receive Cloudflare preview URLs and do not attach production routes.
 7. Add a visible or logged environment marker in preview if useful for debugging, using a non-secret variable such as `APP_ENV=preview`.
 8. Keep production-only credentials out of preview unless the integration is explicitly safe to test there.
-9. Document any preview-specific third-party resources, such as Contentful preview environments, Meta test apps, Supabase branches, or R2 buckets.
+9. Document any preview-specific third-party resources, such as CMS preview environments, Meta test apps, Supabase branches, or R2 buckets.
 10. Add long-lived Wrangler environments only if the team needs stable named URLs outside the pull request lifecycle.
 
 ## Iteration Plan
