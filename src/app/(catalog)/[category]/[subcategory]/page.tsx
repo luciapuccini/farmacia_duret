@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import ProductCatalog from "@/app/(catalog)/[category]/[subcategory]/components/ProductCatalog/ProductCatalog";
-import categories from "@/data/categories.json";
+import categories from "@/services/catalog/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 
 type Props = {

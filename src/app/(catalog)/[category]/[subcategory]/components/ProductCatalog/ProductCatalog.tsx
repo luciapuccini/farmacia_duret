@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import categories from "@/data/categories.json";
-import productsData from "@/data/products.json";
+import categories from "@/services/catalog/data/categories.json";
+import productsData from "@/services/catalog/data/products.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 import styles from "./ProductCatalog.module.scss";
 

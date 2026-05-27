@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-
-import categories from "@/data/categories.json";
+import categories from "@/services/catalog/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 
 import Drawer from "./components/drawer/drawer";
