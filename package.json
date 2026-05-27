@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
+		"fallow:audit": "fallow audit",
 		"fallow": "fallow audit",
 		"lint": "eslint .",
 		"start": "next start",
