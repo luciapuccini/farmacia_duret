@@ -6,7 +6,26 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
+  fallow:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fallow audit
+        uses: fallow-rs/fallow@v2
+        with:
+          command: audit
+          review-comments: true
+
   verify:
     runs-on: ubuntu-latest
 
@@ -24,11 +43,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Fallow PR audit
-        env:
-          FALLOW_BASE: ${{ github.event_name == 'pull_request' && github.base_ref || github.event.before }}
-        run: npm run fallow:audit -- --base "$FALLOW_BASE"
 
       - name: Lint
         run: npm run lint
