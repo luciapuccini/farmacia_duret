@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import SubCategoryGrid from "@/components/SubCategoryGrid/SubCategoryGrid";
+import SubCategoryGrid from "@/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid";
 import categories from "@/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
 

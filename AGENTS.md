@@ -30,6 +30,7 @@ Each page has its `.module.scss` file alongside it in the same directory.
 ### Component Structure
 Every component follows the same named-folder structure:
 
+- Do NOT allow more than 1 component per file. if an abstraction is created should be in a nested /components/<new_component_name> 
 - Create a folder named after the component.
 - Inside that folder, create `<component_name>.tsx` for the React component.
 - Inside that folder, create `<component_name>.module.scss` for the component styles.

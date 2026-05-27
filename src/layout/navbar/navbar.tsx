@@ -27,7 +27,12 @@ function subnavLinkClass(depth: number, isActive: boolean) {
 		: styles.dropdownLink;
 }
 
-function subnavHref(category: Category, categoryPath: string, depth: number, parentPath: string) {
+function subnavHref(
+	category: Category,
+	categoryPath: string,
+	depth: number,
+	parentPath: string,
+) {
 	if (depth === 0) return categoryPath;
 	if (depth === 1) return `${parentPath}/${categoryPath}`;
 	if (category.name === "Ver todos los productos") return parentPath;
@@ -58,8 +63,10 @@ function SubnavItem({
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
 	const href = subnavHref(category, categoryPath, depth, parentPath);
-	const linkClass = depth === 2 ? styles.dropdownLink : subnavLinkClass(depth, isActive(href));
-	const childParentPath = depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
+	const linkClass =
+		depth === 2 ? styles.dropdownLink : subnavLinkClass(depth, isActive(href));
+	const childParentPath =
+		depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
 
 	return (
 		<li
@@ -112,7 +119,6 @@ export default function Navbar() {
 	return (
 		<>
 			<header className={styles.navbar}>
-				{/* ── Top row ─────────────────────────────────── */}
 				<div className={styles.navTop}>
 					<Link href="/" className={styles.brand}>
 						<span className={styles.logoMark} aria-hidden="true">
@@ -212,11 +218,7 @@ export default function Navbar() {
 						<span className={styles.subnavDivider} aria-hidden="true" />
 						<ul className={styles.subnavList}>
 							{subnavCategories.map((cat) => (
-								<SubnavItem
-									key={cat.name}
-									category={cat}
-									pathname={pathname}
-								/>
+								<SubnavItem key={cat.name} category={cat} pathname={pathname} />
 							))}
 						</ul>
 						<Link href="/offers" className={styles.subnavCta}>
