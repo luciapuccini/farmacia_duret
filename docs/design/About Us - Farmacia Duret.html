@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sobre Nosotros — Farmacia Duret</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- <script src="image-slot.js"></script> -->
+<style>
+  :root{
+    --ink-900: oklch(0.22 0.03 235);
+    --ink-700: oklch(0.38 0.025 235);
+    --ink-500: oklch(0.55 0.02 235);
+    --ink-400: oklch(0.66 0.015 235);
+    --ink-300: oklch(0.82 0.012 235);
+    --line:    oklch(0.92 0.008 220);
+    --line-2:  oklch(0.95 0.006 220);
+    --bg:      oklch(0.995 0.003 220);
+    --bg-soft: oklch(0.985 0.008 220);
+    --bg-blue: oklch(0.97 0.025 235);
+    --bg-mint: oklch(0.965 0.035 165);
+
+    --blue-700: oklch(0.46 0.13 245);
+    --blue-600: oklch(0.55 0.14 240);
+    --blue-500: oklch(0.62 0.13 235);
+    --blue-100: oklch(0.93 0.04 235);
+
+    --green-700: oklch(0.55 0.13 165);
+    --green-600: oklch(0.66 0.13 165);
+    --green-500: oklch(0.74 0.12 165);
+    --green-100: oklch(0.93 0.05 165);
+
+
+
+    --radius-sm: 4px;
+    --radius:    6px;
+    --radius-lg: 10px;
+    --radius-xl: 14px;
+    --radius-btn: 6px;
+
+    --shadow-sm: 0 1px 2px oklch(0.4 0.05 235 / 0.06);
+    --shadow:    0 6px 24px -8px oklch(0.4 0.08 235 / 0.16), 0 1px 2px oklch(0.4 0.05 235 / 0.05);
+    --shadow-lg: 0 24px 60px -20px oklch(0.4 0.1 235 / 0.25), 0 2px 6px oklch(0.4 0.05 235 / 0.06);
+
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  *,*::before,*::after{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family: var(--font-sans);
+    color: var(--ink-900);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.55;
+  }
+  img{ display:block; max-width:100%; }
+  button{ font-family: inherit; cursor:pointer; }
+  a{ color: inherit; text-decoration: none; }
+
+  .wrap{ max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+
+  /* ============ PROMO BANNER ============ */
+  .promo{
+    background: linear-gradient(90deg, var(--blue-700), var(--blue-600) 55%, var(--green-600));
+    color: white;
+    font-size: 13.5px; font-weight: 500; letter-spacing: 0.01em;
+  }
+  .promo-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 16px; padding: 9px 0;
+  }
+  .promo-msg{ display:flex; align-items:center; gap:10px; }
+  .promo-dot{
+    width:6px; height:6px; border-radius:2px; background: var(--green-500);
+    box-shadow: 0 0 0 3px oklch(0.74 0.12 165 / 0.35);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:1 } 50%{ opacity:0.5 } }
+  .promo b{ font-weight: 700; }
+  .promo-links{ display:flex; gap:18px; align-items:center; opacity:0.92; }
+  .promo-links a:hover{ opacity:0.7; }
+  .promo .sep{ width:1px; height:12px; background: rgba(255,255,255,0.3); }
+
+  /* ============ HEADER ============ */
+  .hdr{
+    position: sticky; top:0; z-index: 50;
+    background: oklch(0.995 0.003 220 / 0.85);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .hdr-inner{
+    display:flex; align-items:center; gap: 28px; padding: 16px 0;
+  }
+  .logo{
+    display:inline-flex; align-items:center; gap:10px;
+    font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
+    color: var(--ink-900);
+  }
+  .logo-mark{
+    width: 34px; height: 34px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue-600), var(--green-600));
+    display:grid; place-items:center; color:white;
+    box-shadow: 0 4px 14px -4px oklch(0.55 0.13 235 / 0.5);
+  }
+  .logo-mark svg{ width: 18px; height:18px; }
+  .nav{ display:flex; align-items:center; gap: 4px; }
+  .nav a{
+    padding: 8px 14px; border-radius: var(--radius-btn);
+    font-size: 14.5px; font-weight: 500; color: var(--ink-700);
+    transition: all 0.15s ease;
+  }
+  .nav a:hover{ background: var(--bg-blue); color: var(--blue-700); }
+  .nav a.active{ background: var(--blue-100); color: var(--blue-700); }
+  .hdr-actions{ margin-left:auto; display:flex; align-items:center; gap: 8px; }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding: 10px 18px; border-radius: var(--radius-btn);
+    font-weight: 600; font-size: 14.5px;
+    border: 1px solid transparent; transition: all 0.15s ease;
+    background: transparent; color: inherit;
+  }
+  .btn-encargo{ background: var(--ink-900); color: white; }
+  .btn-encargo:hover{ background: var(--blue-700); transform: translateY(-1px); }
+
+  /* ============ HERO ============ */
+  .about-hero{
+    padding: 72px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-hero::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:100%;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 0%, var(--bg-mint) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, var(--bg-blue) 0%, transparent 60%);
+    pointer-events: none; opacity: 0.7;
+  }
+  .hero-content{
+    position:relative; z-index:1;
+    max-width: 680px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--green-100); color: var(--green-700);
+    padding: 6px 14px; border-radius: var(--radius-sm);
+    font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:2px; background: var(--green-600); }
+  .about-hero h1{
+    font-size: clamp(36px, 4.6vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+    margin: 22px 0 20px;
+    text-wrap: balance;
+  }
+  .about-hero h1 em{
+    font-style: normal;
+    background: linear-gradient(120deg, var(--blue-600), var(--green-600));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .about-hero .lede{
+    font-size: 18px; color: var(--ink-700);
+    max-width: 560px; text-wrap: pretty; margin: 0;
+    line-height: 1.65;
+  }
+
+  /* Team photo banner */
+  .team-banner{
+    position:relative; z-index:1;
+    margin-top: 56px;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-bottom: none;
+    background: var(--bg-soft);
+  }
+  .team-banner image-slot{
+    display:block; width:100%; height: 380px;
+  }
+  .team-banner-caption{
+    position:absolute; bottom:0; left:0; right:0;
+    padding: 20px 28px;
+    background: linear-gradient(to top, oklch(0.22 0.03 235 / 0.7), transparent);
+    color: white; font-size: 14px; font-weight: 500;
+  }
+
+  /* ============ STORY ============ */
+  .story{
+    padding: 80px 0;
+    border-top: 1px solid var(--line);
+  }
+  .story-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: start;
+  }
+  .story h2{
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.025em; font-weight: 800;
+    line-height: 1.08; margin: 0 0 24px;
+  }
+  .story p{
+    font-size: 16px; color: var(--ink-700);
+    line-height: 1.7; margin: 0 0 18px;
+    text-wrap: pretty;
+  }
+  .story p:last-child{ margin-bottom:0; }
+  .story-highlight{
+    background: var(--bg-mint);
+    border-left: 3px solid var(--green-600);
+    padding: 20px 24px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 17px; color: var(--ink-900);
+    line-height: 1.65;
+    font-weight: 500;
+    margin: 28px 0;
+  }
+  .story-stats{
+    display:grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin-top: 32px;
+  }
+  .stat-card{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 22px 24px;
+  }
+  .stat-card .n{
+    font-size: 32px; font-weight: 800; letter-spacing: -0.03em;
+    background: linear-gradient(120deg, var(--blue-600), var(--green-600));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat-card .l{
+    font-size: 13.5px; color: var(--ink-500); margin-top: 2px;
+  }
+
+  /* ============ PILLARS ============ */
+  .pillars{
+    padding: 80px 0;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .pillars-head{
+    text-align:center; max-width: 600px; margin: 0 auto 48px;
+  }
+  .pillars-head h2{
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.025em; font-weight: 800;
+    line-height: 1.08; margin: 16px 0 14px;
+  }
+  .pillars-head p{
+    font-size: 16px; color: var(--ink-700); text-wrap: pretty;
+    margin: 0;
+  }
+  .pillars-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .pillar{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    transition: all 0.2s ease;
+  }
+  .pillar:hover{
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: oklch(0.62 0.13 235 / 0.3);
+  }
+  .pillar-icon{
+    width: 44px; height: 44px; border-radius: var(--radius);
+    display:grid; place-items:center;
+    margin-bottom: 18px;
+  }
+  .pillar-icon svg{ width:22px; height:22px; }
+  .pillar-icon.blue{ background: var(--bg-blue); color: var(--blue-700); }
+  .pillar-icon.mint{ background: var(--bg-mint); color: var(--green-700); }
+  .pillar-icon.warm{ background: var(--bg-mint); color: var(--green-700); }
+  .pillar h3{
+    font-size: 17px; font-weight: 700; letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .pillar p{
+    font-size: 14.5px; color: var(--ink-700);
+    line-height: 1.6; margin:0;
+  }
+
+  /* ============ TEAM ============ */
+  .team{
+    padding: 80px 0;
+  }
+  .team-head{
+    max-width: 540px; margin-bottom: 44px;
+  }
+  .team-head h2{
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.025em; font-weight: 800;
+    line-height: 1.08; margin: 16px 0 14px;
+  }
+  .team-head p{
+    font-size: 16px; color: var(--ink-700);
+    text-wrap: pretty; margin: 0;
+  }
+  .team-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .team-card{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  .team-card:hover{
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .team-card image-slot{
+    display:block; width:100%; height: 240px;
+  }
+  .team-card-info{
+    padding: 18px 20px;
+  }
+  .team-card-info h4{
+    font-size: 16px; font-weight: 700; margin: 0 0 3px;
+    letter-spacing: -0.01em;
+  }
+  .team-card-info span{
+    font-size: 13.5px; color: var(--ink-500);
+  }
+
+  /* ============ CONTACT BLOCK ============ */
+  .contact{
+    padding: 80px 0;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .contact-info{
+    display:flex; flex-direction:column; gap: 20px;
+  }
+  .contact-card{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    display:flex; align-items:flex-start; gap: 16px;
+  }
+  .contact-card-icon{
+    width: 40px; height: 40px; border-radius: var(--radius);
+    display:grid; place-items:center; flex-shrink:0;
+    background: var(--bg-blue); color: var(--blue-700);
+  }
+  .contact-card-icon.mint{ background: var(--bg-mint); color: var(--green-700); }
+  .contact-card-icon svg{ width:20px; height:20px; }
+  .contact-card h4{
+    font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--ink-500);
+    margin: 0 0 6px;
+  }
+  .contact-card p{
+    font-size: 15px; color: var(--ink-900); margin:0;
+    line-height: 1.55;
+  }
+  .contact-card a{
+    color: var(--blue-600); font-weight: 600;
+  }
+  .contact-card a:hover{
+    color: var(--blue-700); text-decoration: underline;
+  }
+
+  /* Schedule */
+  .schedule-card{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 28px 28px;
+  }
+  .schedule-card h3{
+    font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em;
+    text-transform: uppercase; color: var(--ink-500);
+    margin: 0 0 20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .schedule-card h3 .dot-live{
+    width:7px; height:7px; border-radius:2px; background: var(--green-500);
+    box-shadow: 0 0 0 3px oklch(0.74 0.12 165 / 0.3);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .schedule-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-2);
+    font-size: 14.5px;
+  }
+  .schedule-row:last-child{ border-bottom: none; }
+  .schedule-row .day{ color: var(--ink-700); font-weight: 500; }
+  .schedule-row .time{ color: var(--ink-900); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .schedule-row.closed .time{ color: var(--ink-400); font-weight: 500; }
+  .schedule-row.today{
+    background: var(--bg-mint); margin: 0 -12px; padding: 10px 12px;
+    border-radius: var(--radius-sm);
+  }
+  .schedule-row.today .day{ color: var(--green-700); font-weight: 700; }
+
+  /* Social */
+  .social-row{
+    display:flex; gap: 12px; margin-top: 8px;
+  }
+  .social-link{
+    display:flex; align-items:center; gap: 10px;
+    padding: 12px 18px;
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    font-size: 14px; font-weight: 600;
+    color: var(--ink-700);
+    transition: all 0.15s ease;
+    flex: 1;
+  }
+  .social-link:hover{
+    border-color: var(--blue-500); color: var(--blue-700);
+    transform: translateY(-1px);
+  }
+  .social-link svg{ flex-shrink:0; }
+  .social-link small{
+    font-size: 12px; color: var(--ink-500); font-weight: 500;
+    display:block;
+  }
+
+  /* Map placeholder */
+  .map-slot{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    height: 100%;
+    min-height: 380px;
+    display:flex; flex-direction:column;
+  }
+  .map-placeholder{
+    flex:1;
+    background:
+      var(--bg-blue)
+      repeating-linear-gradient(
+        0deg,
+        oklch(0.62 0.13 235 / 0.04) 0 1px,
+        transparent 1px 28px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        oklch(0.62 0.13 235 / 0.04) 0 1px,
+        transparent 1px 28px
+      );
+    display:grid; place-items:center;
+  }
+  .map-pin{
+    display:flex; flex-direction:column; align-items:center; gap: 8px;
+    color: var(--ink-500);
+  }
+  .map-pin-icon{
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-600), var(--green-600));
+    display:grid; place-items:center; color: white;
+    box-shadow: 0 6px 20px -4px oklch(0.55 0.13 235 / 0.4);
+  }
+  .map-pin-icon svg{ width:24px; height:24px; }
+  .map-pin span{
+    font-size: 13px; font-weight: 500;
+    font-family: var(--font-mono);
+  }
+  .map-bar{
+    padding: 14px 20px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px; color: var(--ink-700);
+    display:flex; align-items:center; gap:8px;
+  }
+  .map-bar a{
+    color: var(--blue-600); font-weight: 600;
+  }
+
+  /* ============ FAQ ============ */
+  .faq{
+    padding: 80px 0;
+  }
+  .faq-head{
+    max-width: 540px; margin-bottom: 40px;
+  }
+  .faq-head h2{
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.025em; font-weight: 800;
+    line-height: 1.08; margin: 16px 0 14px;
+  }
+  .faq-head p{
+    font-size: 16px; color: var(--ink-700);
+    text-wrap: pretty; margin: 0;
+  }
+  .faq-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .faq-item{
+    background: white; border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    transition: all 0.15s ease;
+  }
+  .faq-item:hover{
+    border-color: oklch(0.62 0.13 235 / 0.3);
+  }
+  .faq-item h4{
+    font-size: 15.5px; font-weight: 700;
+    margin: 0 0 8px; letter-spacing: -0.01em;
+  }
+  .faq-item p{
+    font-size: 14.5px; color: var(--ink-700);
+    line-height: 1.6; margin: 0;
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    background: var(--ink-900);
+    color: oklch(0.85 0.02 235);
+    padding: 48px 0 24px;
+    position: relative;
+  }
+  footer::before{
+    content:""; position:absolute; top:0; left:0; right:0; height: 4px;
+    background: linear-gradient(90deg, var(--blue-600), var(--green-600));
+  }
+  .ft-inner{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap: 48px; flex-wrap: wrap;
+    padding-bottom: 32px;
+    border-bottom: 1px solid oklch(0.32 0.02 235);
+    margin-bottom: 24px;
+  }
+  .ft-brand .logo{ color: white; margin-bottom: 12px; }
+  .ft-brand p{
+    color: oklch(0.75 0.02 235); font-size: 14px;
+    max-width: 320px; margin: 0;
+  }
+  .ft-links{
+    display:flex; gap: 48px;
+  }
+  .ft-col h4{
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: white; margin: 0 0 14px;
+  }
+  .ft-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: 9px; }
+  .ft-col a{ font-size: 13.5px; color: oklch(0.78 0.02 235); transition: color 0.15s ease; }
+  .ft-col a:hover{ color: white; }
+  .ft-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap: 16px;
+    font-size: 12.5px; color: oklch(0.55 0.02 235);
+  }
+  .ft-legal{ display:flex; gap: 18px; }
+  .ft-legal a:hover{ color: white; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px){
+    .nav{ display:none; }
+    .story-grid{ grid-template-columns: 1fr; gap: 48px; }
+    .pillars-grid{ grid-template-columns: 1fr 1fr; }
+    .team-grid{ grid-template-columns: 1fr 1fr; }
+    .contact-grid{ grid-template-columns: 1fr; }
+    .faq-grid{ grid-template-columns: 1fr; }
+    .ft-links{ gap: 32px; }
+    .team-banner image-slot{ height: 280px; }
+  }
+  @media (max-width: 560px){
+    .wrap{ padding: 0 18px; }
+    .promo-links{ display:none; }
+    .about-hero{ padding: 48px 0 0; }
+    .pillars-grid{ grid-template-columns: 1fr; }
+    .team-grid{ grid-template-columns: 1fr; }
+    .social-row{ flex-direction:column; }
+    .ft-links{ flex-direction: column; gap: 24px; }
+    .ft-inner{ flex-direction: column; }
+    .story-stats{ grid-template-columns: 1fr; }
+    .team-banner image-slot{ height: 200px; }
+    .map-slot{ min-height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PROMO BANNER ============ -->
+<div class="promo">
+  <div class="wrap promo-inner">
+    <div class="promo-msg">
+      <span class="promo-dot"></span>
+      <span>Consulta farmacéutica <b>sin cargo</b> · Retiro en sucursal <b>el mismo día</b></span>
+    </div>
+    <div class="promo-links">
+      <a href="#">Cómo llegar</a>
+      <span class="sep"></span>
+      <a href="#">Contacto</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="hdr">
+  <div class="wrap hdr-inner">
+    <a class="logo" href="Landing Page.html">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v16M4 12h16"/>
+        </svg>
+      </span>
+      Farmacia Duret
+    </a>
+    <nav class="nav">
+      <a href="Landing Page.html">Catálogo</a>
+      <a href="#" class="active">Sobre nosotros</a>
+    </nav>
+    <div class="hdr-actions">
+      <button class="btn btn-encargo">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Hacer un encargo
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="about-hero">
+  <div class="wrap">
+    <div class="hero-content">
+      <span class="eyebrow"><span class="dot"></span>Villa Rosa, Buenos Aires</span>
+      <h1>La farmacia <em>de tu barrio</em>, con nombre y apellido.</h1>
+      <p class="lede">Desde hace más de 30 años, Farmacia Duret es parte de la vida cotidiana de Villa Rosa. Acá te conocemos, te escuchamos y te acompañamos en cada tratamiento.</p>
+    </div>
+
+    <div class="team-banner">
+      <image-slot id="hero-team" placeholder="Foto del equipo en la farmacia" shape="rect" style="width:100%; height:380px;"></image-slot>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<section class="story">
+  <div class="wrap story-grid">
+    <div>
+      <span class="eyebrow" style="margin-bottom:4px;"><span class="dot"></span>Nuestra historia</span>
+      <h2>Empezamos como vecinos,<br>seguimos como familia.</h2>
+      <p>Farmacia Duret nació en Pilar del Este con una idea simple: que ir a la farmacia se sienta como pedir un consejo a alguien de confianza. Desde el primer día, elegimos estar cerca — no solo en distancia, sino en la forma de atender.</p>
+
+      <div class="story-highlight">
+        «Nos tomamos el tiempo de explicarte cada medicamento, de preguntarte cómo te sentís, de llamarte si notamos que falta una recarga. Eso no es un servicio extra — para nosotros, es lo mínimo.»
+      </div>
+
+      <p>Hoy somos un equipo de farmacéuticos y colaboradores que elige este oficio porque nos importa la salud de quienes nos visitan. Conocemos a nuestros clientes por nombre, sabemos sus tratamientos, y muchas veces somos la primera consulta antes del médico.</p>
+    </div>
+
+    <div>
+      <div style="border-radius: var(--radius-lg); overflow:hidden; border: 1px solid var(--line); margin-bottom:24px;">
+        <image-slot id="story-photo" placeholder="Interior de la farmacia o atención al mostrador" shape="rect" style="width:100%; height:300px;"></image-slot>
+      </div>
+
+      <div class="story-stats">
+        <div class="stat-card">
+          <div class="n">30+</div>
+          <div class="l">Años en el barrio</div>
+        </div>
+        <div class="stat-card">
+          <div class="n">8.000+</div>
+          <div class="l">Familias que nos eligen</div>
+        </div>
+        <div class="stat-card">
+          <div class="n">12 hs</div>
+          <div class="l">De atención de lunes a sábado</div>
+        </div>
+        <div class="stat-card">
+          <div class="n">100%</div>
+          <div class="l">Consulta farmacéutica sin cargo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PILLARS ============ -->
+<section class="pillars">
+  <div class="wrap">
+    <div class="pillars-head">
+      <span class="eyebrow"><span class="dot"></span>Qué nos diferencia</span>
+      <h2>Mucho más que despachar medicamentos.</h2>
+      <p>En Farmacia Duret nos involucramos en tu salud de verdad. Esto es lo que hacemos distinto:</p>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Consulta personalizada</h3>
+        <p>Te explicamos cada indicación, dosis y posible interacción. Siempre sin cargo, siempre con paciencia. Si tenés dudas después, llamanos — estamos para eso.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon mint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Seguimiento de recetas</h3>
+        <p>Si tu tratamiento es continuo, lo registramos y te avisamos cuando se acerca la fecha de recarga. No te dejamos sin medicación.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon warm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>Entrega a domicilio</h3>
+        <p>Para quienes no pueden acercarse, llevamos el pedido a tu casa en Villa Rosa y alrededores. Pedilo por WhatsApp o por teléfono.</p>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Trato humano, siempre</h3>
+        <p>No somos un mostrador más. Nos interesa saber cómo te fue con el tratamiento, si te cayó bien el remedio, si necesitás algo más. Esa cercanía es nuestra forma de trabajar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="team">
+  <div class="wrap">
+    <div class="team-head">
+      <span class="eyebrow"><span class="dot"></span>El equipo</span>
+      <h2>Las personas detrás del mostrador.</h2>
+      <p>Cada uno de nosotros eligió este trabajo porque nos importa la salud de nuestros vecinos. Vení a conocernos.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <image-slot id="team-1" placeholder="Foto de Director/a técnico/a" shape="rect" style="width:100%; height:240px;"></image-slot>
+        <div class="team-card-info">
+          <h4>Director/a técnico/a</h4>
+          <span>Farmacéutica · Fundadora</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <image-slot id="team-2" placeholder="Foto de farmacéutico/a" shape="rect" style="width:100%; height:240px;"></image-slot>
+        <div class="team-card-info">
+          <h4>Farmacéutico/a</h4>
+          <span>Atención al público</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <image-slot id="team-3" placeholder="Foto de farmacéutico/a" shape="rect" style="width:100%; height:240px;"></image-slot>
+        <div class="team-card-info">
+          <h4>Farmacéutico/a</h4>
+          <span>Dermocosmética</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <image-slot id="team-4" placeholder="Foto del equipo" shape="rect" style="width:100%; height:240px;"></image-slot>
+        <div class="team-card-info">
+          <h4>Equipo</h4>
+          <span>Logística y atención</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT + MAP ============ -->
+<section class="contact">
+  <div class="wrap">
+    <div style="max-width: 540px; margin-bottom: 40px;">
+      <span class="eyebrow"><span class="dot"></span>Visitanos</span>
+      <h2 style="font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.025em; font-weight: 800; line-height: 1.08; margin: 16px 0 14px;">Estamos cerca, siempre.</h2>
+      <p style="font-size: 16px; color: var(--ink-700); margin: 0;">Pasá cuando quieras — no hace falta turno para una consulta rápida. Y si preferís, escribinos por WhatsApp.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <!-- Address -->
+        <div class="contact-card">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <h4>Dirección</h4>
+            <p>Pilar del Este, E. Casella 1743<br>B1631 Villa Rosa<br>Provincia de Buenos Aires, Argentina</p>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="contact-card">
+          <div class="contact-card-icon mint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <h4>Teléfono</h4>
+            <p><a href="tel:+541178942852">+54 11 7894 2852</a></p>
+          </div>
+        </div>
+
+        <!-- Schedule -->
+        <div class="schedule-card">
+          <h3>
+            <span class="dot-live"></span>
+            Horarios de atención
+          </h3>
+          <div class="schedule-row">
+            <span class="day">Lunes</span>
+            <span class="time">8:00 – 20:00</span>
+          </div>
+          <div class="schedule-row">
+            <span class="day">Martes</span>
+            <span class="time">8:00 – 20:00</span>
+          </div>
+          <div class="schedule-row">
+            <span class="day">Miércoles</span>
+            <span class="time">8:00 – 20:00</span>
+          </div>
+          <div class="schedule-row">
+            <span class="day">Jueves</span>
+            <span class="time">8:00 – 20:00</span>
+          </div>
+          <div class="schedule-row">
+            <span class="day">Viernes</span>
+            <span class="time">8:00 – 20:00</span>
+          </div>
+          <div class="schedule-row">
+            <span class="day">Sábado</span>
+            <span class="time">8:00 – 20:00</span>
+          </div>
+          <div class="schedule-row closed">
+            <span class="day">Domingo</span>
+            <span class="time">Cerrado</span>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="social-row">
+          <a href="#" class="social-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            <div>
+              @farmacia_duret
+              <small>Instagram</small>
+            </div>
+          </a>
+          <a href="#" class="social-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <div>
+              WhatsApp
+              <small>Escribinos</small>
+            </div>
+          </a>
+          <a href="#" class="social-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            <div>
+              Facebook
+              <small>Seguinos</small>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="map-slot">
+        <div class="map-placeholder">
+          <div class="map-pin">
+            <div class="map-pin-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <span>E. Casella 1743, Villa Rosa</span>
+          </div>
+        </div>
+        <div class="map-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <a href="#">Abrir en Google Maps →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq">
+  <div class="wrap">
+    <div class="faq-head">
+      <span class="eyebrow"><span class="dot"></span>Preguntas frecuentes</span>
+      <h2>Todo lo que necesitás saber.</h2>
+      <p>Si tu pregunta no está acá, escribinos por WhatsApp o pasá por la farmacia — siempre hay alguien para ayudarte.</p>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>¿Dónde está ubicada Farmacia Duret?</h4>
+        <p>Estamos en Pilar del Este, E. Casella 1743, Villa Rosa, Provincia de Buenos Aires. Cualquier vecino del barrio te sabe indicar.</p>
+      </div>
+      <div class="faq-item">
+        <h4>¿Cuál es el horario de atención?</h4>
+        <p>Atendemos de lunes a sábado de 8:00 a 20:00, sin interrupción al mediodía. Los domingos la farmacia permanece cerrada.</p>
+      </div>
+      <div class="faq-item">
+        <h4>¿Puedo consultar disponibilidad antes de ir?</h4>
+        <p>Sí, podés comunicarte por teléfono o escribirnos por WhatsApp. Te confirmamos en el momento si tenemos lo que necesitás y te lo separamos.</p>
+      </div>
+      <div class="faq-item">
+        <h4>¿Hacen envíos a domicilio?</h4>
+        <p>Sí, hacemos entregas en Villa Rosa y zonas cercanas. Si no podés acercarte, coordinálo por WhatsApp y te lo llevamos.</p>
+      </div>
+      <div class="faq-item">
+        <h4>¿Venden medicamentos con receta?</h4>
+        <p>Sí. Para medicamentos que requieren receta, acercate con la receta a la farmacia o consultá previamente para confirmar disponibilidad.</p>
+      </div>
+      <div class="faq-item">
+        <h4>¿La consulta farmacéutica tiene costo?</h4>
+        <p>No, la consulta es siempre sin cargo. Podés preguntarnos sobre interacciones, dosis, equivalentes genéricos o cualquier duda sobre tu tratamiento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="ft-inner">
+      <div class="ft-brand">
+        <a class="logo" href="Landing Page.html">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M4 12h16"/></svg>
+          </span>
+          Farmacia Duret
+        </a>
+        <p>Más de 30 años cuidando a las familias de Villa Rosa. Productos auténticos, asesoría real y el trato cercano de siempre.</p>
+      </div>
+      <div class="ft-links">
+        <div class="ft-col">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="Landing Page.html">Catálogo</a></li>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Ofertas</a></li>
+            <li><a href="#">Hacer un encargo</a></li>
+          </ul>
+        </div>
+        <div class="ft-col">
+          <h4>Ayuda</h4>
+          <ul>
+            <li><a href="#">Preguntas frecuentes</a></li>
+            <li><a href="#">Consulta farmacéutica</a></li>
+            <li><a href="#">Envíos y cobertura</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <div>Para consultas y/o denuncias contactar a la Dirección General de Defensa y Protección al Consumidor</div>
+      <div>© 2026 Farmacia Duret, E. Casella 1743, B1631 Villa Rosa, Provincia de Buenos Aires, Argentina.</div>
+      <div class="ft-legal">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Highlight today's row in schedule
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const today = days[new Date().getDay()];
+  document.querySelectorAll('.schedule-row').forEach(row => {
+    if (row.querySelector('.day').textContent.trim() === today) {
+      row.classList.add('today');
+    }
+  });
+</script>
+</body>
+</html>

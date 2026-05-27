@@ -6,4 +6,4 @@ if ! git diff --quiet; then
 fi
 
 printf '%s\n' 'pre-commit: running Fallow audit...'
-npx fallow audit
+npm fallow audit
