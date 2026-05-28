@@ -1,0 +1,54 @@
+@use '@/globals' as g;
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-chip);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.84375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    border-color: var(--blue-500);
+    color: var(--blue-700);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus-ring);
+  }
+}
+
+.selected {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+  color: var(--bg);
+
+  &:hover {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: var(--bg);
+  }
+}
+
+.count {
+  padding: 0.0625rem 0.4375rem;
+  border-radius: 3px;
+  background: var(--bg-soft);
+  color: var(--ink-500);
+  font-size: 0.71875rem;
+  font-weight: var(--font-weight-medium);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.selected .count {
+  background: var(--bg-soft);
+  color: var(--ink-700);
+}

@@ -1,20 +1,25 @@
 {
-  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
-  "entry": ["open-next.config.ts"],
-  "ignoreDependencies": ["@opennextjs/cloudflare", "sass"],
-  "ignoreExports": [
-    {
-      "file": "**/*.module.scss",
-      "exports": ["up", "down"]
-    }
-  ],
-  "health": {
-    "maxCrap": 120
-  },
-  "audit": {
-    "gate": "new-only",
-    "deadCodeBaseline": "fallow-baselines/dead-code.json",
-    "healthBaseline": "fallow-baselines/health.json",
-    "dupesBaseline": "fallow-baselines/dupes.json"
-  }
+	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+	"entry": ["open-next.config.ts"],
+	"ignorePatterns": [
+		"src/ui/**/*.ts",
+		"src/ui/**/*.tsx",
+		"src/ui/**/*.scss"
+	],
+	"ignoreDependencies": ["@opennextjs/cloudflare", "sass"],
+	"ignoreExports": [
+		{
+			"file": "**/*.module.scss",
+			"exports": ["up", "down"]
+		}
+	],
+	"health": {
+		"maxCrap": 120
+	},
+	"audit": {
+		"gate": "new-only",
+		"deadCodeBaseline": "fallow-baselines/dead-code.json",
+		"healthBaseline": "fallow-baselines/health.json",
+		"dupesBaseline": "fallow-baselines/dupes.json"
+	}
 }

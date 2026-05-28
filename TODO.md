@@ -1,6 +1,13 @@
 
-## Cleanup Plan -- catalog module approach
+## Cleanup Plan -- 
 
+
+
+
+
+
+
+### FEATURE - catalog module approach [IGNORE]
 TBD - IN PROGRESS => not so good
 ////
 ## Catalog Module Refactor Plan
@@ -134,3 +141,4 @@ One open question:
 ## Deferred work
 - Admin dashboard remains future work, but not part of this cleanup pass.
 - Any SEO strategy decision around removed legacy routes should be handled separately from code cleanup if needed.
+### END FEATURE - catalog module approach [IGNORE]
