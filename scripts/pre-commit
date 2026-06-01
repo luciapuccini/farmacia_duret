@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
 
-if ! git diff --quiet; then
-  printf '%s\n' 'pre-commit: unstaged changes exist; Fallow will audit the working tree.'
+if git diff --cached --quiet; then
+	exit 0
 fi
 
-printf '%s\n' 'pre-commit: running Fallow audit...'
-npm fallow audit
+printf '%s\n' 'pre-commit: running Fallow audit on staged changes...'
+npm run --silent fallow:precommit

@@ -1,0 +1,27 @@
+@use '@/globals' as g;
+
+.textarea {
+  width: 100%;
+  min-height: 6.25rem;
+  padding: 0.6875rem 0.875rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  background: var(--bg);
+  color: var(--ink-900);
+  font: inherit;
+  font-size: 0.90625rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: var(--ink-400);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: var(--shadow-focus-ring);
+  }
+}

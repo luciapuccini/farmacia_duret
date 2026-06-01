@@ -2,7 +2,7 @@
 
 This repository uses full-repo Fallow analysis for maintenance and `fallow audit` as the PR gate.
 
-The current repository state is stored in `fallow-baselines/`. Audits compare against those baselines and use the `new-only` gate so local hooks and PR checks focus on newly introduced issues.
+The current repository state is stored in `fallow-baselines/`. Baseline-aware audits compare against those files and use the `new-only` gate so PR checks focus on newly introduced issues.
 
 ## Health Thresholds
 
@@ -21,4 +21,12 @@ The CRAP threshold is intentionally wider than Fallow's default because this is 
 
 ## Local Hook
 
-The tracked hook script is `scripts/pre-commit`. It is installed locally at `.git/hooks/pre-commit` and runs `npx fallow audit` before commits.
+The tracked hook script is `scripts/pre-commit`. It is installed locally at `.git/hooks/pre-commit` and runs a staged-diff audit before commits:
+
+- `git diff --cached --unified=0 --no-ext-diff --relative | fallow audit --gate all --diff-file - --fail-on-issues`
+
+This intentionally differs from the PR audit:
+
+- local pre-commit only checks staged hunks
+- local pre-commit uses `--gate all`, which skips Fallow's base-snapshot attribution pass and avoids the temporary git worktrees created by `new-only` audits
+- PR and manual full audits can still use the baseline-aware `new-only` flow

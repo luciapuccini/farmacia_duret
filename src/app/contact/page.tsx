@@ -5,6 +5,12 @@ import styles from "./contact.module.scss";
 const description =
 	"Dirección, teléfono, horarios y preguntas frecuentes de Farmacia Duret en Villa Rosa, Pilar del Este.";
 
+const googleMapsUrl =
+	"https://www.google.com/maps/place/Farmacia+Duret/@-34.4064716,-58.8588412,17z/data=!3m1!4b1!4m6!3m5!1s0x95bc9dc88cd56f9d:0x2f17665d565396da!8m2!3d-34.4064761!4d-58.8562663!16s%2Fg%2F11xkrnpz6y?entry=ttu&g_ep=EgoyMDI2MDIyNC4wIKXMDSoASAFQAw%3D%3D";
+
+const googleMapsEmbedUrl =
+	"https://www.google.com/maps?q=Farmacia%20Duret%2C%20E.%20Casella%201743%2C%20Villa%20Rosa%2C%20Buenos%20Aires&z=16&output=embed";
+
 export const metadata: Metadata = {
 	title: "Contacto | Farmacia Duret",
 	description,
@@ -93,85 +99,6 @@ export default function ContactoPage() {
 
 						<div className={styles.contactGrid}>
 							<div className={styles.contactInfo}>
-								<div className={styles.contactCard}>
-									<div className={styles.contactCardIcon}>
-										<svg
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										>
-											<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-											<circle cx="12" cy="10" r="3" />
-										</svg>
-									</div>
-									<div>
-										<h4>Dirección</h4>
-										<p>
-											Pilar del Este, E. Casella 1743 B1631 Villa Rosa Provincia
-											de Buenos Aires, Argentina
-										</p>
-									</div>
-								</div>
-
-								<div className={styles.contactCard}>
-									<div className={`${styles.contactCardIcon} ${styles.mint}`}>
-										<svg
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										>
-											<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-										</svg>
-									</div>
-									<div>
-										<h4>Teléfono</h4>
-										<p>
-											<a href="tel:+541178942852">+54 11 7894 2852</a>
-										</p>
-									</div>
-								</div>
-
-								<div className={styles.scheduleCard}>
-									<h3>
-										<span className={styles.dotLive}></span>
-										Horarios de atención
-									</h3>
-									<div className={styles.scheduleRow}>
-										<span className={styles.day}>Lunes</span>
-										<span className={styles.time}>8:00 – 20:00</span>
-									</div>
-									<div className={styles.scheduleRow}>
-										<span className={styles.day}>Martes</span>
-										<span className={styles.time}>8:00 – 20:00</span>
-									</div>
-									<div className={styles.scheduleRow}>
-										<span className={styles.day}>Miércoles</span>
-										<span className={styles.time}>8:00 – 20:00</span>
-									</div>
-									<div className={styles.scheduleRow}>
-										<span className={styles.day}>Jueves</span>
-										<span className={styles.time}>8:00 – 20:00</span>
-									</div>
-									<div className={styles.scheduleRow}>
-										<span className={styles.day}>Viernes</span>
-										<span className={styles.time}>8:00 – 20:00</span>
-									</div>
-									<div className={styles.scheduleRow}>
-										<span className={styles.day}>Sábado</span>
-										<span className={styles.time}>8:00 – 20:00</span>
-									</div>
-									<div className={`${styles.scheduleRow} ${styles.closed}`}>
-										<span className={styles.day}>Domingo</span>
-										<span className={styles.time}>Cerrado</span>
-									</div>
-								</div>
-
 								<div className={styles.socialRow}>
 									<a
 										href="https://www.instagram.com/farmacia_duret"
@@ -229,27 +156,95 @@ export default function ContactoPage() {
 										<div>WhatsApp</div>
 									</a>
 								</div>
+
+								<div className={styles.contactCard}>
+									<div className={styles.contactCardIcon}>
+										<svg
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										>
+											<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+											<circle cx="12" cy="10" r="3" />
+										</svg>
+									</div>
+									<div>
+										<h4>Dirección</h4>
+										<p>
+											Pilar del Este, E. Casella 1743 B1631 Villa Rosa Provincia
+											de Buenos Aires, Argentina
+										</p>
+									</div>
+								</div>
+
+								<div className={styles.scheduleCard}>
+									<h3>
+										<span className={styles.dotLive}></span>
+										Horarios de atención
+									</h3>
+									<div className={styles.scheduleRow}>
+										<span className={styles.day}>Lunes</span>
+										<span className={styles.time}>8:00 – 20:00</span>
+									</div>
+									<div className={styles.scheduleRow}>
+										<span className={styles.day}>Martes</span>
+										<span className={styles.time}>8:00 – 20:00</span>
+									</div>
+									<div className={styles.scheduleRow}>
+										<span className={styles.day}>Miércoles</span>
+										<span className={styles.time}>8:00 – 20:00</span>
+									</div>
+									<div className={styles.scheduleRow}>
+										<span className={styles.day}>Jueves</span>
+										<span className={styles.time}>8:00 – 20:00</span>
+									</div>
+									<div className={styles.scheduleRow}>
+										<span className={styles.day}>Viernes</span>
+										<span className={styles.time}>8:00 – 20:00</span>
+									</div>
+									<div className={styles.scheduleRow}>
+										<span className={styles.day}>Sábado</span>
+										<span className={styles.time}>8:00 – 20:00</span>
+									</div>
+									<div className={`${styles.scheduleRow} ${styles.closed}`}>
+										<span className={styles.day}>Domingo</span>
+										<span className={styles.time}>Cerrado</span>
+									</div>
+								</div>
+								<div className={styles.contactCard}>
+									<div className={`${styles.contactCardIcon} ${styles.mint}`}>
+										<svg
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										>
+											<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+										</svg>
+									</div>
+									<div>
+										<h4>Teléfono</h4>
+										<p>
+											<a href="tel:+541178942852">+54 11 7894 2852</a>
+										</p>
+									</div>
+								</div>
 							</div>
 
 							<div className={styles.mapSlot}>
-								<div className={styles.mapPlaceholder}>
-									<div className={styles.mapPin}>
-										<div className={styles.mapPinIcon}>
-											<svg
-												viewBox="0 0 24 24"
-												fill="none"
-												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-											>
-												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-												<circle cx="12" cy="10" r="3" />
-											</svg>
-										</div>
-										<span>E. Casella 1743, Villa Rosa</span>
-									</div>
-								</div>
+								<iframe
+									title="Google Maps - Farmacia Duret"
+									src={googleMapsEmbedUrl}
+									loading="lazy"
+									allowFullScreen
+									referrerPolicy="no-referrer-when-downgrade"
+									className={styles.mapFrame}
+								/>
 								<div className={styles.mapBar}>
 									<svg
 										width="14"
@@ -264,7 +259,13 @@ export default function ContactoPage() {
 										<circle cx="12" cy="12" r="10" />
 										<polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
 									</svg>
-									<a href="#">Abrir en Google Maps →</a>
+									<a
+										href={googleMapsUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Abrir en Google Maps →
+									</a>
 								</div>
 							</div>
 						</div>

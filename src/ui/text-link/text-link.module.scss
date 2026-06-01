@@ -1,0 +1,19 @@
+@use '@/globals' as g;
+
+.link {
+  color: var(--blue-700);
+  font-weight: var(--font-weight-strong);
+  text-decoration: none;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+
+  &:hover {
+    color: var(--blue-700);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus-ring);
+    border-radius: var(--radius-sm);
+  }
+}

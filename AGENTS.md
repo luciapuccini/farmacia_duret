@@ -27,6 +27,9 @@ Pages live in the `src/app/` directory using Next.js file-system routing:
 
 Each page has its `.module.scss` file alongside it in the same directory.
 
+### pages components
+we use pages (groups) to have an organize way of co-living the actual route with it's dependencies (mainly components)
+
 ### Component Structure
 Every component follows the same named-folder structure:
 

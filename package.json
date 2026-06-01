@@ -7,6 +7,7 @@
 		"build": "next build",
 		"dev": "next dev",
 		"fallow:audit": "fallow audit",
+		"fallow:precommit": "git diff --cached --unified=0 --no-ext-diff --relative | fallow audit --gate all --diff-file - --fail-on-issues",
 		"fallow": "fallow audit",
 		"lint": "eslint .",
 		"start": "next start",
