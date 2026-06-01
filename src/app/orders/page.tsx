@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TextLink } from "@/ui";
 import { COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from "@/utils/countryCodes";
 import InfoPanel from "./components/InfoPanel/InfoPanel";
 import styles from "./orders.module.scss";
@@ -171,9 +172,9 @@ export default function ReservasPage() {
 							Podés enviar hasta {MAX_PER_DAY} encargos por día. Volvé mañana o
 							comunicate con nosotros directamente por teléfono.
 						</p>
-						<a href="tel:+541178942852" className={styles.limitPhone}>
+						<TextLink href="tel:+541178942852" className={styles.limitPhone}>
 							+54 11 7894 2852
-						</a>
+						</TextLink>
 					</div>
 				</section>
 			</div>
@@ -349,7 +350,9 @@ export default function ReservasPage() {
 						/>
 						<span>
 							Acepto el{" "}
-							<a href="/privacidad" className={styles.consentLink}>aviso de privacidad</a>{" "}
+							<TextLink href="/privacidad" className={styles.consentLink}>
+								aviso de privacidad
+							</TextLink>{" "}
 							y autorizo el uso de mi receta para preparar mi pedido.
 						</span>
 					</label>

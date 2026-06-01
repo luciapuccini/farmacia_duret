@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { TextLink } from "@/ui";
 import { safeJsonLd } from "@/utils/safeJsonLd";
 import styles from "./contact.module.scss";
 
@@ -230,7 +231,9 @@ export default function ContactoPage() {
 									<div>
 										<h4>Teléfono</h4>
 										<p>
-											<a href="tel:+541178942852">+54 11 7894 2852</a>
+											<TextLink href="tel:+541178942852" className={styles.contactLink}>
+												+54 11 7894 2852
+											</TextLink>
 										</p>
 									</div>
 								</div>
@@ -259,13 +262,14 @@ export default function ContactoPage() {
 										<circle cx="12" cy="12" r="10" />
 										<polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
 									</svg>
-									<a
+									<TextLink
 										href={googleMapsUrl}
 										target="_blank"
 										rel="noopener noreferrer"
+										className={styles.mapLink}
 									>
 										Abrir en Google Maps →
-									</a>
+									</TextLink>
 								</div>
 							</div>
 						</div>

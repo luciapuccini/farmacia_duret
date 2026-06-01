@@ -1,3 +1,5 @@
+import { TextLink } from "@/ui";
+
 import styles from "./InfoPanel.module.scss";
 
 const steps = [
@@ -72,7 +74,9 @@ export default function InfoPanel() {
 					</span>
 					<span>
 						<b>¿Preferís llamar?</b>
-						<a href="tel:+541178942852" className={styles.phone}>+54 11 7894 2852</a>
+						<TextLink href="tel:+541178942852" className={styles.phone}>
+							+54 11 7894 2852
+						</TextLink>
 					</span>
 				</div>
 
