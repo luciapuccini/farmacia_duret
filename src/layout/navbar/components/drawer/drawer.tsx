@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import categories from "@/services/catalog/data/categories.json";
+import { NavLink } from "@/ui";
 import { nameToSlug } from "@/utils/nameToSlug";
 import styles from "./drawer.module.scss";
 
@@ -67,12 +68,6 @@ function ChevronRight() {
 	);
 }
 
-function drawerButtonClass(isActive: boolean) {
-	return isActive
-		? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
-		: styles.drawerItemButton;
-}
-
 function ToggleChevron({ isOpen }: { isOpen: boolean }) {
 	return isOpen ? <ChevronDown /> : <ChevronRight />;
 }
@@ -96,13 +91,14 @@ function TopLevelDrawerItem({
 }) {
 	return (
 		<div className={styles.drawerItemHeader}>
-			<Link
+			<NavLink
 				href={categoryPath}
-				className={drawerButtonClass(isActive(categoryPath))}
+				active={isActive(categoryPath)}
 				onClick={onNavigate}
+				variant="drawer"
 			>
 				{category.name}
-			</Link>
+			</NavLink>
 
 			{hasSubcategories && (
 				<button
@@ -137,14 +133,15 @@ function SecondLevelDrawerItem({
 	const href = `${parentPath}/${categoryPath}`;
 
 	return (
-		<Link
+		<NavLink
 			href={href}
-			className={drawerButtonClass(isActive(href))}
+			active={isActive(href)}
 			onClick={onNavigate}
+			variant="drawer"
 		>
 			{category.name}
 			{hasSubcategories && <ChevronRight />}
-		</Link>
+		</NavLink>
 	);
 }
 
@@ -167,17 +164,17 @@ function DeepDrawerItem({
 }) {
 	if (!hasSubcategories) {
 		return (
-			<Link
+			<NavLink
 				href={
 					category.name === "Ver todos los productos"
 						? parentPath
 						: `${parentPath}?f=${categoryPath.slice(1)}`
 				}
-				className={styles.drawerItemButton}
 				onClick={onNavigate}
+				variant="drawer"
 			>
 				{category.name}
-			</Link>
+			</NavLink>
 		);
 	}
 
@@ -327,22 +324,20 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
 						/>
 					))}
 					<div className={styles.drawerItem} data-depth={0}>
-						<Link
+						<NavLink
 							href="/contact"
-							className={
-								pathname === "/contact"
-									? `${styles.drawerItemButton} ${styles.drawerItemButtonActive}`
-									: styles.drawerItemButton
-							}
+							active={pathname === "/contact"}
 							onClick={onClose}
+							variant="drawer"
 						>
 							Contacto
-						</Link>
+						</NavLink>
 					</div>
 				</nav>
 
 				{/* Footer CTA */}
 				<div className={styles.drawerFooter}>
+					{/* TODO: Revisit CTA-styled navigation links once their shared semantics are clearer. */}
 					<Link href="/orders" className={styles.drawerCta} onClick={onClose}>
 						Hacer un encargo
 					</Link>

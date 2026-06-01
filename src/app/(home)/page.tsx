@@ -23,6 +23,7 @@ export default function HomePage() {
 						Encargá online y retirá en sucursal.
 					</p>
 					<div className={styles.heroCtas}>
+						{/* TODO: Revisit CTA-styled navigation links once their shared semantics are clearer. */}
 						<Link href="/offers" className={styles.ctaPrimary}>
 							Ver ofertas
 						</Link>

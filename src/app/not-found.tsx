@@ -9,6 +9,7 @@ export default function NotFound() {
       <p className={styles.description}>
         La página que buscás no existe o fue movida a otra dirección.
       </p>
+      {/* TODO: Revisit CTA-styled navigation links once their shared semantics are clearer. */}
       <Link href="/" className={styles.link}>
         Volver al inicio
       </Link>
