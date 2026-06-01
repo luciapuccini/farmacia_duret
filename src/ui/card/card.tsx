@@ -17,6 +17,7 @@ export default function Card({
 }: Props) {
 	return (
 		<div
+			role="presentation"
 			{...props}
 			className={cx(styles.card, interactive && styles.interactive, className)}
 		>

@@ -25,9 +25,7 @@ export default function Chip({
 			className={cx(styles.chip, selected && styles.selected, className)}
 		>
 			<span>{children}</span>
-			{count !== undefined ? (
-				<span className={styles.count}>{count}</span>
-			) : null}
+			{count && <span className={styles.count}>{count}</span>}
 		</button>
 	);
 }
