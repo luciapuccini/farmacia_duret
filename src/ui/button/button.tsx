@@ -1,27 +1,29 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
-
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cx } from "@/ui/utils/cx";
-
 import styles from "./button.module.scss";
 
-type ButtonVariant = "primary" | "secondary";
+type Variant = "primary" | "secondary";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+type BaseProps = {
 	children: ReactNode;
-	variant?: ButtonVariant;
+	variant?: Variant;
 };
 
-export default function Button({
-	children,
-	className,
-	type = "button",
-	variant = "primary",
-	...props
-}: Props) {
+type ButtonProps = ComponentPropsWithoutRef<"button"> & BaseProps;
+
+export default function Button(props: ButtonProps) {
+	const {
+		variant = "primary",
+		className,
+		children,
+		type = "button",
+		...buttonProps
+	} = props;
+
 	return (
 		<button
-			{...props}
 			type={type}
+			{...buttonProps}
 			className={cx(styles.button, styles[variant], className)}
 		>
 			{children}

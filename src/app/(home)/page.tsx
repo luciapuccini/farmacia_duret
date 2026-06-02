@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CatalogSection from "@/app/(home)/components/CatalogSection/CatalogSection";
 import HeroVisual from "@/app/(home)/components/HeroVisual/HeroVisual";
+import { TextLink } from "@/ui";
 import styles from "./home.module.scss";
 
 const phone = "7894 2852";
@@ -24,12 +25,11 @@ export default function HomePage() {
 						Encargá online y retirá en sucursal.
 					</p>
 					<div className={styles.heroCtas}>
-						<Link href="/offers" className={styles.ctaPrimary}>
+						<TextLink href="/offers" variant="secondary">
 							Ver ofertas
-						</Link>
-						<Link href="/orders" className={styles.ctaSecondary}>
-							Hacer un encargo
-						</Link>
+						</TextLink>
+
+						<TextLink href="/orders">Hacer un encargo</TextLink>
 					</div>
 
 					<div className={styles.trustRow}>
