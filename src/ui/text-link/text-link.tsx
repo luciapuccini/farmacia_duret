@@ -1,16 +1,28 @@
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 import { cx } from "@/ui/utils/cx";
 
 import styles from "./text-link.module.scss";
 
-type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
+type Variant = "primary" | "secondary";
+
+type Props = ComponentPropsWithoutRef<"a"> & {
 	children: ReactNode;
+	variant?: Variant;
+	href: string;
 };
 
-export default function TextLink({ children, className, ...props }: Props) {
+export default function TextLink({
+	variant = "primary",
+	children,
+	className,
+	href,
+	...props
+}: Props) {
+	const linkClassName = cx(styles.link, styles[variant], className);
+
 	return (
-		<a {...props} className={cx(styles.link, className)}>
+		<a {...props} href={href} className={linkClassName}>
 			{children}
 		</a>
 	);

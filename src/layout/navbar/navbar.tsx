@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import categories from "@/services/catalog/data/categories.json";
+import { NavLink } from "@/ui";
 import { nameToSlug } from "@/utils/nameToSlug";
 
 import Drawer from "./components/drawer/drawer";
@@ -13,18 +14,6 @@ type Category = {
 	name: string;
 	subcategories?: Category[];
 };
-
-function subnavLinkClass(depth: number, isActive: boolean) {
-	if (depth === 0) {
-		return isActive
-			? `${styles.subnavLink} ${styles.subnavLinkActive}`
-			: styles.subnavLink;
-	}
-
-	return isActive
-		? `${styles.dropdownLink} ${styles.dropdownLinkActive}`
-		: styles.dropdownLink;
-}
 
 function subnavHref(
 	category: Category,
@@ -62,8 +51,6 @@ function SubnavItem({
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
 	const href = subnavHref(category, categoryPath, depth, parentPath);
-	const linkClass =
-		depth === 2 ? styles.dropdownLink : subnavLinkClass(depth, isActive(href));
 	const childParentPath =
 		depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
 
@@ -73,9 +60,13 @@ function SubnavItem({
 			onMouseEnter={() => hasSubcategories && setIsOpen(true)}
 			onMouseLeave={() => setIsOpen(false)}
 		>
-			<Link href={href} className={linkClass}>
+			<NavLink
+				href={href}
+				active={depth < 2 && isActive(href)}
+				variant={depth === 0 ? "subnav" : "dropdown"}
+			>
 				{category.name}
-			</Link>
+			</NavLink>
 
 			{hasSubcategories && isOpen && (
 				<ul className={dropdownClass(depth)}>
@@ -139,29 +130,24 @@ export default function Navbar() {
 					</Link>
 
 					<nav className={styles.navLinks} aria-label="Navegación principal">
-						<Link
+						<NavLink
 							href="/"
-							className={
-								pathname === "/"
-									? `${styles.navLink} ${styles.navLinkActive}`
-									: styles.navLink
-							}
+							active={pathname === "/"}
+							variant="nav"
 						>
 							Catálogo
-						</Link>
-						<Link
+						</NavLink>
+						<NavLink
 							href="/contact"
-							className={
-								isActive("/contact")
-									? `${styles.navLink} ${styles.navLinkActive}`
-									: styles.navLink
-							}
+							active={isActive("/contact")}
+							variant="nav"
 						>
 							Contacto
-						</Link>
+						</NavLink>
 					</nav>
 
 					<div className={styles.navActions}>
+						{/* TODO: Revisit CTA-styled navigation links once their shared semantics are clearer. */}
 						<Link href="/orders" className={styles.navEncargo}>
 							<svg
 								width="15"
@@ -203,23 +189,21 @@ export default function Navbar() {
 				{/* ── Sub-nav ribbon — desktop only ────────────── */}
 				<nav className={styles.subnav} aria-label="Categorías">
 					<div className={styles.subnavInner}>
-						<Link
+						<NavLink
 							href="/#catalogo"
 							onClick={handleCatalogClick}
-							className={
-								pathname === "/"
-									? `${styles.subnavLink} ${styles.subnavLinkActive}`
-									: styles.subnavLink
-							}
+							active={pathname === "/"}
+							variant="subnav"
 						>
 							Todo el catálogo
-						</Link>
+						</NavLink>
 						<span className={styles.subnavDivider} aria-hidden="true" />
 						<ul className={styles.subnavList}>
 							{subnavCategories.map((cat) => (
 								<SubnavItem key={cat.name} category={cat} pathname={pathname} />
 							))}
 						</ul>
+						{/* TODO: Keep the Ofertas promo link local until it clearly fits an existing UI link primitive. */}
 						<Link href="/offers" className={styles.subnavCta}>
 							<span className={styles.subnavCtaDot} aria-hidden="true" />
 							Ofertas

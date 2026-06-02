@@ -364,10 +364,7 @@
 }
 
 .consentLink {
-  color: var(--blue-700);
-  font-weight: 600;
   border-bottom: 1px solid var(--blue-500);
-  text-decoration: none;
 }
 
 /* ── Actions ────────────────────────────────────────────── */
@@ -488,13 +485,6 @@
 
 .limitPhone {
   font-size: 15px;
-  font-weight: 700;
-  color: var(--blue-700);
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 /* ── WhatsApp handoff sent state ────────────────────────── */

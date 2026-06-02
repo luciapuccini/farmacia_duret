@@ -33,6 +33,10 @@ Initial backbone:
 9. `Chip`
 10. `Badge`
 
+Existing primitive already in the codebase:
+
+- `Icon`
+
 Deferred for later:
 
 - `Select`
@@ -42,6 +46,19 @@ Deferred for later:
 
 These are deferred because the current styles are either concentrated in one place, more behavior-heavy, or not yet repeated enough.
 
+## Link Taxonomy
+
+- `TextLink` is for inline and support links that read like text inside content.
+- `NavLink` is for internal navigation items rendered with `next/link`.
+- CTA-styled `Link` usages stay local for now until they clearly fit one of those primitives.
+
+Current local TODOs for CTA-styled links:
+
+- `src/app/(home)/page.tsx` hero CTAs
+- `src/layout/navbar/navbar.tsx` `navEncargo` and `subnavCta`
+- `src/layout/navbar/components/drawer/drawer.tsx` `drawerCta`
+- `src/app/not-found.tsx` return link
+
 ## Component Matrix
 
 | Component | Purpose | Current source styles | Shared shape to preserve | Minimal variants | Explicitly not included yet |
@@ -49,7 +66,7 @@ These are deferred because the current styles are either concentrated in one pla
 | `Button` | Primary call-to-action and secondary action control | `src/app/(home)/home.module.scss` `.ctaPrimary` `.ctaSecondary`; `src/app/orders/orders.module.scss` `.btnPrimary` `.btnGhost`; `src/layout/navbar/components/drawer/drawer.module.scss` `.drawerCta`; `src/layout/navbar/navbar.module.scss` `.navEncargo`; `src/app/not-found.module.scss` `.link` | Inline-flex action, strong label, rounded button radius, consistent hover/active motion | `primary`, `secondary` | Pill-only marketing treatments, nav-only links, icon-only controls |
 | `Card` | Default bordered surface for repeated content blocks and clickable catalog tiles | `src/app/offers/offers.module.scss` `.card`; `src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss` `.card`; `src/app/(catalog)/[category]/[subcategory]/components/ProductCatalog/ProductCatalog.module.scss` `.card`; `src/app/(home)/components/CatalogSection/CatalogSection.module.scss` `.cat`; `src/app/contact/contact.module.scss` `.contactCard` `.scheduleCard` `.faqItem` | White/background surface, `1px` border, rounded corners, internal spacing, optional hover elevation for interactive usage | `interactive` | Product media layout, badges, arrows, complex static panels |
 | `TextLink` | Inline links inside paragraphs, labels, helper copy, and support content | `src/app/orders/orders.module.scss` `.consentLink` `.limitPhone`; `src/app/contact/contact.module.scss` nested `a`; `src/app/orders/components/InfoPanel/InfoPanel.module.scss` `.phone` | Text emphasis, blue/ink link color, clear hover affordance | none | Navigation hit-area links, CTA links styled like buttons |
-| `NavLink` | Navigation links with a padded hit area and active state | `src/layout/navbar/navbar.module.scss` `.navLink` `.subnavLink` `.dropdownLink`; `src/layout/navbar/components/drawer/drawer.module.scss` `.drawerItemButton` | Compact padded control, rounded corners, active state, ink-to-blue hover | `active` state only | CTA nav buttons, brand lockup, dropdown containers |
+| `NavLink` | Internal navigation links with a padded hit area and active state | `src/layout/navbar/navbar.module.scss` `.navLink` `.subnavLink` `.dropdownLink`; `src/layout/navbar/components/drawer/drawer.module.scss` `.drawerItemButton` | Compact padded control, rounded corners, active state, ink-to-blue hover | `active` state only | CTA nav buttons, brand lockup, dropdown containers |
 | `Field` | Standard field wrapper for label, hint, error and control composition | `src/app/orders/orders.module.scss` `.field` `.label` `.hint` `.fieldError` `.req` `.optional` | Vertical stack, compact label rhythm, helper and error text slots | none | Layout rows, section titles, grouped step headers |
 | `Input` | Single-line text input | `src/app/orders/orders.module.scss` `.input`; `src/app/orders/orders.module.scss` `.phoneRow input`; `src/app/dashboard/dashboard.module.scss` input styles if later aligned | White background, line border, button radius, blue focus ring, placeholder treatment | none | Compound phone prefix, search-only wrappers, icon wrapper behavior |
 | `Textarea` | Multi-line text input | `src/app/orders/orders.module.scss` `.textarea` | Same visual system as `Input`, larger vertical space, resize behavior | none | Character count and page-specific validation messaging |
@@ -158,6 +175,7 @@ Include now:
 - padded hit area
 - hover state
 - active state
+- `next/link` rendering for internal navigation
 
 Variants:
 - none
@@ -169,6 +187,7 @@ States:
 
 Rules:
 - keep the component narrow in scope: only the clickable item style
+- `SubnavItem` and other internal navigation items should use `NavLink`
 - dropdown shells, drawer sections, separators, and CTA nav items stay outside
 
 Do not include yet:
