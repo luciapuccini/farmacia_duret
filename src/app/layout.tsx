@@ -1,10 +1,10 @@
 import "./reset.scss";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/config/site";
-import Container from "@/layout/container/container";
 import Footer from "@/layout/footer/footer";
 import Navbar from "@/layout/navbar/navbar";
 import PromoBanner from "@/layout/PromoBanner/PromoBanner";
+import Container from "@/ui/container/container";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(SITE_URL),

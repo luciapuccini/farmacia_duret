@@ -1,17 +1,16 @@
 @use '@/globals' as g;
 
-.page {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  padding-bottom: 1rem;
+.page section {
+  padding: 0.5rem 0;
+
+  @include g.up(md) {
+    padding: 3rem 0;
+
+  }
 }
 
-/* ── Hero ──────────────────────────────────────────────────── */
 
 .hero {
-  margin: -1.5rem -1rem 0;
-  padding: 3.5rem 1rem 3rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
@@ -19,11 +18,11 @@
   position: relative;
 
   @include g.up(md) {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3.5rem;
     margin: -2.5rem -2rem 0;
     padding: 5rem 2rem 4.5rem;
-    grid-template-columns: 1.05fr 0.95fr;
     align-items: center;
-    gap: 3.5rem;
   }
 }
 
@@ -96,6 +95,7 @@
   margin-top: 0.25rem;
 }
 
+// FIXME: ctas probably should be standardized 
 .ctaPrimary {
   display: inline-flex;
   align-items: center;
@@ -120,6 +120,7 @@
   }
 }
 
+// FIXME: ctas probably should be standardized 
 .ctaSecondary {
   display: inline-flex;
   align-items: center;
@@ -139,7 +140,7 @@
   }
 }
 
-/* Trust row */
+
 .trustRow {
   display: flex;
   gap: 1.5rem;
@@ -190,24 +191,23 @@
   }
 }
 
-/* ── Info strip ────────────────────────────────────────────── */
 
 .infoStrip {
   background: var(--bg-soft);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 20px 1rem;
-  margin: 0 -1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1.5em 1rem;
+  margin: 1em -1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 1.5em;
   flex-wrap: wrap;
 
   @include g.up(md) {
-    padding: 20px 2rem;
-    margin: 0 -2rem;
-    gap: 32px;
+    padding: 1.5em 2rem;
+    margin: 2em -2rem;
+    gap: 2em;
   }
 }
 
@@ -269,4 +269,3 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-

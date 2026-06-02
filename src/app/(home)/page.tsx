@@ -10,6 +10,7 @@ export default function HomePage() {
 		<div className={styles.page}>
 			<section className={styles.hero}>
 				<div className={styles.heroContent}>
+					{/* FIXME: could extract eyebrow to a separate component */}
 					<p className={styles.heroEyebrow}>
 						<span className={styles.heroEyebrowDot} aria-hidden="true" />
 						Farmacia Duret · Villa Rosa
@@ -23,7 +24,6 @@ export default function HomePage() {
 						Encargá online y retirá en sucursal.
 					</p>
 					<div className={styles.heroCtas}>
-						{/* TODO: Revisit CTA-styled navigation links once their shared semantics are clearer. */}
 						<Link href="/offers" className={styles.ctaPrimary}>
 							Ver ofertas
 						</Link>
@@ -102,7 +102,7 @@ export default function HomePage() {
 				</div>
 			</section>
 
-			<div className={styles.infoStrip}>
+			<div role="presentation" className={styles.infoStrip}>
 				<div className={styles.infoMsg}>
 					<span className={styles.infoIcon} aria-hidden="true">
 						<svg
