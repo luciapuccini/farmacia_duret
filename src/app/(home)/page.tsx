@@ -1,4 +1,3 @@
-import Link from "next/link";
 import CatalogSection from "@/app/(home)/components/CatalogSection/CatalogSection";
 import HeroVisual from "@/app/(home)/components/HeroVisual/HeroVisual";
 import { TextLink } from "@/ui";
