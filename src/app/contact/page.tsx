@@ -231,7 +231,7 @@ export default function ContactoPage() {
 									<div>
 										<h4>Teléfono</h4>
 										<p>
-											<TextLink href="tel:+541178942852" className={styles.contactLink}>
+											<TextLink href="tel:+541178942852">
 												+54 11 7894 2852
 											</TextLink>
 										</p>
@@ -266,7 +266,6 @@ export default function ContactoPage() {
 										href={googleMapsUrl}
 										target="_blank"
 										rel="noopener noreferrer"
-										className={styles.mapLink}
 									>
 										Abrir en Google Maps →
 									</TextLink>

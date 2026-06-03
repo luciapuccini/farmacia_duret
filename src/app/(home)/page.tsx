@@ -28,7 +28,9 @@ export default function HomePage() {
 							Ver ofertas
 						</TextLink>
 
-						<TextLink href="/orders">Hacer un encargo</TextLink>
+						<TextLink href="/orders" variant="primary">
+							Hacer un encargo
+						</TextLink>
 					</div>
 
 					<div className={styles.trustRow}>

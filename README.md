@@ -64,7 +64,7 @@ npm run deploy
 1. Builds the Next.js app via the OpenNext Cloudflare adapter (outputs to `.open-next/`)
 2. Deploys the Worker and uploads static assets to Cloudflare
 
-The live site URL is `https://farmacia-duret.puccinilucia.workers.dev`.
+The live site URL is `https://farmaciaduret.online`.
 
 ---
 
@@ -100,51 +100,27 @@ To rotate the verify token, generate a new value, update Cloudflare, update Meta
 
 ```
 src/
-  app/                  # Next.js App Router pages and API routes
-    api/whatsapp/       # Meta order send route, webhook verification, and event receiver
-    orders/             # Order form page
-    [category]/         # Dynamic catalog pages
-  components/           # Shared UI components
-  layout/               # Navbar, Footer, PromoBanner, Container
-  data/                 # Local JSON catalog fixtures
-  utils/                # Shared utilities such as slug helpers and JSON-LD safety
+  app/                    # App Router routes, route groups, and API handlers
+    (home)/               # Home page and page-local components
+    (catalog)/            # Catalog category and subcategory routes
+    contact/              # Contact page
+    offers/               # Offers page
+    orders/               # Order form page
+    api/whatsapp/         # WhatsApp order route and webhook handlers
+  ui/                     # Reusable UI primitives
+    layout/               # Shared layout components like navbar and footer
+  services/               # Integrations and server/client service modules
+  utils/                  # Shared utilities such as slug helpers and JSON-LD safety
+  config/                 # Centralized app configuration
+  tests/                  # Test setup and automated tests
 ```
-
-
-## Using cloudflare & env settings
-
-local dev config lives in `.env.local` 
-
-`.dev.vars` is cloudflare config, not available in next.js runtime
 
 ---
 
 ## Testing
-
-Three levels, two runners.
 
 | Level | What it tests | Command |
 | --- | --- | --- |
 | Unit | Pure logic (helpers, utils) | `npm test` |
 | Integration | Module boundaries — API modules | `npm test` |
 | E2E | Full browser flow against a running dev server | `npm run test:e2e` |
-
-### Unit & integration (Vitest)
-
-```bash
-npm test
-```
-
-No network calls — external dependencies are mocked via `vi.mock()` and JSON fixtures in `src/tests/fixtures/`.
-
-### E2E (Playwright)
-
-```bash
-npm run test:e2e
-```
-
-Starts `next dev` automatically, then drives real Chromium. For the interactive debugger:
-
-```bash
-npm run test:e2e:ui
-```
