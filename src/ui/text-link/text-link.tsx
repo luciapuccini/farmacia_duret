@@ -13,14 +13,19 @@ type Props = ComponentPropsWithoutRef<"a"> & {
 };
 
 export default function TextLink({
-	variant = "primary",
+	variant,
 	children,
 	className,
 	href,
 	...props
 }: Props) {
-	const linkClassName = cx(styles.link, styles[variant], className);
-
+	const defaultLinkStyles = cx(styles.link, className);
+	const asButtonStyles = cx(
+		styles.button,
+		variant && styles[variant],
+		className,
+	);
+	const linkClassName = variant ? asButtonStyles : defaultLinkStyles;
 	return (
 		<a {...props} href={href} className={linkClassName}>
 			{children}

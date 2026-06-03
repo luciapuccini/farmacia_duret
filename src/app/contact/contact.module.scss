@@ -87,13 +87,7 @@
 
 }
 
-.contactLink {
-  color: var(--ink-900);
 
-  &:hover {
-    color: var(--blue-700);
-  }
-}
 
 .contactCardIcon {
   width: 40px;
@@ -145,8 +139,15 @@
 }
 
 @keyframes livePulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.45; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
 }
 
 .scheduleRow {
@@ -157,7 +158,9 @@
   border-bottom: 1px solid var(--line-2);
   font-size: 0.875rem;
 
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .day {
@@ -227,9 +230,6 @@
 
 }
 
-.mapLink {
-  color: var(--blue-700);
-}
 
 // ── Intro ─────────────────────────────────────────────────────
 

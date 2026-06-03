@@ -1,6 +1,15 @@
 @use '@/globals' as g;
 
+
 .link {
+  color: var(--ink-900);
+
+  &:hover {
+    color: var(--blue-700);
+  }
+}
+
+.button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
