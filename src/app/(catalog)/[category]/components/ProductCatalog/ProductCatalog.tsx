@@ -1,5 +1,6 @@
 import categories from "@/services/catalog/data/categories.json";
 import productsData from "@/services/catalog/data/products.json";
+import { TCatalogUrlParams } from "@/types/types";
 import { nameToSlug } from "@/utils/nameToSlug";
 import styles from "./ProductCatalog.module.scss";
 
@@ -84,7 +85,7 @@ function ProductCard({ product }: { product: Product }) {
 }
 
 type Props = {
-	url: { [key: string]: string };
+	url: TCatalogUrlParams;
 };
 
 export default function ProductCatalog({ url }: Props) {
