@@ -1,31 +1,29 @@
-import Link from "next/link";
-import {
-	ComponentProps,
-	ComponentPropsWithoutRef,
-	ComponentPropsWithRef,
-} from "react";
-import { nameToSlug } from "@/utils/nameToSlug";
-
+import type { ComponentPropsWithRef } from "react";
+import type { TCategory } from "@/types/types";
+import CollapsibleSection from "../CollapsibleSection/collapsibleSection";
 import styles from "./CategoryFilters.module.scss";
 
-type TCategoryFiltersProps = ComponentPropsWithRef<"aside"> & {};
+type TCategoryFiltersProps = ComponentPropsWithRef<"aside"> & {
+	category: TCategory;
+};
 
-function CategoryFilters(args: TCategoryFiltersProps) {
+function CategoryFilters({ category }: TCategoryFiltersProps) {
+	console.log("🚀 ~ category:", category);
 	/*
 	FIXME: move as down as possible --> checkbox
 	const router = useRouter();
 	const pathname = usePathname();
 	console.log("🚀 ~ searchParams:", router, pathname); */
+
 	return (
 		<aside className={styles.sidebar}>
-			{[1, 2, 3].map((sc) => {
-				return (
-					<details key={"2"}>
-						<summary> title</summary>
-						content
-					</details>
-				);
-			})}
+			{category.subcategories ? (
+				category.subcategories.map((sc) => {
+					return <CollapsibleSection key={sc.name} subcategory={sc} />;
+				})
+			) : (
+				<p>nada...</p>
+			)}
 		</aside>
 	);
 }

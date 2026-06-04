@@ -7,64 +7,64 @@
 		"subcategories": [
 			{
 				"name": "Rostro",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Anti Edad",
-						"url": "/dermocosmetica/rostro/anti-edad"
+						"url": "/dermocosmetica?sc=rostro&f=anti-edad"
 					},
 					{
 						"name": "Anti Manchas",
-						"url": "/dermocosmetica/rostro/anti-manchas"
+						"url": "/dermocosmetica?sc=rostro&f=anti-manchas"
 					},
 					{
 						"name": "Hidratación",
-						"url": "/dermocosmetica/rostro/hidratacion"
+						"url": "/dermocosmetica?sc=rostro&f=hidratacion"
 					},
 					{
 						"name": "Limpieza",
-						"url": "/dermocosmetica/rostro/limpieza"
+						"url": "/dermocosmetica?sc=rostro&f=limpieza"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/dermocosmetica/rostro/ver-todos-los-productos"
+						"url": "/dermocosmetica?sc=rostro&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Corporal",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Cicatrizantes",
-						"url": "/dermocosmetica/corporal/cicatrizantes"
+						"url": "/dermocosmetica?sc=corporal&f=cicatrizantes"
 					},
 					{
 						"name": "Higiene",
-						"url": "/dermocosmetica/corporal/higiene"
+						"url": "/dermocosmetica?sc=corporal&f=higiene"
 					},
 					{
 						"name": "Piel Atópica",
-						"url": "/dermocosmetica/corporal/piel-atopica"
+						"url": "/dermocosmetica?sc=corporal&f=piel-atopica"
 					},
 					{
 						"name": "Piel Seca",
-						"url": "/dermocosmetica/corporal/piel-seca"
+						"url": "/dermocosmetica?sc=corporal&f=piel-seca"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/dermocosmetica/corporal/ver-todos-los-productos"
+						"url": "/dermocosmetica?sc=corporal&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Pelo",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Shampoos y Acondicionadores",
-						"url": "/dermocosmetica/pelo/shampoos-y-acondicionadores"
+						"url": "/dermocosmetica?sc=pelo&f=shampoos-y-acondicionadores"
 					},
 					{
 						"name": "Bálsamos y Tratamientos",
-						"url": "/dermocosmetica/pelo/balsamos-y-tratamientos"
+						"url": "/dermocosmetica?sc=pelo&f=balsamos-y-tratamientos"
 					}
 				]
 			}
@@ -75,141 +75,141 @@
 		"subcategories": [
 			{
 				"name": "Maquillaje",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Labios",
-						"url": "/belleza/maquillaje/labios"
+						"url": "/belleza?sc=maquillaje&f=labios"
 					},
 					{
 						"name": "Ojos",
-						"url": "/belleza/maquillaje/ojos"
+						"url": "/belleza?sc=maquillaje&f=ojos"
 					},
 					{
 						"name": "Rostro",
-						"url": "/belleza/maquillaje/rostro"
+						"url": "/belleza?sc=maquillaje&f=rostro"
 					},
 					{
 						"name": "Uñas",
-						"url": "/belleza/maquillaje/unas"
+						"url": "/belleza?sc=maquillaje&f=unas"
 					}
 				]
 			},
 			{
 				"name": "Perfumes y Fragancias",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Hombres",
-						"url": "/belleza/perfumes-y-fragancias/hombres"
+						"url": "/belleza?sc=perfumes-y-fragancias&f=hombres"
 					},
 					{
 						"name": "Mujeres",
-						"url": "/belleza/perfumes-y-fragancias/mujeres"
+						"url": "/belleza?sc=perfumes-y-fragancias&f=mujeres"
 					},
 					{
 						"name": "Colonias y Body Splash",
-						"url": "/belleza/perfumes-y-fragancias/colonias-y-body-splash"
+						"url": "/belleza?sc=perfumes-y-fragancias&f=colonias-y-body-splash"
 					}
 				]
 			},
 			{
 				"name": "Cuidado de la Piel",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Cuidado Corporal",
-						"url": "/belleza/cuidado-de-la-piel/cuidado-corporal"
+						"url": "/belleza?sc=cuidado-de-la-piel&f=cuidado-corporal"
 					},
 					{
 						"name": "Cuidado Facial",
-						"url": "/belleza/cuidado-de-la-piel/cuidado-facial"
+						"url": "/belleza?sc=cuidado-de-la-piel&f=cuidado-facial"
 					},
 					{
 						"name": "Protección Solar",
-						"url": "/belleza/cuidado-de-la-piel/proteccion-solar"
+						"url": "/belleza?sc=cuidado-de-la-piel&f=proteccion-solar"
 					}
 				]
 			},
 			{
 				"name": "Accesorios de Belleza",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Accesorios de Pelo",
-						"url": "/belleza/accesorios-de-belleza/accesorios-de-pelo"
+						"url": "/belleza?sc=accesorios-de-belleza&f=accesorios-de-pelo"
 					},
 					{
 						"name": "Accesorios de Maquillaje",
-						"url": "/belleza/accesorios-de-belleza/accesorios-de-maquillaje"
+						"url": "/belleza?sc=accesorios-de-belleza&f=accesorios-de-maquillaje"
 					}
 				]
 			},
 			{
 				"name": "Electro Belleza",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Cortadoras y Afeitadoras",
-						"url": "/belleza/electro-belleza/cortadoras-y-afeitadoras"
+						"url": "/belleza?sc=electro-belleza&f=cortadoras-y-afeitadoras"
 					},
 					{
 						"name": "Masajeadores y Exfoliadores",
-						"url": "/belleza/electro-belleza/masajeadores-y-exfoliadores"
+						"url": "/belleza?sc=electro-belleza&f=masajeadores-y-exfoliadores"
 					},
 					{
 						"name": "Secadores",
-						"url": "/belleza/electro-belleza/secadores"
+						"url": "/belleza?sc=electro-belleza&f=secadores"
 					},
 					{
 						"name": "Depiladoras",
-						"url": "/belleza/electro-belleza/depiladoras"
+						"url": "/belleza?sc=electro-belleza&f=depiladoras"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/belleza/electro-belleza/ver-todos-los-productos"
+						"url": "/belleza?sc=electro-belleza&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Cuidado Capilar",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Shampoo y Acondicionador",
-						"url": "/belleza/cuidado-capilar/shampoo-y-acondicionador"
+						"url": "/belleza?sc=cuidado-capilar&f=shampoo-y-acondicionador"
 					},
 					{
 						"name": "Reparación y Tratamiento",
-						"url": "/belleza/cuidado-capilar/reparacion-y-tratamiento"
+						"url": "/belleza?sc=cuidado-capilar&f=reparacion-y-tratamiento"
 					},
 					{
 						"name": "Modelado y Peinado",
-						"url": "/belleza/cuidado-capilar/modelado-y-peinado"
+						"url": "/belleza?sc=cuidado-capilar&f=modelado-y-peinado"
 					},
 					{
 						"name": "Coloración y Oxidantes",
-						"url": "/belleza/cuidado-capilar/coloracion-y-oxidantes"
+						"url": "/belleza?sc=cuidado-capilar&f=coloracion-y-oxidantes"
 					}
 				]
 			},
 			{
 				"name": "Moda",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Pequeña Marroquinería",
-						"url": "/belleza/moda/pequena-marroquineria"
+						"url": "/belleza?sc=moda&f=pequena-marroquineria"
 					},
 					{
 						"name": "Textil",
-						"url": "/belleza/moda/textil"
+						"url": "/belleza?sc=moda&f=textil"
 					}
 				]
 			},
 			{
 				"name": "Novedades y Sorteos",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Dove Oleos Corporales",
-						"url": "/belleza/novedades-y-sorteos/dove-oleos-corporales"
+						"url": "/belleza?sc=novedades-y-sorteos&f=dove-oleos-corporales"
 					},
 					{
 						"name": "Colossal Bubble",
-						"url": "/belleza/novedades-y-sorteos/colossal-bubble"
+						"url": "/belleza?sc=novedades-y-sorteos&f=colossal-bubble"
 					}
 				]
 			}
@@ -220,115 +220,115 @@
 		"subcategories": [
 			{
 				"name": "Cuidado Capilar",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Shampoo y Acondicionador",
-						"url": "/cuidado-personal/cuidado-capilar/shampoo-y-acondicionador"
+						"url": "/cuidado-personal?sc=cuidado-capilar&f=shampoo-y-acondicionador"
 					},
 					{
 						"name": "Reparación y Tratamiento",
-						"url": "/cuidado-personal/cuidado-capilar/reparacion-y-tratamiento"
+						"url": "/cuidado-personal?sc=cuidado-capilar&f=reparacion-y-tratamiento"
 					},
 					{
 						"name": "Modelado y Peinado",
-						"url": "/cuidado-personal/cuidado-capilar/modelado-y-peinado"
+						"url": "/cuidado-personal?sc=cuidado-capilar&f=modelado-y-peinado"
 					},
 					{
 						"name": "Coloración y Oxidantes",
-						"url": "/cuidado-personal/cuidado-capilar/coloracion-y-oxidantes"
+						"url": "/cuidado-personal?sc=cuidado-capilar&f=coloracion-y-oxidantes"
 					}
 				]
 			},
 			{
 				"name": "Cuidado Oral",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Pasta Dental",
-						"url": "/cuidado-personal/cuidado-oral/pasta-dental"
+						"url": "/cuidado-personal?sc=cuidado-oral&f=pasta-dental"
 					},
 					{
 						"name": "Cepillos Dentales",
-						"url": "/cuidado-personal/cuidado-oral/cepillos-dentales"
+						"url": "/cuidado-personal?sc=cuidado-oral&f=cepillos-dentales"
 					},
 					{
 						"name": "Enjuagues Bucales",
-						"url": "/cuidado-personal/cuidado-oral/enjuagues-bucales"
+						"url": "/cuidado-personal?sc=cuidado-oral&f=enjuagues-bucales"
 					},
 					{
 						"name": "Tabletas Limpiadoras y Adhesivos",
-						"url": "/cuidado-personal/cuidado-oral/tabletas-limpiadoras-y-adhesivos"
+						"url": "/cuidado-personal?sc=cuidado-oral&f=tabletas-limpiadoras-y-adhesivos"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/cuidado-personal/cuidado-oral/ver-todos-los-productos"
+						"url": "/cuidado-personal?sc=cuidado-oral&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Adultos",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Pañales para Adultos",
-						"url": "/cuidado-personal/adultos/panales-para-adultos"
+						"url": "/cuidado-personal?sc=adultos&f=panales-para-adultos"
 					},
 					{
 						"name": "Protección para Incontinencia",
-						"url": "/cuidado-personal/adultos/proteccion-para-incontinencia"
+						"url": "/cuidado-personal?sc=adultos&f=proteccion-para-incontinencia"
 					},
 					{
 						"name": "Toallas Húmedas",
-						"url": "/cuidado-personal/adultos/toallas-humedas"
+						"url": "/cuidado-personal?sc=adultos&f=toallas-humedas"
 					}
 				]
 			},
 			{
 				"name": "Higiene Personal",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Desodorantes",
-						"url": "/cuidado-personal/higiene-personal/desodorantes"
+						"url": "/cuidado-personal?sc=higiene-personal&f=desodorantes"
 					},
 					{
 						"name": "Protección Femenina",
-						"url": "/cuidado-personal/higiene-personal/proteccion-femenina"
+						"url": "/cuidado-personal?sc=higiene-personal&f=proteccion-femenina"
 					},
 					{
 						"name": "Jabones y Ducha",
-						"url": "/cuidado-personal/higiene-personal/jabones-y-ducha"
+						"url": "/cuidado-personal?sc=higiene-personal&f=jabones-y-ducha"
 					},
 					{
 						"name": "Afeitado y Depilación",
-						"url": "/cuidado-personal/higiene-personal/afeitado-y-depilacion"
+						"url": "/cuidado-personal?sc=higiene-personal&f=afeitado-y-depilacion"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/cuidado-personal/higiene-personal/ver-todos-los-productos"
+						"url": "/cuidado-personal?sc=higiene-personal&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Repelentes",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Adultos",
-						"url": "/cuidado-personal/repelentes/adultos"
+						"url": "/cuidado-personal?sc=repelentes&f=adultos"
 					},
 					{
 						"name": "Infantiles",
-						"url": "/cuidado-personal/repelentes/infantiles"
+						"url": "/cuidado-personal?sc=repelentes&f=infantiles"
 					}
 				]
 			},
 			{
 				"name": "Novedades y Sorteos",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "All Body Deo",
-						"url": "/cuidado-personal/novedades-y-sorteos/all-body-deo"
+						"url": "/cuidado-personal?sc=novedades-y-sorteos&f=all-body-deo"
 					},
 					{
 						"name": "Dove UV Repair",
-						"url": "/cuidado-personal/novedades-y-sorteos/dove-uv-repair"
+						"url": "/cuidado-personal?sc=novedades-y-sorteos&f=dove-uv-repair"
 					}
 				]
 			}
@@ -339,86 +339,86 @@
 		"subcategories": [
 			{
 				"name": "Nutrición Infantil",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Leches y Fórmulas",
-						"url": "/bebes/nutricion-infantil/leches-y-formulas"
+						"url": "/bebes?sc=nutricion-infantil&f=leches-y-formulas"
 					},
 					{
 						"name": "Alimentos Infantiles",
-						"url": "/bebes/nutricion-infantil/alimentos-infantiles"
+						"url": "/bebes?sc=nutricion-infantil&f=alimentos-infantiles"
 					}
 				]
 			},
 			{
 				"name": "Pañales",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Recién Nacido",
-						"url": "/bebes/panales/recien-nacido"
+						"url": "/bebes?sc=panales&f=recien-nacido"
 					},
 					{
 						"name": "Pañales Descartables",
-						"url": "/bebes/panales/panales-descartables"
+						"url": "/bebes?sc=panales&f=panales-descartables"
 					},
 					{
 						"name": "Pants",
-						"url": "/bebes/panales/pants"
+						"url": "/bebes?sc=panales&f=pants"
 					},
 					{
 						"name": "Pañales de Agua",
-						"url": "/bebes/panales/panales-de-agua"
+						"url": "/bebes?sc=panales&f=panales-de-agua"
 					}
 				]
 			},
 			{
 				"name": "Lactancia",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Mamaderas y Tetinas",
-						"url": "/bebes/lactancia/mamaderas-y-tetinas"
+						"url": "/bebes?sc=lactancia&f=mamaderas-y-tetinas"
 					},
 					{
 						"name": "Esterilizadores",
-						"url": "/bebes/lactancia/esterilizadores"
+						"url": "/bebes?sc=lactancia&f=esterilizadores"
 					},
 					{
 						"name": "Extractores de Leche",
-						"url": "/bebes/lactancia/extractores-de-leche"
+						"url": "/bebes?sc=lactancia&f=extractores-de-leche"
 					}
 				]
 			},
 			{
 				"name": "Cuidado Materno",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Protectores Mamarios",
-						"url": "/bebes/cuidado-materno/protectores-mamarios"
+						"url": "/bebes?sc=cuidado-materno&f=protectores-mamarios"
 					},
 					{
 						"name": "Cuidado de la Piel",
-						"url": "/bebes/cuidado-materno/cuidado-de-la-piel"
+						"url": "/bebes?sc=cuidado-materno&f=cuidado-de-la-piel"
 					}
 				]
 			},
 			{
 				"name": "Higiene del Bebé",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Toallas Húmedas",
-						"url": "/bebes/higiene-del-bebe/toallas-humedas"
+						"url": "/bebes?sc=higiene-del-bebe&f=toallas-humedas"
 					},
 					{
 						"name": "Óleos y Algodón",
-						"url": "/bebes/higiene-del-bebe/oleos-y-algodon"
+						"url": "/bebes?sc=higiene-del-bebe&f=oleos-y-algodon"
 					},
 					{
 						"name": "Baño del Bebé",
-						"url": "/bebes/higiene-del-bebe/bano-del-bebe"
+						"url": "/bebes?sc=higiene-del-bebe&f=bano-del-bebe"
 					},
 					{
 						"name": "Fragancias de Bebés y Niños",
-						"url": "/bebes/higiene-del-bebe/fragancias-de-bebes-y-ninos"
+						"url": "/bebes?sc=higiene-del-bebe&f=fragancias-de-bebes-y-ninos"
 					}
 				]
 			}
@@ -429,140 +429,140 @@
 		"subcategories": [
 			{
 				"name": "Desayuno y Merienda",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Infusiones",
-						"url": "/hogar-y-alimentos/desayuno-y-merienda/infusiones"
+						"url": "/hogar-y-alimentos?sc=desayuno-y-merienda&f=infusiones"
 					},
 					{
 						"name": "Galletitas y Tostadas",
-						"url": "/hogar-y-alimentos/desayuno-y-merienda/galletitas-y-tostadas"
+						"url": "/hogar-y-alimentos?sc=desayuno-y-merienda&f=galletitas-y-tostadas"
 					},
 					{
 						"name": "Dulces y Mermeladas",
-						"url": "/hogar-y-alimentos/desayuno-y-merienda/dulces-y-mermeladas"
+						"url": "/hogar-y-alimentos?sc=desayuno-y-merienda&f=dulces-y-mermeladas"
 					},
 					{
 						"name": "Azúcar, Miel y Endulzantes",
-						"url": "/hogar-y-alimentos/desayuno-y-merienda/azucar-miel-y-endulzantes"
+						"url": "/hogar-y-alimentos?sc=desayuno-y-merienda&f=azucar-miel-y-endulzantes"
 					}
 				]
 			},
 			{
 				"name": "Alimentación Saludable",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Snacks Saludables",
-						"url": "/hogar-y-alimentos/alimentacion-saludable/snacks-saludables"
+						"url": "/hogar-y-alimentos?sc=alimentacion-saludable&f=snacks-saludables"
 					},
 					{
 						"name": "Bebidas",
-						"url": "/hogar-y-alimentos/alimentacion-saludable/bebidas"
+						"url": "/hogar-y-alimentos?sc=alimentacion-saludable&f=bebidas"
 					},
 					{
 						"name": "Golosinas Saludables",
-						"url": "/hogar-y-alimentos/alimentacion-saludable/golosinas-saludables"
+						"url": "/hogar-y-alimentos?sc=alimentacion-saludable&f=golosinas-saludables"
 					},
 					{
 						"name": "Otros Alimentos",
-						"url": "/hogar-y-alimentos/alimentacion-saludable/otros-alimentos"
+						"url": "/hogar-y-alimentos?sc=alimentacion-saludable&f=otros-alimentos"
 					}
 				]
 			},
 			{
 				"name": "Limpieza y Desinfección",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Cuidado De La Ropa",
-						"url": "/hogar-y-alimentos/limpieza-y-desinfeccion/cuidado-de-la-ropa"
+						"url": "/hogar-y-alimentos?sc=limpieza-y-desinfeccion&f=cuidado-de-la-ropa"
 					},
 					{
 						"name": "Desinfección",
-						"url": "/hogar-y-alimentos/limpieza-y-desinfeccion/desinfeccion"
+						"url": "/hogar-y-alimentos?sc=limpieza-y-desinfeccion&f=desinfeccion"
 					},
 					{
 						"name": "Baño y Cocina",
-						"url": "/hogar-y-alimentos/limpieza-y-desinfeccion/bano-y-cocina"
+						"url": "/hogar-y-alimentos?sc=limpieza-y-desinfeccion&f=bano-y-cocina"
 					},
 					{
 						"name": "Insecticidas",
-						"url": "/hogar-y-alimentos/limpieza-y-desinfeccion/insecticidas"
+						"url": "/hogar-y-alimentos?sc=limpieza-y-desinfeccion&f=insecticidas"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/hogar-y-alimentos/limpieza-y-desinfeccion/ver-todos-los-productos"
+						"url": "/hogar-y-alimentos?sc=limpieza-y-desinfeccion&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Librería",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Librería",
-						"url": "/hogar-y-alimentos/libreria/libreria"
+						"url": "/hogar-y-alimentos?sc=libreria&f=libreria"
 					},
 					{
 						"name": "Libros",
-						"url": "/hogar-y-alimentos/libreria/libros"
+						"url": "/hogar-y-alimentos?sc=libreria&f=libros"
 					}
 				]
 			},
 			{
 				"name": "Electrónica y Pilas",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Pilas",
-						"url": "/hogar-y-alimentos/electronica-y-pilas/pilas"
+						"url": "/hogar-y-alimentos?sc=electronica-y-pilas&f=pilas"
 					},
 					{
 						"name": "Tecnología",
-						"url": "/hogar-y-alimentos/electronica-y-pilas/tecnologia"
+						"url": "/hogar-y-alimentos?sc=electronica-y-pilas&f=tecnologia"
 					}
 				]
 			},
 			{
 				"name": "Hogar y Deco",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Accesorios de Baño",
-						"url": "/hogar-y-alimentos/hogar-y-deco/accesorios-de-bano"
+						"url": "/hogar-y-alimentos?sc=hogar-y-deco&f=accesorios-de-bano"
 					},
 					{
 						"name": "Accesorios de Cocina",
-						"url": "/hogar-y-alimentos/hogar-y-deco/accesorios-de-cocina"
+						"url": "/hogar-y-alimentos?sc=hogar-y-deco&f=accesorios-de-cocina"
 					},
 					{
 						"name": "Accesorios del Hogar",
-						"url": "/hogar-y-alimentos/hogar-y-deco/accesorios-del-hogar"
+						"url": "/hogar-y-alimentos?sc=hogar-y-deco&f=accesorios-del-hogar"
 					},
 					{
 						"name": "Deco Hogar",
-						"url": "/hogar-y-alimentos/hogar-y-deco/deco-hogar"
+						"url": "/hogar-y-alimentos?sc=hogar-y-deco&f=deco-hogar"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/hogar-y-alimentos/hogar-y-deco/ver-todos-los-productos"
+						"url": "/hogar-y-alimentos?sc=hogar-y-deco&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Papeles",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Pañuelos Descartables",
-						"url": "/hogar-y-alimentos/papeles/panuelos-descartables"
+						"url": "/hogar-y-alimentos?sc=papeles&f=panuelos-descartables"
 					},
 					{
 						"name": "Papel Higiénico",
-						"url": "/hogar-y-alimentos/papeles/papel-higienico"
+						"url": "/hogar-y-alimentos?sc=papeles&f=papel-higienico"
 					},
 					{
 						"name": "Rollos De Cocina y Servilletas",
-						"url": "/hogar-y-alimentos/papeles/rollos-de-cocina-y-servilletas"
+						"url": "/hogar-y-alimentos?sc=papeles&f=rollos-de-cocina-y-servilletas"
 					},
 					{
 						"name": "Descartables",
-						"url": "/hogar-y-alimentos/papeles/descartables"
+						"url": "/hogar-y-alimentos?sc=papeles&f=descartables"
 					}
 				]
 			}
@@ -573,131 +573,131 @@
 		"subcategories": [
 			{
 				"name": "Servicios de Salud",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Reserva de Medicamentos",
-						"url": "/salud-y-farmacia/servicios-de-salud/reserva-de-medicamentos"
+						"url": "/salud-y-farmacia?sc=servicios-de-salud&f=reserva-de-medicamentos"
 					},
 					{
 						"name": "Blog de Salud",
-						"url": "/salud-y-farmacia/servicios-de-salud/blog-de-salud"
+						"url": "/salud-y-farmacia?sc=servicios-de-salud&f=blog-de-salud"
 					},
 					{
 						"name": "Buscador de Sucursales",
-						"url": "/salud-y-farmacia/servicios-de-salud/buscador-de-sucursales"
+						"url": "/salud-y-farmacia?sc=servicios-de-salud&f=buscador-de-sucursales"
 					},
 					{
 						"name": "Reservá tu Turno",
-						"url": "/salud-y-farmacia/servicios-de-salud/reserva-tu-turno"
+						"url": "/salud-y-farmacia?sc=servicios-de-salud&f=reserva-tu-turno"
 					},
 					{
 						"name": "Gabinetes de Salud",
-						"url": "/salud-y-farmacia/servicios-de-salud/gabinetes-de-salud"
+						"url": "/salud-y-farmacia?sc=servicios-de-salud&f=gabinetes-de-salud"
 					}
 				]
 			},
 			{
 				"name": "Farmacia",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Primeros auxilios",
-						"url": "/salud-y-farmacia/farmacia/primeros-auxilios"
+						"url": "/salud-y-farmacia?sc=farmacia&f=primeros-auxilios"
 					},
 					{
 						"name": "Óptica",
-						"url": "/salud-y-farmacia/farmacia/optica"
+						"url": "/salud-y-farmacia?sc=farmacia&f=optica"
 					},
 					{
 						"name": "Pediculosis",
-						"url": "/salud-y-farmacia/farmacia/pediculosis"
+						"url": "/salud-y-farmacia?sc=farmacia&f=pediculosis"
 					},
 					{
 						"name": "Pédicos",
-						"url": "/salud-y-farmacia/farmacia/pedicos"
+						"url": "/salud-y-farmacia?sc=farmacia&f=pedicos"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/salud-y-farmacia/farmacia/ver-todos-los-productos"
+						"url": "/salud-y-farmacia?sc=farmacia&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Nutricion y Deportes",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Suplementos Dietarios",
-						"url": "/salud-y-farmacia/nutricion-y-deportes/suplementos-dietarios"
+						"url": "/salud-y-farmacia?sc=nutricion-y-deportes&f=suplementos-dietarios"
 					},
 					{
 						"name": "Suplementos Nutricionales",
-						"url": "/salud-y-farmacia/nutricion-y-deportes/suplementos-nutricionales"
+						"url": "/salud-y-farmacia?sc=nutricion-y-deportes&f=suplementos-nutricionales"
 					},
 					{
 						"name": "Suplementos Deportivos",
-						"url": "/salud-y-farmacia/nutricion-y-deportes/suplementos-deportivos"
+						"url": "/salud-y-farmacia?sc=nutricion-y-deportes&f=suplementos-deportivos"
 					},
 					{
 						"name": "Protección y Recuperación",
-						"url": "/salud-y-farmacia/nutricion-y-deportes/proteccion-y-recuperacion"
+						"url": "/salud-y-farmacia?sc=nutricion-y-deportes&f=proteccion-y-recuperacion"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/salud-y-farmacia/nutricion-y-deportes/ver-todos-los-productos"
+						"url": "/salud-y-farmacia?sc=nutricion-y-deportes&f=ver-todos-los-productos"
 					}
 				]
 			},
 			{
 				"name": "Nutrición Infantil",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Leches y Fórmulas",
-						"url": "/salud-y-farmacia/nutricion-infantil/leches-y-formulas"
+						"url": "/salud-y-farmacia?sc=nutricion-infantil&f=leches-y-formulas"
 					},
 					{
 						"name": "Alimentos Infantiles",
-						"url": "/salud-y-farmacia/nutricion-infantil/alimentos-infantiles"
+						"url": "/salud-y-farmacia?sc=nutricion-infantil&f=alimentos-infantiles"
 					}
 				]
 			},
 			{
 				"name": "Bienestar Sexual",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Preservativos",
-						"url": "/salud-y-farmacia/bienestar-sexual/preservativos"
+						"url": "/salud-y-farmacia?sc=bienestar-sexual&f=preservativos"
 					},
 					{
 						"name": "Lubricantes",
-						"url": "/salud-y-farmacia/bienestar-sexual/lubricantes"
+						"url": "/salud-y-farmacia?sc=bienestar-sexual&f=lubricantes"
 					},
 					{
 						"name": "Estimuladores Sexuales",
-						"url": "/salud-y-farmacia/bienestar-sexual/estimuladores-sexuales"
+						"url": "/salud-y-farmacia?sc=bienestar-sexual&f=estimuladores-sexuales"
 					}
 				]
 			},
 			{
 				"name": "Electrosalud",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Tensiómetros",
-						"url": "/salud-y-farmacia/electrosalud/tensiometros"
+						"url": "/salud-y-farmacia?sc=electrosalud&f=tensiometros"
 					},
 					{
 						"name": "Nebulizadores",
-						"url": "/salud-y-farmacia/electrosalud/nebulizadores"
+						"url": "/salud-y-farmacia?sc=electrosalud&f=nebulizadores"
 					},
 					{
 						"name": "Balanzas",
-						"url": "/salud-y-farmacia/electrosalud/balanzas"
+						"url": "/salud-y-farmacia?sc=electrosalud&f=balanzas"
 					},
 					{
 						"name": "Almohadillas Térmicas",
-						"url": "/salud-y-farmacia/electrosalud/almohadillas-termicas"
+						"url": "/salud-y-farmacia?sc=electrosalud&f=almohadillas-termicas"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/salud-y-farmacia/electrosalud/ver-todos-los-productos"
+						"url": "/salud-y-farmacia?sc=electrosalud&f=ver-todos-los-productos"
 					}
 				]
 			}
@@ -708,30 +708,30 @@
 		"subcategories": [
 			{
 				"name": "Venta Libre",
-				"subcategories": [
+				"filters": [
 					{
 						"name": "Analgésicos",
-						"url": "/medicamentos/venta-libre/analgesicos"
+						"url": "/medicamentos?sc=venta-libre&f=analgesicos"
 					},
 					{
 						"name": "Digestivos",
-						"url": "/medicamentos/venta-libre/digestivos"
+						"url": "/medicamentos?sc=venta-libre&f=digestivos"
 					},
 					{
 						"name": "Antialérgicos",
-						"url": "/medicamentos/venta-libre/antialergicos"
+						"url": "/medicamentos?sc=venta-libre&f=antialergicos"
 					},
 					{
 						"name": "Gripe y Resfrío",
-						"url": "/medicamentos/venta-libre/gripe-y-resfrio"
+						"url": "/medicamentos?sc=venta-libre&f=gripe-y-resfrio"
 					},
 					{
 						"name": "Antimicóticos",
-						"url": "/medicamentos/venta-libre/antimicoticos"
+						"url": "/medicamentos?sc=venta-libre&f=antimicoticos"
 					},
 					{
 						"name": "Ver todos los productos",
-						"url": "/medicamentos/venta-libre/ver-todos-los-productos"
+						"url": "/medicamentos?sc=venta-libre&f=ver-todos-los-productos"
 					}
 				]
 			},

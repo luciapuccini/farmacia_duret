@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import categories from "@/services/catalog/data/categories.json";
-import type { TCatalogUrlParams } from "@/types/types";
+import type { TCatalogUrlParams, TCategory } from "@/types/types";
 import { nameToSlug } from "@/utils/nameToSlug";
 import CategoryFilters from "./components/CategoryFilters/CategoryFilters";
 import ProductCatalog from "./components/ProductCatalog/ProductCatalog";
@@ -15,7 +15,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 	const { category, subcategory, filter } = await params;
 	const filters = await searchParams;
 	//filters: { sc: 'cuidado-capilar', f: 'shampoo-y-acondicionador' }
-	console.log("🚀 ~ filters:", filters);
+	console.log("🚀 ~ CategoryPage- curent params:", filters);
 
 	const matched = categories.find((c) => nameToSlug(c.name) === category);
 	// TBD: could force subcategory if undefined -> [0] category
@@ -24,6 +24,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 		notFound();
 	}
 
+	const categoryObject = categories.find(
+		(c) => nameToSlug(c.name) === category,
+	) as TCategory;
+	console.log("🚀 ~ categoryObject:", categoryObject);
 	return (
 		<div className={styles.page}>
 			<div className={styles.sectHead}>
@@ -36,7 +40,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 				</div>
 			</div>
 			<div className={styles.content}>
-				<CategoryFilters />
+				<CategoryFilters category={categoryObject} />
 				<ProductCatalog url={{ category, subcategory, filter }} />
 			</div>
 		</div>

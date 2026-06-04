@@ -1,0 +1,11 @@
+@use '@/globals' as g;
+
+.section {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 0.25rem;
+
+}
+
+.section__title::marker {}
