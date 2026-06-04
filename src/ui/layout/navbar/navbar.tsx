@@ -1,30 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import categories from "@/services/catalog/data/categories.json";
+import type { TCategory, TFilters, TSubcategory } from "@/types/types";
 import { NavLink } from "@/ui";
 import { nameToSlug } from "@/utils/nameToSlug";
 
 import Drawer from "./components/drawer/drawer";
 import styles from "./navbar.module.scss";
 
-type Category = {
-	name: string;
-	subcategories?: Category[];
-};
+function filterHref(categorySlug: string, subcategorySlug: string, filterSlug: string) {
+	const searchParams = new URLSearchParams({ sc: subcategorySlug, f: filterSlug });
+	return `/${categorySlug}?${searchParams.toString()}`;
+}
 
-function subnavHref(
-	category: Category,
-	categoryPath: string,
-	depth: number,
-	parentPath: string,
-) {
-	if (depth === 0) return categoryPath;
-	if (depth === 1) return `${parentPath}/${categoryPath}`;
-	if (category.name === "Ver todos los productos") return parentPath;
-	return `${parentPath}?f=${categoryPath.slice(1)}`;
+function subcategoryHref(categorySlug: string, subcategorySlug: string) {
+	const searchParams = new URLSearchParams({ sc: subcategorySlug });
+	return `/${categorySlug}?${searchParams.toString()}`;
 }
 
 function dropdownClass(depth: number) {
@@ -33,36 +27,75 @@ function dropdownClass(depth: number) {
 		: `${styles.dropdown} ${styles.dropdownNested}`;
 }
 
+function FilterItem({
+	categorySlug,
+	subcategorySlug,
+	filter,
+	pathname,
+	activeSubcategory,
+	activeFilter,
+}: {
+	categorySlug: string;
+	subcategorySlug: string;
+	filter: TFilters;
+	pathname: string;
+	activeSubcategory: string | null;
+	activeFilter: string | null;
+}) {
+	const filterSlug = nameToSlug(filter.name);
+	const href = filter.url || filterHref(categorySlug, subcategorySlug, filterSlug);
+	const isActive =
+		pathname === `/${categorySlug}` &&
+		activeSubcategory === subcategorySlug &&
+		activeFilter === filterSlug;
+
+	return (
+		<li className={styles.subnavItem}>
+			<NavLink href={href} active={isActive} variant="dropdown">
+				{filter.name}
+			</NavLink>
+		</li>
+	);
+}
+
 function SubnavItem({
 	category,
 	depth = 0,
-	parentPath = "",
+	parentCategorySlug,
 	pathname,
+	activeSubcategory,
+	activeFilter,
 }: {
-	category: Category;
+	category: TCategory | TSubcategory;
 	depth?: number;
-	parentPath?: string;
+	parentCategorySlug?: string;
 	pathname: string;
+	activeSubcategory: string | null;
+	activeFilter: string | null;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const categorySlug = nameToSlug(category.name);
 	const hasSubcategories =
-		category.subcategories && category.subcategories.length > 0;
-	const categoryPath = `/${nameToSlug(category.name)}`;
-	const isActive = (href: string) =>
-		pathname === href || pathname.startsWith(`${href}/`);
-	const href = subnavHref(category, categoryPath, depth, parentPath);
-	const childParentPath =
-		depth === 0 ? categoryPath : `${parentPath}/${categoryPath}`;
+		"subcategories" in category && Boolean(category.subcategories?.length);
+	const hasFilters = "filters" in category && Boolean(category.filters?.length);
+	const href =
+		depth === 0
+			? `/${categorySlug}`
+			: subcategoryHref(parentCategorySlug!, categorySlug);
+	const isActive =
+		depth === 0
+			? pathname === href
+			: pathname === `/${parentCategorySlug}` && activeSubcategory === categorySlug;
 
 	return (
 		<li
 			className={styles.subnavItem}
-			onMouseEnter={() => hasSubcategories && setIsOpen(true)}
+			onMouseEnter={() => (hasSubcategories || hasFilters) && setIsOpen(true)}
 			onMouseLeave={() => setIsOpen(false)}
 		>
 			<NavLink
 				href={href}
-				active={depth < 2 && isActive(href)}
+				active={isActive}
 				variant={depth === 0 ? "subnav" : "dropdown"}
 			>
 				{category.name}
@@ -75,8 +108,26 @@ function SubnavItem({
 							key={sub.name}
 							category={sub}
 							depth={depth + 1}
-							parentPath={childParentPath}
+							parentCategorySlug={depth === 0 ? categorySlug : parentCategorySlug}
 							pathname={pathname}
+							activeSubcategory={activeSubcategory}
+							activeFilter={activeFilter}
+						/>
+					))}
+				</ul>
+			)}
+
+			{hasFilters && isOpen && (
+				<ul className={dropdownClass(depth)}>
+					{category.filters?.map((filter) => (
+						<FilterItem
+							key={filter.name}
+							categorySlug={parentCategorySlug!}
+							subcategorySlug={categorySlug}
+							filter={filter}
+							pathname={pathname}
+							activeSubcategory={activeSubcategory}
+							activeFilter={activeFilter}
 						/>
 					))}
 				</ul>
@@ -88,9 +139,14 @@ function SubnavItem({
 export default function Navbar() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const pathname = usePathname();
+	const searchParams = useSearchParams();
 
 	const router = useRouter();
-	const subnavCategories = categories.filter((c) => c.name !== "Ofertas");
+	const subnavCategories = (categories as TCategory[]).filter(
+		(c) => c.name !== "Ofertas",
+	);
+	const activeSubcategory = searchParams.get("sc");
+	const activeFilter = searchParams.get("f");
 
 	const isActive = (href: string) =>
 		pathname === href || pathname.startsWith(`${href}/`);
@@ -130,11 +186,7 @@ export default function Navbar() {
 					</Link>
 
 					<nav className={styles.navLinks} aria-label="Navegación principal">
-						<NavLink
-							href="/"
-							active={pathname === "/"}
-							variant="nav"
-						>
+						<NavLink href="/" active={pathname === "/"} variant="nav">
 							Catálogo
 						</NavLink>
 						<NavLink
@@ -200,7 +252,13 @@ export default function Navbar() {
 						<span className={styles.subnavDivider} aria-hidden="true" />
 						<ul className={styles.subnavList}>
 							{subnavCategories.map((cat) => (
-								<SubnavItem key={cat.name} category={cat} pathname={pathname} />
+								<SubnavItem
+									key={cat.name}
+									category={cat}
+									pathname={pathname}
+									activeSubcategory={activeSubcategory}
+									activeFilter={activeFilter}
+								/>
 							))}
 						</ul>
 						{/* TODO: Keep the Ofertas promo link local until it clearly fits an existing UI link primitive. */}
