@@ -1,14 +1,24 @@
 import { notFound } from "next/navigation";
-import SubCategoryGrid from "@/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid";
 import categories from "@/services/catalog/data/categories.json";
 import { nameToSlug } from "@/utils/nameToSlug";
+import ProductCatalog from "./[subcategory]/components/ProductCatalog/ProductCatalog";
+import CategoryFilters from "./components/CategoryFilters/CategoryFilters";
+
+import style from "./page.module.scss";
+
+type TCatalogUrl = {
+	category: string;
+	subcategory: string;
+	filter: string;
+};
 
 type Props = {
-	params: Promise<{ category: string }>;
+	params: Promise<TCatalogUrl>;
 };
 
 export default async function CategoryPage({ params }: Props) {
 	const { category } = await params;
+	// console.log("🚀 ~ url:", url);
 
 	const matched = categories.find((c) => nameToSlug(c.name) === category);
 
@@ -17,9 +27,10 @@ export default async function CategoryPage({ params }: Props) {
 	}
 
 	return (
-		<SubCategoryGrid
-			subcategories={matched.subcategories}
-			categorySlug={category}
-		/>
+		<div className={style.page}>
+			<CategoryFilters />
+
+			{/* <ProductCatalog url={url} /> */}
+		</div>
 	);
 }

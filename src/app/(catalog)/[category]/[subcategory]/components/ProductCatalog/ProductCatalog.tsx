@@ -1,6 +1,3 @@
-"use client";
-
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import categories from "@/services/catalog/data/categories.json";
 import productsData from "@/services/catalog/data/products.json";
 import { nameToSlug } from "@/utils/nameToSlug";
@@ -17,19 +14,48 @@ type Product = {
 	filter: string;
 };
 
-type Filter = { label: string; slug: string };
+// type Filter = { label: string; slug: string };
 
-function getFilters(categorySlug: string, subcategorySlug: string): Filter[] {
-	for (const cat of categories) {
-		if (nameToSlug(cat.name) !== categorySlug) continue;
-		for (const sub of cat.subcategories ?? []) {
-			if (nameToSlug(sub.name) !== subcategorySlug) continue;
-			return (sub.subcategories ?? [])
-				.filter((f) => f.name !== "Ver todos los productos")
-				.map((f) => ({ label: f.name, slug: nameToSlug(f.name) }));
-		}
+// function getFilters(categorySlug: string, subcategorySlug: string): Filter[] {
+// 	for (const cat of categories) {
+// 		if (nameToSlug(cat.name) !== categorySlug) continue;
+// 		for (const sub of cat.subcategories ?? []) {
+// 			if (nameToSlug(sub.name) !== subcategorySlug) continue;
+// 			return (sub.subcategories ?? [])
+// 				.filter((f) => f.name !== "Ver todos los productos")
+// 				.map((f) => ({ label: f.name, slug: nameToSlug(f.name) }));
+// 		}
+// 	}
+// 	return [];
+// }
+
+function getProducts(url: { [key: string]: string }) {
+	// /belleza/maquillaje/ojos
+	// /belleza/maquillaje
+
+	const { category, subcategory, filter } = url;
+
+	let productsFiltered = [];
+	if (filter) {
+		productsFiltered = productsData.filter((product) => {
+			if (
+				product.filter === filter &&
+				product.subcategory === subcategory &&
+				product.category === category
+			) {
+				return product;
+			}
+			return null;
+		});
 	}
-	return [];
+
+	productsFiltered = productsData.filter((product) => {
+		if (product.subcategory === subcategory && product.category === category) {
+			return product;
+		}
+		return null;
+	});
+	return productsFiltered;
 }
 
 function ProductCard({ product }: { product: Product }) {
@@ -57,61 +83,15 @@ function ProductCard({ product }: { product: Product }) {
 	);
 }
 
-type Props = { category: string; subcategory: string };
+type Props = {
+	url: { [key: string]: string };
+};
 
-export default function ProductCatalog({ category, subcategory }: Props) {
-	const searchParams = useSearchParams();
-	const router = useRouter();
-	const pathname = usePathname();
-	const activeFilter = searchParams.get("f");
-
-	const filters = getFilters(category, subcategory);
-
-	const products = (productsData as Product[]).filter((p) => {
-		if (p.category !== category || p.subcategory !== subcategory) return false;
-		if (activeFilter) return p.filter === activeFilter;
-		return true;
-	});
-
-	function setFilter(slug: string | null) {
-		const params = new URLSearchParams(searchParams.toString());
-		if (slug) {
-			params.set("f", slug);
-		} else {
-			params.delete("f");
-		}
-		const query = params.toString();
-		router.replace(query ? `${pathname}?${query}` : pathname);
-	}
-
+export default function ProductCatalog({ url }: Props) {
+	const products = getProducts(url);
 	return (
 		<div className={styles.catalog}>
-			{filters.length > 0 && (
-				<div
-					className={styles.filterBar}
-					role="toolbar"
-					aria-label="Filtrar por categoría"
-				>
-					<button
-						type="button"
-						className={`${styles.chip} ${!activeFilter ? styles.chipActive : ""}`}
-						onClick={() => setFilter(null)}
-					>
-						Todos
-					</button>
-					{filters.map(({ label, slug }) => (
-						<button
-							type="button"
-							key={slug}
-							className={`${styles.chip} ${activeFilter === slug ? styles.chipActive : ""}`}
-							onClick={() => setFilter(slug)}
-						>
-							{label}
-						</button>
-					))}
-				</div>
-			)}
-
+			catalog
 			{products.length > 0 ? (
 				<div className={styles.grid}>
 					{products.map((product) => (
