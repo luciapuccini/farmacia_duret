@@ -17,16 +17,21 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { category } = await params;
   const { sc: subcategory = '', f: filter = '' } = await searchParams;
 
-  const matched = categories.find((c) => nameToSlug(c.name) === category);
+  // FIXME: isolate to make sure from url to down the tree its always in slug format -->zod
+  const cat = nameToSlug(category);
+  const subc = nameToSlug(subcategory);
+  const fil = nameToSlug(filter);
+
+  const matched = categories.find((c) => nameToSlug(c.name) === cat);
 
   if (!matched || !matched.subcategories?.length) {
     notFound();
   }
 
-  const categoryObject = categories.find((c) => nameToSlug(c.name) === category) as TCategory;
+  const categoryObject = categories.find((c) => nameToSlug(c.name) === cat) as TCategory;
 
   return (
-    <div className={styles.page}>
+    <div>
       <div className={styles.sectHead}>
         <div>
           <p className={styles.sectLabel}>Catálogo</p>
@@ -36,9 +41,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           </p>
         </div>
       </div>
-      <div className={styles.content}>
+      <div className="flex gap-8 py-4">
         <CategoryFilters category={categoryObject} activeSc={subcategory} />
-        <ProductCatalog url={{ category, subcategory, filter }} />
+        <ProductCatalog url={{ category: cat, subcategory: subc, filter: fil }} />
       </div>
     </div>
   );
