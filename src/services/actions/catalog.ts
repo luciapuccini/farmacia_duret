@@ -1,6 +1,6 @@
 import productsData from '@/services/catalog/data/products.json';
 
-export type TProduct = (typeof productsData)[number];
+type TProduct = (typeof productsData)[number];
 
 export function getProducts(url: { [key: string]: string }) {
   const { category, subcategory, filter } = url;

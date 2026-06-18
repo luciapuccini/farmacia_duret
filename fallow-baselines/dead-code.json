@@ -1,9 +1,32 @@
 {
-  "unused_files": [],
-  "unused_exports": [],
+  "unused_files": [
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.tsx"
+  ],
+  "unused_exports": [
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:catalog",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:grid",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:card",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:cardImage",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:cardImg",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:cardImgPlaceholder",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:offerBadge",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:cardBody",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:cardBrand",
+    "src/app/(catalog)/[category]/components/ProductCatalog/ProductCatalog.module.scss:cardName",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:grid",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:card",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:arrow",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:thumb",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:image",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:meta",
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:title"
+  ],
   "unused_types": [],
   "private_type_leaks": [],
-  "unused_dependencies": [],
+  "unused_dependencies": [
+    "package.json:@base-ui/react"
+  ],
   "unused_dev_dependencies": [],
   "circular_dependencies": [],
   "re_export_cycles": [],

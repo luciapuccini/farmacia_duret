@@ -4,7 +4,10 @@
 	"ignorePatterns": [
 		"src/ui/**/*.ts",
 		"src/ui/**/*.tsx",
-		"src/ui/**/*.scss"
+		"src/ui/**/*.scss",
+		"src/components/ui/**/*.ts",
+		"src/components/ui/**/*.tsx",
+		"src/components/ui/**/*.scss"
 	],
 	"ignoreDependencies": ["@opennextjs/cloudflare", "sass", "class-variance-authority"],
 	"ignoreExports": [
