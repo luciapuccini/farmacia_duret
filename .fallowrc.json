@@ -6,7 +6,7 @@
 		"src/ui/**/*.tsx",
 		"src/ui/**/*.scss"
 	],
-	"ignoreDependencies": ["@opennextjs/cloudflare", "sass"],
+	"ignoreDependencies": ["@opennextjs/cloudflare", "sass", "class-variance-authority"],
 	"ignoreExports": [
 		{
 			"file": "**/*.module.scss",

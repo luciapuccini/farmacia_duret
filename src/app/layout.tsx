@@ -1,3 +1,4 @@
+import "./globals.css";
 import "./reset.scss";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/config/site";
@@ -5,7 +6,6 @@ import Container from "@/ui/container/container";
 import Footer from "@/ui/layout/footer/footer";
 import Navbar from "@/ui/layout/navbar/navbar";
 import PromoBanner from "@/ui/layout/PromoBanner/PromoBanner";
-
 export const metadata: Metadata = {
 	metadataBase: new URL(SITE_URL),
 	title: "Farmacia Duret",
