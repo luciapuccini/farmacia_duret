@@ -1,6 +1,7 @@
 import "./globals.css";
 import "./reset.scss";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { SITE_URL } from "@/config/site";
 import Container from "@/ui/container/container";
 import Footer from "@/ui/layout/footer/footer";
@@ -33,7 +34,9 @@ export default function RootLayout({
 			</head>
 			<body>
 				<PromoBanner />
-				<Navbar />
+				<Suspense>
+					<Navbar />
+				</Suspense>
 				<Container>{children}</Container>
 				<Footer />
 			</body>

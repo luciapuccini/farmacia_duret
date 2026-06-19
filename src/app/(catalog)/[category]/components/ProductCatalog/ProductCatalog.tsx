@@ -15,9 +15,7 @@ export default function ProductCatalog({ url }: Props) {
       {products.length > 0 ? (
         <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
           {products.map((product) => (
-            <>
-              <ProductCard key={product.id} {...product} image={product.image ?? undefined} />
-            </>
+            <ProductCard key={product.id} {...product} image={product.image ?? undefined} />
           ))}
         </div>
       ) : (
