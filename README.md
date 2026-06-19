@@ -96,6 +96,20 @@ To rotate the verify token, generate a new value, update Cloudflare, update Meta
 
 ---
 
+## Code quality
+
+[Fallow](https://docs.fallow.tools) audits the codebase for dead code, unused dependencies, complexity, and duplication on every PR.
+
+```bash
+npx fallow audit
+```
+
+The audit runs in `new-only` mode — it only gates on issues introduced by the current branch (relative to `main`), so pre-existing findings don't block merges. Baselines live in `fallow-baselines/`.
+
+Shadcn UI components (`src/components/ui/`) and their dependency chain (`lucide-react`, `shadcn`) are excluded from the audit — they are generated/vendor code and not subject to our code quality rules.
+
+---
+
 ## Project structure
 
 ```
