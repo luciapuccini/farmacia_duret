@@ -235,12 +235,12 @@ function DrawerNavItem({
 		);
 	}
 
-	if (depth === 1) {
+	if (depth === 1 && parentCategorySlug) {
 		content = (
 			<SecondLevelDrawerItem
 				category={category as TSubcategory}
 				categorySlug={categorySlug}
-				parentCategorySlug={parentCategorySlug!}
+				parentCategorySlug={parentCategorySlug}
 				hasFilters={Boolean(hasFilters)}
 				isActive={(href) =>
 					pathname === `/${parentCategorySlug}` && href.includes(`sc=${categorySlug}`)
@@ -273,12 +273,12 @@ function DrawerNavItem({
 				</div>
 			)}
 
-			{hasFilters && isOpen && (
+			{hasFilters && isOpen && parentCategorySlug && (
 				<div className={styles.drawerSubmenu}>
 					{category.filters?.map((filter) => (
 						<div key={filter.name} className={styles.drawerItem} data-depth={depth + 1}>
 							<FilterDrawerItem
-								categorySlug={parentCategorySlug!}
+								categorySlug={parentCategorySlug}
 								subcategorySlug={categorySlug}
 								filter={filter}
 								pathname={pathname}

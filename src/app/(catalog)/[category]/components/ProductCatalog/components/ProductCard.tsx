@@ -12,7 +12,7 @@ type ProductCardProps = ComponentProps<'article'> & {
   price?: number;
 };
 
-export function ProductCard({ image, name, category, price = 0, className }: ProductCardProps) {
+export function ProductCard({ image, name, category, className }: ProductCardProps) {
   return (
     <Card className={cn('not-prose h-fit w-full overflow-hidden', className)}>
       {image ? (

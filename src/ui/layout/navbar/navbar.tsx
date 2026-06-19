@@ -79,9 +79,9 @@ function SubnavItem({
 		"subcategories" in category && Boolean(category.subcategories?.length);
 	const hasFilters = "filters" in category && Boolean(category.filters?.length);
 	const href =
-		depth === 0
+		depth === 0 || !parentCategorySlug
 			? `/${categorySlug}`
-			: subcategoryHref(parentCategorySlug!, categorySlug);
+			: subcategoryHref(parentCategorySlug, categorySlug);
 	const isActive =
 		depth === 0
 			? pathname === href
@@ -117,12 +117,12 @@ function SubnavItem({
 				</ul>
 			)}
 
-			{hasFilters && isOpen && (
+			{hasFilters && isOpen && parentCategorySlug && (
 				<ul className={dropdownClass(depth)}>
 					{category.filters?.map((filter) => (
 						<FilterItem
 							key={filter.name}
-							categorySlug={parentCategorySlug!}
+							categorySlug={parentCategorySlug}
 							subcategorySlug={categorySlug}
 							filter={filter}
 							pathname={pathname}
