@@ -1,18 +1,9 @@
 'use client';
 
-import {
-  Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-
 import { cn } from '@/lib/utils';
-import { ComponentProps } from 'react';
-import { Heart } from 'lucide-react';
+import { ComponentProps, JSX } from 'react';
 
 type ProductCardProps = ComponentProps<'article'> & {
   name: string;
@@ -21,15 +12,14 @@ type ProductCardProps = ComponentProps<'article'> & {
   price?: number;
 };
 
-const IMG_FALLBACK =
-  'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1742';
-
-export function ProductCard({ image, name, category, price, className }: ProductCardProps) {
-  const src = image ?? IMG_FALLBACK;
-
+export function ProductCard({ image, name, category, price = 0, className }: ProductCardProps) {
   return (
-    <Card className={cn('not-prose w-full overflow-hidden', className)}>
-      <img src={src} alt={name} className="aspect-3/2 w-full object-cover" />
+    <Card className={cn('not-prose h-fit w-full overflow-hidden', className)}>
+      {image ? (
+        <img src={image} alt={name} className="aspect-3/2 w-full object-cover" />
+      ) : (
+        <EmptyStateImg />
+      )}
       <CardHeader>
         <CardTitle className="line-clamp-2 text-sm leading-snug">{name}</CardTitle>
         <CardDescription>{category}</CardDescription>
@@ -40,3 +30,13 @@ export function ProductCard({ image, name, category, price, className }: Product
     </Card>
   );
 }
+
+const EmptyStateImg = (): JSX.Element => {
+  return (
+    // NOTE: --card-spacing is inherited css var from shadcn card, not my design tokens
+    <div
+      className="-mt-(--card-spacing) grid aspect-3/2 h-fit w-full place-items-center overflow-hidden [background:var(--bg-stripe-blue)]"
+      role="img"
+    />
+  );
+};

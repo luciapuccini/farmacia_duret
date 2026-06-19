@@ -23,8 +23,13 @@ $screens: (
     --line-2:   oklch(0.95 0.006 220);
     --bg:       oklch(0.995 0.003 220);
     --bg-soft:  oklch(0.985 0.008 220);
-    --bg-blue:  oklch(0.97 0.025 235);
-    --bg-mint:  oklch(0.965 0.035 165);
+    --bg-blue:        oklch(0.97 0.025 235);
+    --bg-mint:        oklch(0.965 0.035 165);
+    --bg-stripe-blue: repeating-linear-gradient(
+      45deg,
+      color-mix(in oklch, var(--blue-500) 18%, transparent) 0 4px,
+      color-mix(in oklch, var(--blue-500) 6%, transparent) 4px 9px
+    );
 
     // Blue (primary)
     --blue-100: oklch(0.93 0.04 235);
