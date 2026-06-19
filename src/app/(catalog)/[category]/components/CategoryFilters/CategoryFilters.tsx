@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 import type { TCategory } from '@/types/types';
 import CollapsibleSection from '../CollapsibleSection/collapsibleSection';
@@ -13,12 +13,6 @@ type TCategoryFiltersProps = ComponentPropsWithRef<'aside'> & {
 
 function CategoryFilters({ category, activeSc }: TCategoryFiltersProps) {
   const [openPanels, setOpenPanels] = useState<string[]>(activeSc ? [activeSc] : []);
-
-  useEffect(() => {
-    if (activeSc) {
-      setOpenPanels((prev) => (prev.includes(activeSc) ? prev : [...prev, activeSc]));
-    }
-  }, [activeSc]);
 
   return (
     <aside className="w-60">
