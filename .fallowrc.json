@@ -9,7 +9,8 @@
 		"src/components/ui/**/*.tsx",
 		"src/components/ui/**/*.scss"
 	],
-	"ignoreDependencies": ["@opennextjs/cloudflare", "sass", "class-variance-authority"],
+	// ignoring shadcn & related external libs from our code quality audits
+	"ignoreDependencies": ["@opennextjs/cloudflare", "sass", "class-variance-authority", "lucide-react"],
 	"ignoreExports": [
 		{
 			"file": "**/*.module.scss",
