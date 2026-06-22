@@ -34,14 +34,6 @@ function getConfig(): WhatsAppConfig {
     .filter(([, value]) => !value)
     .map(([key]) => key);
 
-  if (missing.length) {
-    throw new WhatsAppOrderError(
-      `Missing WhatsApp order configuration: ${missing.join(', ')}`,
-      503,
-      'La integración de WhatsApp no está configurada.',
-    );
-  }
-
   console.log('[whatsapp:orders] config', {
     apiVersion: config.apiVersion,
     phoneNumberId: config.phoneNumberId,
@@ -50,6 +42,13 @@ function getConfig(): WhatsAppConfig {
     templateLanguage: config.templateLanguage,
     accessTokenLength: config.accessToken.length,
   });
+  if (missing.length) {
+    throw new WhatsAppOrderError(
+      `Missing WhatsApp order configuration: ${missing.join(', ')}`,
+      503,
+      'La integración de WhatsApp no está configurada.',
+    );
+  }
 
   return config;
 }
