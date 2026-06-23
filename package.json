@@ -13,6 +13,7 @@
     "start": "next start",
     "whatsapp:token:generate": "node -e \"console.log(require('node:crypto').randomBytes(24).toString('hex'))\"",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy:stg": "NEXT_PUBLIC_SITE_URL=https://farmacia-duret-stg.puccinilucia.workers.dev opennextjs-cloudflare build && opennextjs-cloudflare deploy --env stg",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "test": "vitest run",

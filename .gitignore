@@ -33,6 +33,7 @@ next-env.d.ts
 # Secret files
 .env.local
 .env.prod
+.env.stg
 
 # Test coverage
 coverage

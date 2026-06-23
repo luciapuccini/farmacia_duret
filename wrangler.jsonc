@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": ".open-next/worker.js",
-	"name": "farmacia-duret-dev",
+	"name": "farmacia-duret",
 	"compatibility_date": "2026-04-01",
 	"compatibility_flags": [
 		// Enable Node.js API
@@ -45,6 +45,26 @@
 			"custom_domain": true
 		}
 	],
+
+	"env": {
+		"stg": {
+			"workers_dev": true,
+			"services": [
+				{
+					"binding": "WORKER_SELF_REFERENCE",
+					"service": "farmacia-duret-stg"
+				}
+			],
+			"vars": {
+				"WHATSAPP_GRAPH_API_VERSION": "v25.0",
+				"WHATSAPP_ORDER_TEMPLATE_NAME": "send_order",
+				"WHATSAPP_ORDER_TEMPLATE_LANGUAGE": "en_US",
+				"WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER": "15556438703",
+				"WHATSAPP_BUSINESS_ACCOUNT_ID": "1515743930276322",
+				"WHATSAPP_PHONE_NUMBER_ID": "1134870129709445"
+			}
+		}
+	},
 
 	"observability": {
 		"enabled": false,
