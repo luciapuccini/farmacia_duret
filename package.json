@@ -7,20 +7,19 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "start": "next start",
     "fallow:audit": "git diff --cached --unified=0 --no-ext-diff --relative | fallow audit --gate all --diff-file - --fail-on-issues",
     "fallow": "fallow audit",
     "lint": "eslint .",
-    "start": "next start",
-    "whatsapp:token:generate": "node -e \"console.log(require('node:crypto').randomBytes(24).toString('hex'))\"",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "deploy:stg": "NEXT_PUBLIC_SITE_URL=https://farmacia-duret-stg.puccinilucia.workers.dev opennextjs-cloudflare build && opennextjs-cloudflare deploy --env stg",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "whatsapp:token:generate": "node -e \"console.log(require('node:crypto').randomBytes(24).toString('hex'))\"",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "build:stg": "NEXT_PUBLIC_SITE_URL=https://farmacia-duret-stg.puccinilucia.workers.dev next build",
+    "deploy:stg": "NEXT_PUBLIC_SITE_URL=https://farmacia-duret-stg.puccinilucia.workers.dev opennextjs-cloudflare deploy --env stg"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
