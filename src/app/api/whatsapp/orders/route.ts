@@ -6,7 +6,6 @@ type WhatsAppConfig = {
   accessToken: string;
   apiVersion: string;
   phoneNumberId: string;
-  recipientPhoneNumber: string;
   templateLanguage: string;
   templateName: string;
 };
@@ -30,7 +29,6 @@ function getConfig(): WhatsAppConfig {
     accessToken: env('WHATSAPP_ACCESS_TOKEN'),
     apiVersion: env('WHATSAPP_GRAPH_API_VERSION') || 'v25.0',
     phoneNumberId: env('WHATSAPP_PHONE_NUMBER_ID'),
-    recipientPhoneNumber: env('WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER'),
     templateLanguage: env('WHATSAPP_ORDER_TEMPLATE_LANGUAGE') || 'es_AR',
     templateName: env('WHATSAPP_ORDER_TEMPLATE_NAME'),
   };
@@ -55,6 +53,7 @@ function getFormString(formData: FormData, field: string): string {
 }
 
 function normalizePhoneNumber(phoneNumber: string): string {
+  console.log('🚀 ~ phoneNumber:', phoneNumber);
   return phoneNumber.replace(/\D/g, '');
 }
 
@@ -122,7 +121,7 @@ function buildTemplateComponents(formData: FormData): Array<Record<string, unkno
     {
       type: 'body',
       parameters: [
-        { type: 'text', parameter_name: 'name',  text: name },
+        { type: 'text', parameter_name: 'name', text: name },
         { type: 'text', parameter_name: 'phone', text: phone },
         { type: 'text', parameter_name: 'email', text: email },
         { type: 'text', parameter_name: 'notes', text: notes },
@@ -138,7 +137,7 @@ async function sendOrderTemplate(
   const payload = PayloadSchema.parse({
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
-    to: config.recipientPhoneNumber,
+    to: getCustomerPhone(formData),
     type: 'template',
     template: {
       name: config.templateName,
@@ -165,6 +164,8 @@ async function sendOrderTemplate(
       body: JSON.stringify(payload),
     },
   );
+  // FIXME: here authentication error
+
   const responsePayload = await readGraphPayload(response);
 
   if (!response.ok) {
