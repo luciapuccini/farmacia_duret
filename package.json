@@ -16,7 +16,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "whatsapp:token:generate": "node -e \"console.log(require('node:crypto').randomBytes(24).toString('hex'))\"",
-    "build": "opennextjs-cloudflare build",
+    "build": "next build",
+    "build:cf": "opennextjs-cloudflare build",
     "deploy": "opennextjs-cloudflare deploy",
     "deploy:stg": "opennextjs-cloudflare deploy --env stg"
   },
