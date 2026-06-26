@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 
 const TEMPLATE_PEDIDO_SIMPLE = 'pedido_imagen';
 
@@ -217,6 +217,14 @@ export async function POST(request: Request) {
     if (error instanceof WhatsAppOrderError) {
       console.warn('[whatsapp:orders] send failed', error.message);
       return Response.json({ ok: false, error: error.publicMessage }, { status: error.status });
+    }
+
+    if (error instanceof ZodError) {
+      console.error('[whatsapp:orders] payload validation failed', error.issues);
+      return Response.json(
+        { ok: false, error: 'No pudimos enviar el encargo por WhatsApp.' },
+        { status: 500 },
+      );
     }
 
     console.error('[whatsapp:orders] unexpected error', error);
