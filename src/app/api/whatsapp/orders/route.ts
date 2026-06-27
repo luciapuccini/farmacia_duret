@@ -1,50 +1,29 @@
 import { z, ZodError } from 'zod';
 
+import {
+  getWhatsAppApiConfig,
+  sendTemplateMessage,
+  WhatsAppApiError,
+} from '@/app/api/whatsapp/service';
+
 const TEMPLATE_PEDIDO_SIMPLE = 'pedido_imagen';
 
-type WhatsAppConfig = {
-  accessToken: string;
-  apiVersion: string;
-  phoneNumberId: string;
-  templateLanguage: string;
+type OrderTemplateConfig = {
   templateName: string;
 };
 
-class WhatsAppOrderError extends Error {
-  constructor(
-    message: string,
-    readonly status: number,
-    readonly publicMessage = message,
-  ) {
-    super(message);
-  }
-}
+function getOrderTemplateConfig(): OrderTemplateConfig {
+  const templateName = process.env.WHATSAPP_ORDER_TEMPLATE_NAME?.trim() ?? '';
 
-function env(name: keyof NodeJS.ProcessEnv): string {
-  return process.env[name]?.trim() ?? '';
-}
-
-function getConfig(): WhatsAppConfig {
-  const config = {
-    accessToken: env('WHATSAPP_ACCESS_TOKEN'),
-    apiVersion: env('WHATSAPP_GRAPH_API_VERSION') || 'v25.0',
-    phoneNumberId: env('WHATSAPP_PHONE_NUMBER_ID'),
-    templateLanguage: env('WHATSAPP_ORDER_TEMPLATE_LANGUAGE') || 'es_AR',
-    templateName: env('WHATSAPP_ORDER_TEMPLATE_NAME'),
-  };
-  const missing = Object.entries(config)
-    .filter(([, value]) => !value)
-    .map(([key]) => key);
-
-  if (missing.length) {
-    throw new WhatsAppOrderError(
-      `Missing WhatsApp order configuration: ${missing.join(', ')}`,
+  if (!templateName) {
+    throw new WhatsAppApiError(
+      'Missing WhatsApp order configuration: templateName',
       503,
       'La integración de WhatsApp no está configurada.',
     );
   }
 
-  return config;
+  return { templateName };
 }
 
 function getFormString(formData: FormData, field: string): string {
@@ -93,23 +72,6 @@ function getCustomerPhone(formData: FormData): string {
   return normalizePhoneNumber(`${countryDial}${phone}`);
 }
 
-async function readGraphPayload(response: Response): Promise<unknown> {
-  try {
-    return await response.json();
-  } catch {
-    return null;
-  }
-}
-
-function graphErrorMessage(payload: unknown): string {
-  if (!payload || typeof payload !== 'object') {
-    return 'Unknown WhatsApp API error';
-  }
-
-  const error = (payload as { error?: { message?: unknown } }).error;
-  return typeof error?.message === 'string' ? error.message : 'Unknown WhatsApp API error';
-}
-
 function buildTemplateComponents(formData: FormData): Array<Record<string, unknown>> {
   const name = getFormString(formData, 'name');
   const phone = getCustomerPhone(formData);
@@ -129,59 +91,25 @@ function buildTemplateComponents(formData: FormData): Array<Record<string, unkno
   ];
 }
 
-async function sendOrderTemplate(
-  config: WhatsAppConfig,
-  formData: FormData,
-): Promise<string | null> {
+async function sendOrderTemplate(formData: FormData): Promise<string | null> {
+  const apiConfig = getWhatsAppApiConfig();
+  const templateConfig = getOrderTemplateConfig();
+
   const payload = PayloadSchema.parse({
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
     to: getCustomerPhone(formData),
     type: 'template',
     template: {
-      name: config.templateName,
+      name: templateConfig.templateName,
       language: {
-        code: config.templateLanguage,
+        code: apiConfig.templateLanguage,
       },
       components: buildTemplateComponents(formData),
     },
   });
 
-  console.log('[whatsapp:orders] sending template', {
-    template: config.templateName,
-    to: payload.to,
-  });
-
-  const response = await fetch(
-    `https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${config.accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    },
-  );
-
-  const responsePayload = await readGraphPayload(response);
-
-  if (!response.ok) {
-    console.error('[whatsapp:orders] graph response', {
-      status: response.status,
-      body: responsePayload,
-    });
-    throw new WhatsAppOrderError(
-      `WhatsApp template send failed: ${graphErrorMessage(responsePayload)}`,
-      502,
-      'No pudimos enviar el encargo por WhatsApp.',
-    );
-  }
-
-  const message = (responsePayload as { messages?: Array<{ id?: unknown }> } | null)?.messages?.[0]
-    ?.id;
-
-  return typeof message === 'string' ? message : null;
+  return sendTemplateMessage(apiConfig, payload, 'orders');
 }
 
 export async function POST(request: Request) {
@@ -208,14 +136,18 @@ export async function POST(request: Request) {
   }
 
   try {
-    const config = getConfig();
-    const messageId = await sendOrderTemplate(config, formData);
+    const messageId = await sendOrderTemplate(formData);
 
     return Response.json({ ok: true, messageId });
   } catch (error) {
-    if (error instanceof WhatsAppOrderError) {
+    if (error instanceof WhatsAppApiError) {
       console.warn('[whatsapp:orders] send failed', error.message);
-      return Response.json({ ok: false, error: error.publicMessage }, { status: error.status });
+      const publicMessage =
+        error.status === 502
+          ? 'No pudimos enviar el encargo por WhatsApp.'
+          : error.publicMessage;
+
+      return Response.json({ ok: false, error: publicMessage }, { status: error.status });
     }
 
     if (error instanceof ZodError) {

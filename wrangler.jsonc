@@ -52,7 +52,7 @@
 				"NEXT_PUBLIC_SITE_URL": "https://farmaciaduret.online",
 				"WHATSAPP_GRAPH_API_VERSION": "v25.0",
 				"WHATSAPP_ORDER_TEMPLATE_NAME": "pedido_imagen",
-				"WHATSAPP_ORDER_TEMPLATE_LANGUAGE": "es_AR",
+				"WHATSAPP_TEMPLATE_LANGUAGE": "es_AR",
 				"WHATSAPP_BUSINESS_ACCOUNT_ID": "1515743930276322",
 				"WHATSAPP_PHONE_NUMBER_ID": "1134870129709445"
 				// secrets (set via wrangler secret put --env production):
@@ -77,7 +77,7 @@
 				"NEXT_PUBLIC_SITE_URL": "https://farmacia-duret-stg.puccinilucia.workers.dev",
 				"WHATSAPP_GRAPH_API_VERSION": "v25.0",
 				"WHATSAPP_ORDER_TEMPLATE_NAME": "pedido_imagen",
-				"WHATSAPP_ORDER_TEMPLATE_LANGUAGE": "es_AR",
+				"WHATSAPP_TEMPLATE_LANGUAGE": "es_AR",
 				"WHATSAPP_BUSINESS_ACCOUNT_ID": "1515743930276322",
 				"WHATSAPP_PHONE_NUMBER_ID": "1134870129709445"
 				// secrets (set via wrangler secret put --env stg):
