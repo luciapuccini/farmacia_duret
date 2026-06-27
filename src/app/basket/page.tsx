@@ -1,44 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import products from '@/services/catalog/data/products.json';
-
-type Product = (typeof products)[number];
+import { useState } from 'react';
+import { type Product, getBasket, removeFromBasket, submitOrder } from '@/utils/basket';
 
 export default function BasketPage() {
-  const [items, setItems] = useState<string[]>([]);
-
-  useEffect(() => {
-    const stored: string[] = JSON.parse(localStorage.getItem('basket_items') ?? '[]');
-    setItems(stored);
-  }, []);
+  const [items, setItems] = useState<Product[]>(() =>
+    typeof window === 'undefined' ? [] : getBasket(),
+  );
 
   function remove(id: string) {
-    const next = items.filter((i) => i !== id);
-    setItems(next);
-    localStorage.setItem('basket_items', JSON.stringify(next));
-    window.dispatchEvent(new Event('basket:update'));
+    removeFromBasket(id);
+    setItems((prev) => prev.filter((p) => p.id !== id));
   }
 
   function handleOrder() {
-    const basketProducts = items.map((id) => products.find((p) => p.id === id)).filter(Boolean);
-    console.log('Hacer pedido', basketProducts);
+    submitOrder(items, (products) => {
+      console.log('Hacer pedido', products);
+    });
   }
-
-  const basketProducts = items
-    .map((id) => products.find((p) => p.id === id))
-    .filter(Boolean) as Product[];
 
   return (
     <main className="py-8">
       <h2 className="mb-6 text-2xl font-bold">Carrito</h2>
 
-      {basketProducts.length === 0 ? (
+      {items.length === 0 ? (
         <p className="text-gray-500">Tu carrito está vacío.</p>
       ) : (
         <>
           <ul className="mb-8 flex flex-col gap-3">
-            {basketProducts.map((product) => (
+            {items.map((product) => (
               <li key={product.id} className="flex items-center justify-between border-b pb-3">
                 <span className="text-sm">{product.name}</span>
                 <button

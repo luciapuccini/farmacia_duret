@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShoppingBag } from 'lucide-react';
+import { getBasket } from '@/utils/basket';
 
 export function BasketBadge() {
   const [count, setCount] = useState(0);
@@ -10,8 +11,7 @@ export function BasketBadge() {
 
   useEffect(() => {
     function sync() {
-      const stored: string[] = JSON.parse(localStorage.getItem('basket_items') ?? '[]');
-      setCount(stored.length);
+      setCount(getBasket().length);
     }
     sync();
     window.addEventListener('basket:update', sync);
