@@ -2,7 +2,7 @@
 
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/className';
 import { ComponentProps, JSX } from 'react';
 
 type ProductCardProps = ComponentProps<'article'> & {

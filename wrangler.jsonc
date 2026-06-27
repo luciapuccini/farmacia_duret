@@ -35,20 +35,38 @@
 		"binding": "IMAGES"
 	},
 
-	"routes": [
-		{
-			"pattern": "farmaciaduret.online",
-			"custom_domain": true
-		},
-		{
-			"pattern": "www.farmaciaduret.online",
-			"custom_domain": true
-		}
-	],
-
 	"env": {
+		"production": {
+			"name": "farmacia-duret",
+			"routes": [
+				{
+					"pattern": "farmaciaduret.online",
+					"custom_domain": true
+				},
+				{
+					"pattern": "www.farmaciaduret.online",
+					"custom_domain": true
+				}
+			],
+			"vars": {
+				"NEXT_PUBLIC_SITE_URL": "https://farmaciaduret.online",
+				"WHATSAPP_GRAPH_API_VERSION": "v25.0",
+				"WHATSAPP_ORDER_TEMPLATE_NAME": "pedido_imagen",
+				"WHATSAPP_ORDER_TEMPLATE_LANGUAGE": "es_AR",
+				"WHATSAPP_BUSINESS_ACCOUNT_ID": "1515743930276322",
+				"WHATSAPP_PHONE_NUMBER_ID": "1134870129709445"
+				// secrets (set via wrangler secret put --env production):
+				// WHATSAPP_ACCESS_TOKEN
+				// WHATSAPP_WEBHOOK_VERIFY_TOKEN
+			}
+		},
 		"stg": {
 			"workers_dev": true,
+			"routes": [],
+			"images": {
+				"binding": "IMAGES"
+			},
+			"r2_buckets": [],
 			"services": [
 				{
 					"binding": "WORKER_SELF_REFERENCE",
@@ -56,12 +74,15 @@
 				}
 			],
 			"vars": {
+				"NEXT_PUBLIC_SITE_URL": "https://farmacia-duret-stg.puccinilucia.workers.dev",
 				"WHATSAPP_GRAPH_API_VERSION": "v25.0",
-				"WHATSAPP_ORDER_TEMPLATE_NAME": "send_order",
-				"WHATSAPP_ORDER_TEMPLATE_LANGUAGE": "en_US",
-				"WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER": "15556438703",
+				"WHATSAPP_ORDER_TEMPLATE_NAME": "pedido_imagen",
+				"WHATSAPP_ORDER_TEMPLATE_LANGUAGE": "es_AR",
 				"WHATSAPP_BUSINESS_ACCOUNT_ID": "1515743930276322",
 				"WHATSAPP_PHONE_NUMBER_ID": "1134870129709445"
+				// secrets (set via wrangler secret put --env stg):
+				// WHATSAPP_ACCESS_TOKEN
+				// WHATSAPP_WEBHOOK_VERIFY_TOKEN
 			}
 		}
 	},
