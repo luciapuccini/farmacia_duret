@@ -9,6 +9,7 @@ declare global {
     WHATSAPP_PHONE_NUMBER_ID?: string
     WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER?: string
     WHATSAPP_ORDER_TEMPLATE_NAME?: string
+    WHATSAPP_CATALOGO_TEMPLATE_NAME?: string
     WHATSAPP_TEMPLATE_LANGUAGE?: string
   }
   namespace NodeJS {
