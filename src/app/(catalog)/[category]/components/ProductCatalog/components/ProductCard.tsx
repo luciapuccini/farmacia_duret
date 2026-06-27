@@ -6,13 +6,22 @@ import { cn } from '@/utils/className';
 import { ComponentProps, JSX } from 'react';
 
 type ProductCardProps = ComponentProps<'article'> & {
+  id: string;
   name: string;
   category: string;
   image?: string;
   price?: number;
 };
 
-export function ProductCard({ image, name, category, className }: ProductCardProps) {
+export function ProductCard({ id, image, name, category, className }: ProductCardProps) {
+  function handleAdd() {
+    const stored: string[] = JSON.parse(localStorage.getItem('basket_items') ?? '[]');
+    if (!stored.includes(id) && stored.length < 5) {
+      localStorage.setItem('basket_items', JSON.stringify([...stored, id]));
+      window.dispatchEvent(new Event('basket:update'));
+    }
+  }
+
   return (
     <Card className={cn('not-prose h-fit w-full overflow-hidden', className)}>
       {image ? (
@@ -24,7 +33,7 @@ export function ProductCard({ image, name, category, className }: ProductCardPro
         <CardTitle className="line-clamp-2 text-sm leading-snug">{name}</CardTitle>
         <CardDescription>{category}</CardDescription>
         <CardAction>
-          <Button className="flex-1">Comprar</Button>
+          <Button className="flex-1" onClick={handleAdd}>Comprar</Button>
         </CardAction>
       </CardHeader>
     </Card>
