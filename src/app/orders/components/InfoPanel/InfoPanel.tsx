@@ -5,14 +5,14 @@ import styles from './InfoPanel.module.scss';
 const steps = [
   {
     n: 1,
-    title: 'Comparte tu receta',
-    desc: 'Llena el formulario con tu foto o PDF.',
+    title: 'Completá el formulario',
+    desc: 'Tus datos y lo que necesitás. En minutos te escribimos por WhatsApp.',
     done: true,
   },
   {
     n: 2,
-    title: 'Te confirmamos en 30 min',
-    desc: 'Disponibilidad, precio total y tiempo de preparación.',
+    title: 'Nuestro equipo te guía',
+    desc: 'Confirmamos disponibilidad, precio y tiempo de preparación. Podés enviarnos la receta directo en el chat.',
     done: false,
   },
   {
@@ -28,16 +28,16 @@ export default function InfoPanel() {
     <aside className={styles.side}>
       <span className={styles.eyebrow}>
         <span className={styles.dot} />
-        Reservas · Sube tu receta
+        Encargos · Por WhatsApp
       </span>
 
       <h2 className={styles.heading}>
-        Tu receta lista en <em className={styles.accent}>30 minutos</em>.
+        Pedí por WhatsApp, <em className={styles.accent}>sin esperas</em>.
       </h2>
 
       <p className={styles.lede}>
-        Subí una foto o PDF de tu receta médica y nuestro farmacéutico te confirma disponibilidad,
-        precio y horario de retiro por WhatsApp.
+        Completá el formulario y nuestro equipo te escribe por WhatsApp para guiarte con tu pedido.
+        Confirmamos disponibilidad, precio y horario de retiro en el mismo chat.
       </p>
 
       <div className={styles.steps}>
@@ -70,7 +70,7 @@ export default function InfoPanel() {
           </span>
           <span>
             <b>Tu información está segura</b>
-            Ciframos tus datos y recetas.
+            Ciframos tus datos y los usamos solo para tu pedido.
           </span>
         </div>
 
