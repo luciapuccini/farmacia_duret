@@ -53,7 +53,6 @@ function getFormString(formData: FormData, field: string): string {
 }
 
 function normalizePhoneNumber(phoneNumber: string): string {
-  console.log('🚀 ~ phoneNumber:', phoneNumber);
   return phoneNumber.replace(/\D/g, '');
 }
 
@@ -164,7 +163,6 @@ async function sendOrderTemplate(
       body: JSON.stringify(payload),
     },
   );
-  // FIXME: here authentication error
 
   const responsePayload = await readGraphPayload(response);
 

@@ -6,9 +6,6 @@ import { COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from '@/utils/countryCodes';
 import InfoPanel from './components/InfoPanel/InfoPanel';
 import styles from './orders.module.scss';
 
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
-
 // ── Rate-limit helpers ────────────────────────────────────
 const STORAGE_KEY = 'orders_submissions';
 const MAX_PER_DAY = 6;
@@ -41,41 +38,11 @@ export default function ReservasPage() {
   const [charCount, setCharCount] = useState(0);
   const [consent, setConsent] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [fileError, setFileError] = useState('');
   const [submissionCount, setSubmissionCount] = useState(getCount);
   const [status, setStatus] = useState<Status>('idle');
 
   const remaining = MAX_PER_DAY - submissionCount;
   const isLimited = remaining <= 0;
-
-  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const image = e.target.files?.[0];
-    setErrorMessage('');
-
-    if (!image) {
-      setFileName(null);
-      setFileError('');
-      return;
-    }
-
-    if (!ALLOWED_IMAGE_TYPES.has(image.type)) {
-      e.target.value = '';
-      setFileName(null);
-      setFileError('La imagen debe ser JPG, PNG o WebP.');
-      return;
-    }
-
-    if (image.size > MAX_IMAGE_SIZE_BYTES) {
-      e.target.value = '';
-      setFileName(null);
-      setFileError('La imagen debe pesar hasta 5 MB.');
-      return;
-    }
-
-    setFileName(image.name);
-    setFileError('');
-  }
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -109,8 +76,6 @@ export default function ReservasPage() {
       setStatus('sent');
       form.reset();
       setCharCount(0);
-      setFileName(null);
-      setFileError('');
     } catch (error) {
       setStatus('error');
       setErrorMessage(
@@ -122,8 +87,6 @@ export default function ReservasPage() {
   function resetForm() {
     setCharCount(0);
     setErrorMessage('');
-    setFileName(null);
-    setFileError('');
     setStatus('idle');
   }
 
@@ -135,8 +98,8 @@ export default function ReservasPage() {
           <div className={styles.sentBox}>
             <p className={styles.sentTitle}>Encargo enviado por WhatsApp</p>
             <p className={styles.sentText}>
-              Recibimos tus datos y la imagen adjunta si la agregaste. Te confirmamos
-              disponibilidad, precio y horario de retiro por WhatsApp.
+              Recibimos tus datos. Te confirmamos disponibilidad, precio y horario de retiro por
+              WhatsApp.
             </p>
             <button type="button" className={styles.btnPrimary} onClick={() => setStatus('idle')}>
               Hacer otro encargo
@@ -264,7 +227,7 @@ export default function ReservasPage() {
 
               <div className={styles.field}>
                 <label htmlFor="email" className={styles.label}>
-                  Email
+                  Email <span className={styles.optional}>(opcional)</span>
                 </label>
                 <div className={styles.inputWrap}>
                   <span className={styles.icon}>
@@ -299,7 +262,7 @@ export default function ReservasPage() {
           <div className={styles.group}>
             <div className={styles.groupTitle}>
               <span className={styles.num}>2</span>
-              Encargo <span className={styles.optional}>(opcional)</span>
+              Encargo
             </div>
             <div className={styles.field}>
               <label htmlFor="notes" className={styles.label}>
@@ -311,46 +274,13 @@ export default function ReservasPage() {
                 className={styles.textarea}
                 placeholder="Ej. necesito el genérico si está disponible, prefiero retirar mañana a la tarde…"
                 maxLength={300}
+                required
                 rows={4}
                 onChange={(e) => setCharCount(e.target.value.length)}
               />
               <span className={styles.charCount}>{charCount} / 300</span>
             </div>
 
-            <div className={styles.field}>
-              <label htmlFor="image" className={styles.label}>
-                Imagen de referencia <span className={styles.optional}>(opcional)</span>
-              </label>
-              <label htmlFor="image" className={styles.fileLabel}>
-                <span className={styles.fileIcon} aria-hidden="true">
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" x2="12" y1="3" y2="15" />
-                  </svg>
-                </span>
-                <span className={styles.fileName}>{fileName ?? 'Subir imagen'}</span>
-                <span className={styles.fileHint}>JPG, PNG o WebP hasta 5 MB</span>
-                <input
-                  id="image"
-                  name="image"
-                  type="file"
-                  accept="image/png, image/jpeg, image/webp"
-                  className={styles.fileInput}
-                  onChange={handleImageChange}
-                />
-              </label>
-              {fileError ? <span className={styles.fieldError}>{fileError}</span> : null}
-            </div>
           </div>
 
           {/* Consent */}
@@ -378,7 +308,7 @@ export default function ReservasPage() {
             <button
               type="submit"
               className={styles.btnPrimary}
-              disabled={!consent || status === 'submitting' || Boolean(fileError)}
+              disabled={!consent || status === 'submitting'}
             >
               {status === 'submitting' ? 'Enviando...' : 'Enviar por WhatsApp'}
               <svg
