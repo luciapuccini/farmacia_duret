@@ -8,6 +8,7 @@ Farmacia Duret is a local pharmacy website for customers in Villa Rosa, Buenos A
 - [Offers](https://farmaciaduret.online/offers): Current pharmacy offers and promotions.
 - [Orders](https://farmaciaduret.online/orders): WhatsApp handoff form for customer orders and reservations.
 - [Contact](https://farmaciaduret.online/contact): Contact and location information for the pharmacy.
+- [Privacy](https://farmaciaduret.online/privacy): Privacy policy for how Farmacia Duret handles personal data.
 - [Sitemap](https://farmaciaduret.online/sitemap.xml): Complete list of crawlable public URLs.
 
 ## Catalog Areas
