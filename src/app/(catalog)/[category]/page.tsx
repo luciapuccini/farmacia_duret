@@ -38,7 +38,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           <p className={styles.sectLabel}>Catálogo</p>
           <h2 className={styles.sectTitle}>Hacé tus pedidos por whatsapp.</h2>
           <p className={styles.sectSub}>
-            consultas hasta 10 productos, sujetos a disponibilidad y precios
+            consultas hasta 5 productos, sujetos a disponibilidad y precios
           </p>
         </div>
         <BasketBadge />

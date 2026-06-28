@@ -1,4 +1,3 @@
-import CatalogSection from '@/app/(home)/components/CatalogSection/CatalogSection';
 import HeroVisual from '@/app/(home)/components/HeroVisual/HeroVisual';
 import { TextLink } from '@/components/ui';
 import styles from './home.module.scss';
@@ -154,8 +153,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
-      <CatalogSection />
     </div>
   );
 }
