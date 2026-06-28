@@ -7,7 +7,7 @@ import {
 } from '@/app/api/whatsapp/service';
 
 const TEMPLATE_PEDIDO_CATALOGO = 'pedido_catalogo';
-const MAX_PARAMS = 5;
+const MANDATORY_PARAMS = 5;
 
 type CatalogoTemplateConfig = {
   templateName: string;
@@ -40,7 +40,7 @@ const ListItemParam = z.object({
     'list_item_4',
     'list_item_5',
   ]),
-  text: z.string(),
+  text: z.string().max(150),
 });
 
 const PayloadSchema = z.object({
@@ -67,7 +67,7 @@ const PayloadSchema = z.object({
 });
 
 function buildTemplateComponents(items: string[]): Array<Record<string, unknown>> {
-  const mapParameters = Array.from({ length: MAX_PARAMS }, (_, i) => ({
+  const mapParameters = Array.from({ length: MANDATORY_PARAMS }, (_, i) => ({
     type: 'text',
     parameter_name: `list_item_${i + 1}`,
     text: items[i]?.trim() || '-',
