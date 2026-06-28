@@ -7,7 +7,7 @@ function stubWhatsAppEnv() {
   vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123456789');
   vi.stubEnv('WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER', '+54 9 11 1111-2222');
   vi.stubEnv('WHATSAPP_ORDER_TEMPLATE_NAME', 'pedido_imagen');
-  vi.stubEnv('WHATSAPP_ORDER_TEMPLATE_LANGUAGE', 'es_AR');
+  vi.stubEnv('WHATSAPP_TEMPLATE_LANGUAGE', 'es_AR');
 }
 
 function orderFormData() {

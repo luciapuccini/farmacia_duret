@@ -78,7 +78,7 @@ Required order-send variables:
 - `WHATSAPP_PHONE_NUMBER_ID`
 - `WHATSAPP_ORDER_RECIPIENT_PHONE_NUMBER`
 - `WHATSAPP_ORDER_TEMPLATE_NAME`
-- `WHATSAPP_ORDER_TEMPLATE_LANGUAGE` (defaults to `es_AR`)
+- `WHATSAPP_TEMPLATE_LANGUAGE` (defaults to `es_AR`)
 - `WHATSAPP_GRAPH_API_VERSION` (defaults to `v25.0`)
 
 The approved order template should have four body variables in this order: customer name, customer phone, customer email, and notes.

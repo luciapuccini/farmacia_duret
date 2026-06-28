@@ -4,6 +4,7 @@ import type { TCatalogUrlParams, TCategory } from '@/types/types';
 import { nameToSlug } from '@/utils/nameToSlug';
 import CategoryFilters from './components/CategoryFilters/CategoryFilters';
 import ProductCatalog from './components/ProductCatalog/ProductCatalog';
+import { BasketBadge } from './components/BasketBadge/BasketBadge';
 import styles from './page.module.scss';
 
 type Slug = string;
@@ -40,6 +41,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             consultas hasta 10 productos, sujetos a disponibilidad y precios
           </p>
         </div>
+        <BasketBadge />
       </div>
       <div className="flex gap-8 py-4">
         <CategoryFilters category={categoryObject} activeSc={subcategory} />
