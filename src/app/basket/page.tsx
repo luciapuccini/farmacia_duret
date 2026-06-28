@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { type Product, getBasket, removeFromBasket } from '@/utils/basket';
+import { type Product, clearBasket, getBasket, removeFromBasket } from '@/utils/basket';
 import { CatalogoOrderSchema } from '@/app/api/whatsapp/catalogo/schema';
 
 type Status = 'idle' | 'sending' | 'sent';
@@ -42,6 +42,8 @@ export default function BasketPage() {
     const data = await response.json();
 
     if (data.ok) {
+      clearBasket();
+      setItems([]);
       setStatus('sent');
     } else {
       setError(data.error ?? 'No pudimos enviar el pedido.');
@@ -82,6 +84,7 @@ export default function BasketPage() {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              required
               placeholder="+54 9 11 ..."
               className="w-full max-w-xs rounded-md border px-3 py-2 text-sm"
             />

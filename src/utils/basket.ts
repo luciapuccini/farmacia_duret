@@ -40,6 +40,11 @@ export function removeFromBasket(id: string): void {
   if (typeof window !== 'undefined') window.dispatchEvent(new Event('basket:update'));
 }
 
+export function clearBasket(): void {
+  localStorage.removeItem(KEY);
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('basket:update'));
+}
+
 export function submitOrder(items: Product[], onSubmit: (items: Product[]) => void): void {
   onSubmit(items);
 }

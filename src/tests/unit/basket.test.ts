@@ -9,7 +9,8 @@ function makeLocalStorageMock() {
       store[key] = value;
     },
     removeItem: (key: string) => {
-      delete store[key];
+      const { [key]: _, ...rest } = store;
+      store = rest;
     },
     clear: () => {
       store = {};
