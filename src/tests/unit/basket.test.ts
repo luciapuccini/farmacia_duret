@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { type Product, addToBasket, getBasket, removeFromBasket, submitOrder } from '@/utils/basket';
+import {
+  type Product,
+  addToBasket,
+  getBasket,
+  removeFromBasket,
+  submitOrder,
+} from '@/utils/basket';
 
 function makeLocalStorageMock() {
   let store: Record<string, string> = {};
