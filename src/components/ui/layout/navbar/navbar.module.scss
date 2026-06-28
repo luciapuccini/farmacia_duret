@@ -9,7 +9,7 @@
   border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 10;
 }
 
 /* ── Top row ────────────────────────────────────────────── */
@@ -143,7 +143,6 @@
 
 .subnav {
   display: none;
-
   @include g.up(md) {
     display: block;
     border-top: 1px solid var(--line);

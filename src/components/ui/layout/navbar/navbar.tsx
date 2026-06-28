@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import categories from '@/services/catalog/data/categories.json';
 import type { TCategory, TFilters, TSubcategory } from '@/types/types';
@@ -134,23 +134,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const router = useRouter();
   const subnavCategories = (categories as TCategory[]).filter((c) => c.name !== 'Ofertas');
   const activeSubcategory = searchParams.get('sc');
   const activeFilter = searchParams.get('f');
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
-
-  const handleCatalogClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const el = document.getElementById('catalogo');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-      history.replaceState(null, '', '/');
-    } else {
-      router.push('/#catalogo');
-    }
-  };
 
   return (
     <>
@@ -176,7 +164,12 @@ export default function Navbar() {
           </Link>
 
           <nav className={styles.navLinks} aria-label="Navegación principal">
-            <NavLink href="/" active={pathname === '/'} variant="nav">
+            <NavLink
+              // FIXME: get first from catalog
+              href="/dermocosmetica?sc=rostro&f=anti-edad"
+              active={pathname === '/'}
+              variant="nav"
+            >
               Catálogo
             </NavLink>
             <NavLink href="/contact" active={isActive('/contact')} variant="nav">
@@ -227,15 +220,6 @@ export default function Navbar() {
         {/* ── Sub-nav ribbon — desktop only ────────────── */}
         <nav className={styles.subnav} aria-label="Categorías">
           <div className={styles.subnavInner}>
-            <NavLink
-              href="/#catalogo"
-              onClick={handleCatalogClick}
-              active={pathname === '/'}
-              variant="subnav"
-            >
-              Todo el catálogo
-            </NavLink>
-            <span className={styles.subnavDivider} aria-hidden="true" />
             <ul className={styles.subnavList}>
               {subnavCategories.map((cat) => (
                 <SubnavItem
@@ -247,11 +231,6 @@ export default function Navbar() {
                 />
               ))}
             </ul>
-            {/* TODO: Keep the Ofertas promo link local until it clearly fits an existing UI link primitive. */}
-            <Link href="/offers" className={styles.subnavCta}>
-              <span className={styles.subnavCtaDot} aria-hidden="true" />
-              Ofertas
-            </Link>
           </div>
         </nav>
       </header>

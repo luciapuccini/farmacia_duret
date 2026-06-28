@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { TextLink } from '@/components/ui';
+import { SITE_URL } from '@/config/site';
 import { safeJsonLd } from '@/utils/safeJsonLd';
 import styles from './contact.module.scss';
 
@@ -11,6 +12,42 @@ const googleMapsUrl =
 
 const googleMapsEmbedUrl =
   'https://www.google.com/maps?q=Farmacia%20Duret%2C%20E.%20Casella%201743%2C%20Villa%20Rosa%2C%20Buenos%20Aires&z=16&output=embed';
+
+const pharmacyPhone = '+541178942852';
+const pharmacyInstagram = 'https://www.instagram.com/farmacia_duret';
+const pharmacyWhatsApp = 'https://wa.me/5491178942852';
+
+const pharmacyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Pharmacy',
+  '@id': `${SITE_URL}/contact#pharmacy`,
+  name: 'Farmacia Duret',
+  url: SITE_URL,
+  telephone: pharmacyPhone,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'E. Casella 1743',
+    addressLocality: 'Villa Rosa',
+    addressRegion: 'Buenos Aires',
+    postalCode: 'B1631',
+    addressCountry: 'AR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -34.4064761,
+    longitude: -58.8562663,
+  },
+  hasMap: googleMapsUrl,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      opens: '08:00',
+      closes: '20:00',
+    },
+  ],
+  sameAs: [pharmacyInstagram, pharmacyWhatsApp, googleMapsUrl],
+};
 
 export const metadata: Metadata = {
   title: 'Contacto | Farmacia Duret',
@@ -43,14 +80,19 @@ const faqs = [
       'Atendemos de lunes a sábado de 8:00 a 20:00. Los domingos la farmacia permanece cerrada.',
   },
   {
+    question: '¿Puedo ver productos del catálogo online?',
+    answer:
+      'Sí. Podés explorar categorías como dermocosmética, belleza o cuidado personal desde el menú. Elegí los productos que te interesen y consultanos por WhatsApp para confirmar stock y precio.',
+  },
+  {
     question: '¿Puedo consultar disponibilidad de productos antes de ir?',
     answer:
-      'Sí. Podés comunicarte por teléfono o iniciar una reserva por WhatsApp para consultar disponibilidad de medicamentos, productos de farmacia, dermocosmética, cuidado personal y ofertas.',
+      'Sí. Podés explorar el catálogo online, comunicarte por teléfono o armar un encargo por WhatsApp para consultar disponibilidad de medicamentos, productos de farmacia, dermocosmética, cuidado personal y ofertas.',
   },
   {
     question: '¿Puedo hacer un pedido por WhatsApp?',
     answer:
-      'Sí. Desde la sección de reservas podés preparar un mensaje de WhatsApp con los productos que necesitás para continuar la atención directamente con la farmacia.',
+      'Sí. Podés armar un encargo desde Encargos o elegir productos del catálogo online (hasta 5) y enviarlos por WhatsApp desde el carrito. En ambos casos, la farmacia te confirma disponibilidad y precio.',
   },
   {
     question: '¿Venden medicamentos con receta?',
@@ -82,6 +124,10 @@ export default function ContactoPage() {
     <>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(pharmacyJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }}
       />
       <div className={styles.container}>
@@ -102,7 +148,7 @@ export default function ContactoPage() {
               <div className={styles.contactInfo}>
                 <div className={styles.socialRow}>
                   <a
-                    href="https://www.instagram.com/farmacia_duret"
+                    href={pharmacyInstagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.socialLink}
@@ -127,7 +173,7 @@ export default function ContactoPage() {
                     <div>@farmacia_duret</div>
                   </a>
                   <a
-                    href="https://wa.me/5491178942852"
+                    href={pharmacyWhatsApp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.socialLink}
@@ -224,7 +270,7 @@ export default function ContactoPage() {
                   <div>
                     <h4>Teléfono</h4>
                     <p>
-                      <TextLink href="tel:+541178942852">+54 11 7894 2852</TextLink>
+                      <TextLink href={`tel:${pharmacyPhone}`}>+54 11 7894 2852</TextLink>
                     </p>
                   </div>
                 </div>

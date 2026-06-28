@@ -1,8 +1,10 @@
 import dashboardData from "@/services/catalog/data/dashboard-orders.json";
+import type { Metadata } from "next";
 import styles from "./dashboard.module.scss";
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: "Dashboard de órdenes | Farmacia Duret",
+	robots: { index: false, follow: false },
 };
 
 type OrderStatus =
