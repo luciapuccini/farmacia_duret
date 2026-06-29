@@ -109,6 +109,17 @@ export default function Footer() {
             Las fotos son a modo ilustrativo. La venta de cualquiera de los productos publicados
             está sujeta a la verificación de stock.
           </p>
+          <p>
+            Desarrollado por{' '}
+            <Link
+              href="https://luciapuccini.com"
+              className={styles.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              luciapuccini
+            </Link>
+          </p>
         </div>
       </div>
     </footer>
