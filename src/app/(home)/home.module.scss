@@ -1,13 +1,13 @@
 @use '@/globals' as g;
 
-.page section {
-  padding: 0.5rem 0;
+// .page section {
+//   padding: 0.5rem 0;
 
-  @include g.up(md) {
-    padding: 3rem 0;
+//   @include g.up(md) {
+//     padding: 3rem 0;
 
-  }
-}
+//   }
+// }
 
 
 .hero {
@@ -137,7 +137,7 @@
   }
 }
 
-/* Hero visual panel — hidden on mobile */
+
 .heroVisual {
   display: none;
 
@@ -152,7 +152,7 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   padding: 1.5em 1rem;
-  margin: 1em -1rem;
+  margin: 1em 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -161,7 +161,7 @@
 
   @include g.up(md) {
     padding: 1.5em 2rem;
-    margin: 2em -2rem;
+    margin: 2em 0;
     gap: 2em;
   }
 }
