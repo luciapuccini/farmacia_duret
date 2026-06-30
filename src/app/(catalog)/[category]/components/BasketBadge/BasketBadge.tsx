@@ -23,7 +23,7 @@ export function BasketBadge() {
   return (
     <button
       onClick={() => router.push('/basket')}
-      className="relative flex items-center justify-center p-2"
+      className="relative flex cursor-pointer items-center justify-center p-2"
       aria-label={`Carrito (${count} productos)`}
     >
       <ShoppingBag className="h-6 w-6" />
