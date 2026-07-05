@@ -21,7 +21,9 @@ The CRAP threshold is intentionally wider than Fallow's default because this is 
 
 ## Local Hook
 
-The tracked hook script is `scripts/pre-commit`. It is installed locally at `.git/hooks/pre-commit` and runs a staged-diff audit before commits:
+Pre-commit hooks are managed with [Lefthook](https://lefthook.dev/) via `lefthook.yml`. Run `npm install` (or `npx lefthook install`) to install hooks into `.git/hooks/`.
+
+The Fallow job runs a staged-diff audit before commits:
 
 - `git diff --cached --unified=0 --no-ext-diff --relative | fallow audit --gate all --diff-file - --fail-on-issues`
 
