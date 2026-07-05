@@ -43,3 +43,6 @@ playwright-report
 
 ## fallow local cache
 ./fallow
+
+## misc
+tsconfig.tsbuildinfo

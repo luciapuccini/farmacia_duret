@@ -96,6 +96,7 @@ Shared utility functions are in `src/utils/`:
 ### Types
 
 Shared TypeScript types live in `src/types/types.ts`.
+see rules in `.cursor/typescript.mdc`
 
 ### Config
 
@@ -105,7 +106,9 @@ Site-wide configuration (name, URLs, contact info) lives in `src/config/site.ts`
 
 Unit tests live in `src/tests/unit/`. files use _.test.ts
 End to end test with playwrite live in `e2e`. files use _.spec.ts
-filenames intentionally different match for simplicity confing between vitest vs playwright
+filenames intentionally different match for simplicity confing between vitest vs playwright.
+
+see rules in `.cursor/testing.mdc`
 
 ### How does this project get data?
 
@@ -132,6 +135,8 @@ When creating new pages that would benefit from structured data, proactively sug
 - Content is in Spanish, ARG.
 
 ## Agent skills
+
+see rules in `.cursor`
 
 ### Domain docs
 
