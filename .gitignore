@@ -38,5 +38,8 @@ next-env.d.ts
 # Test coverage
 coverage
 
+# Playwright
+playwright-report
+
 ## fallow local cache
 ./fallow
