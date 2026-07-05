@@ -45,4 +45,4 @@ playwright-report
 ./fallow
 
 ## misc
-tsconfig.tsbuildinfo
+*.tsbuildinfo

@@ -8,11 +8,12 @@ alwaysApply: false
 
 ## What "done" means
 
-A task is not done until all three exit zero, in this order:
+A task is not done until all four exit zero, in this order:
 
 1. `npm run typecheck`
 2. `npm run lint`
-3. `npm run test:e2e`
+3. `npm run test`
+4. `npm run test:e2e`
 
 Do not report a task complete with any of these failing. If a failure looks unrelated, say so explicitly and link the failing test name in your summary.
 
