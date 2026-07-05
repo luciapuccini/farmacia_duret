@@ -5,7 +5,7 @@
 - This is a **Next.js App Router** project (React 19 + TypeScript).
 - We style with **Sass modules** for custom components and **Tailwind CSS** for shadcn/ui components. Design tokens and reusable mixins live in `globals.scss`.
 - Hosted on Cloudflare Pages via `@opennextjs/cloudflare`.
-- Catalog data (products and categories) will come from a call to an API. [TBD] Rest with non relational data potentially -> R2
+- Catalog data (products and categories) is currently static JSON files.
 - Public customer facing flows only. No auth needed here.
 
 ## Structure to follow - where does each thing live?
@@ -24,63 +24,13 @@ Pages live in the `src/app/` directory using Next.js file-system routing:
 - `src/app/api/whatsapp/webhook/route.ts` — Meta WhatsApp webhook verification + event receiver
 - `src/app/not-found.tsx` — 404 page
 
-Each page has its `.module.scss` file alongside it in the same directory.
-
 ### Pages components
 
 We use route groups (folders in parentheses) to co-locate each route with its own `components/` subfolder containing page-local components.
 
-### Component Structure
-
-Every component follows the same named-folder structure:
-
-- Do NOT put more than 1 component per file. If an abstraction is created it goes into a nested `components/<new_component_name>/` folder.
-- Create a folder named after the component (kebab-case).
-- Inside that folder, create `<component_name>.tsx` for the React component.
-- Inside that folder, create `<component_name>.module.scss` for the component styles.
-- Import the CSS module from the component's own folder.
-
-This rule applies to reusable components, layout components, and page-local nested components under a route's `components/` folder.
-
-For parent components with sub-components:
-
-- A `components` folder immediately within the parent component's directory contains all sub-components.
-- Each sub-component follows the same named-folder structure.
-
-Example:
-
-```
-src/components/ui/layout/navbar/
-  navbar.tsx
-  navbar.module.scss
-  components/
-    drawer/
-      drawer.tsx
-      drawer.module.scss
-```
-
-Next.js route files are the exception to this naming rule: pages, layouts, route handlers, metadata files, and special files keep their framework-required names such as `page.tsx`, `layout.tsx`, `route.ts`, `not-found.tsx`, `robots.ts`, and `sitemap.ts`. Route-level `.module.scss` files may stay alongside the route file.
-
 ### UI component library
 
-Custom UI components live in `src/components/ui/` as named subfolders, exported via the barrel file `src/components/ui/index.ts`.
-
-Current components:
-
-- `button/` — Primary/secondary button
-- `card/` — Content card with optional interactive state
-- `checkbox/` — Checkbox with label
-- `chip/` — Selectable filter chip
-- `container/` — Layout container
-- `field/` — Form field wrapper with label, hint, error
-- `icon/` — Icon wrapper with tone and size variants
-- `input/` — Text input
-- `nav-link/` — Navigation link with active state and variant (nav/subnav/dropdown/drawer)
-- `text-link/` — Anchor that can render as a styled button (primary/secondary variant)
-- `textarea/` — Textarea input
-- `layout/` — Layout-level components (navbar, footer, PromoBanner)
-
-shadcn/ui components (Tailwind-only, no Sass modules) live flat at `src/components/ui/` root: `accordion.tsx`, `button.tsx`, `card.tsx`, `checkbox.tsx`.
+Reusable Shadcn UI components live in `src/components/ui/` as named subfolders, exported via the barrel file `src/components/ui/index.ts`.
 
 ### Styling — Sass modules vs Tailwind
 
@@ -95,6 +45,8 @@ Two styling systems coexist:
 **shadcn/ui components** use Tailwind utility classes only:
 
 - Use `cn` (from `src/utils/className.ts`) to merge Tailwind strings — it wraps `clsx` + `twMerge`.
+
+> note: reach for tailwind first, we want to migrate progressively off sass
 
 #### Rule: `clsx` for CSS Modules, `cn` for Tailwind
 
@@ -144,6 +96,7 @@ Shared utility functions are in `src/utils/`:
 ### Types
 
 Shared TypeScript types live in `src/types/types.ts`.
+see rules in `.cursor/typescript.mdc`
 
 ### Config
 
@@ -151,7 +104,11 @@ Site-wide configuration (name, URLs, contact info) lives in `src/config/site.ts`
 
 ### Tests
 
-Unit tests live in `src/tests/unit/`. Framework: [TBD — check existing test files for runner].
+Unit tests live in `src/tests/unit/`. files use _.test.ts
+End to end test with playwrite live in `e2e`. files use _.spec.ts
+filenames intentionally different match for simplicity confing between vitest vs playwright.
+
+see rules in `.cursor/testing.mdc`
 
 ### How does this project get data?
 
@@ -179,9 +136,7 @@ When creating new pages that would benefit from structured data, proactively sug
 
 ## Agent skills
 
-### Issue tracker
-
-Issues live in GitHub Issues (`luciapuccini/farmacia_duret`). See `docs/agents/issue-tracker.md`.
+see rules in `.cursor`
 
 ### Domain docs
 

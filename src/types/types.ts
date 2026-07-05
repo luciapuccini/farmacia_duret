@@ -1,20 +1,20 @@
 export type TCatalogUrlParams = {
-	category: string;
-	subcategory?: string;
-	filter?: string;
+  category: string;
+  subcategory?: string;
+  filter?: string;
 };
 
 export type TFilters = {
-	name: string;
-	url: string;
+  name: string;
+  url: string;
 };
 
 export type TSubcategory = {
-	name: string;
-	filters?: TFilters[];
+  name: string;
+  filters?: TFilters[];
 };
 
 export type TCategory = {
-	name: string;
-	subcategories?: TSubcategory[];
+  name: string;
+  subcategories?: TSubcategory[];
 };

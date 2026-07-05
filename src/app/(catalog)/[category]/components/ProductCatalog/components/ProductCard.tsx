@@ -22,7 +22,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
         <CardTitle className="line-clamp-2 text-sm leading-snug">{product.name}</CardTitle>
         <CardDescription>{product.category}</CardDescription>
         <CardAction>
-          <Button className="flex-1" onClick={() => addToBasket(product)}>Comprar</Button>
+          <Button className="flex-1" onClick={() => addToBasket(product)}>
+            Comprar
+          </Button>
         </CardAction>
       </CardHeader>
     </Card>

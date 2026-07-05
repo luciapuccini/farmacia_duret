@@ -5,10 +5,8 @@
 
   @include g.up(md) {
     padding: 3rem 0;
-
   }
 }
-
 
 .hero {
   display: grid;
@@ -95,7 +93,6 @@
   margin-top: 0.25rem;
 }
 
-
 .trustRow {
   display: flex;
   gap: 1.5rem;
@@ -145,7 +142,6 @@
     display: block;
   }
 }
-
 
 .infoStrip {
   background: var(--bg-soft);

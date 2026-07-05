@@ -20,7 +20,6 @@ If any of these files don't exist, **proceed silently**. Don't flag their absenc
 └── src/
 ```
 
-
 ## Flag ADR conflicts
 
 If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:

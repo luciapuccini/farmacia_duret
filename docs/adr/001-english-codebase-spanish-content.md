@@ -13,15 +13,15 @@ A full i18n setup (e.g. `next-intl`) was evaluated but rejected as over-engineer
 
 **Code identifiers are English. User-visible content is Spanish.**
 
-| Layer | Language | Examples |
-|---|---|---|
-| File & folder names | English | `contact/`, `orders/`, `route.ts` |
-| URL routes | English | `/contact`, `/offers`, `/orders` |
-| TypeScript identifiers | English | `name`, `subcategories`, `phone`, `notes` |
-| JSON data keys | English | `"name"`, `"subcategories"` |
-| HTML form field names | English | `name="phone"`, `name="notes"` |
-| User-visible strings (JSX) | Spanish | button labels, headings, copy |
-| `<html lang>` attribute | `es` | informs browsers and assistive tech |
+| Layer                      | Language | Examples                                  |
+| -------------------------- | -------- | ----------------------------------------- |
+| File & folder names        | English  | `contact/`, `orders/`, `route.ts`         |
+| URL routes                 | English  | `/contact`, `/offers`, `/orders`          |
+| TypeScript identifiers     | English  | `name`, `subcategories`, `phone`, `notes` |
+| JSON data keys             | English  | `"name"`, `"subcategories"`               |
+| HTML form field names      | English  | `name="phone"`, `name="notes"`            |
+| User-visible strings (JSX) | Spanish  | button labels, headings, copy             |
+| `<html lang>` attribute    | `es`     | informs browsers and assistive tech       |
 
 Old Spanish URLs redirect permanently to their English equivalents (301) so existing links and search engine rankings are preserved.
 

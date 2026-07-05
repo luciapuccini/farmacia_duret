@@ -1,0 +1,17 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: fallow
+      run: npm run --silent fallow:audit
+
+    - name: prettier
+      glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
+      run: npx prettier --check {staged_files}
+
+    - name: eslint
+      glob: '*.{ts,tsx,js,jsx}'
+      run: npx eslint {staged_files}
+
+    - name: typecheck
+      glob: '*.{ts,tsx}'
+      run: npm run --silent typecheck

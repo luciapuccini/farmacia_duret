@@ -50,7 +50,9 @@
   color: white;
   text-decoration: none;
   box-shadow: var(--shadow-btn-primary);
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
 
   &:hover {
     background: var(--blue-700);

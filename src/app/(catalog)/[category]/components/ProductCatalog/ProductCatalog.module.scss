@@ -6,11 +6,9 @@
   gap: 1.5rem;
 }
 
-
 /* ── Product grid ────────────────────────────────────────── */
 
 .grid {
-  
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
@@ -36,7 +34,10 @@
   flex-direction: column;
   gap: 12px;
   position: relative;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
 
   @include g.up(md) {
     padding: 16px;

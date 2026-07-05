@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,9 +47,9 @@
   --color-ink-300: var(--ink-300);
 
   /* Surfaces */
-  --color-line:    var(--line);
-  --color-line-2:  var(--line-2);
-  --color-bg:      var(--bg);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-bg: var(--bg);
   --color-bg-soft: var(--bg-soft);
   --color-bg-blue: var(--bg-blue);
   --color-bg-mint: var(--bg-mint);
@@ -68,44 +68,44 @@
 
   /* Red / Semantic */
   --color-red-500: var(--red-500);
-  --color-warn:    var(--warn);
+  --color-warn: var(--warn);
 
   /* shadcn semantic colors */
-  --color-background:             var(--background);
-  --color-foreground:             var(--foreground);
-  --color-card:                   var(--card);
-  --color-card-foreground:        var(--card-foreground);
-  --color-popover:                var(--popover);
-  --color-popover-foreground:     var(--popover-foreground);
-  --color-primary:                var(--primary);
-  --color-primary-foreground:     var(--primary-foreground);
-  --color-secondary:              var(--secondary);
-  --color-secondary-foreground:   var(--secondary-foreground);
-  --color-muted:                  var(--muted);
-  --color-muted-foreground:       var(--muted-foreground);
-  --color-accent:                 var(--accent);
-  --color-accent-foreground:      var(--accent-foreground);
-  --color-destructive:            var(--destructive);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-border:                 var(--border);
-  --color-input:                  var(--input);
-  --color-ring:                   var(--ring);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
   /* Radii */
-  --radius-sm:   var(--radius-sm);
-  --radius-md:   var(--radius);
-  --radius-lg:   var(--radius-lg);
-  --radius-xl:   var(--radius-xl);
-  --radius-btn:  var(--radius-btn);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-btn: var(--radius-btn);
   --radius-chip: var(--radius-chip);
   --radius-pill: var(--radius-pill);
 
   /* Shadows */
-  --shadow-sm:          var(--shadow-sm);
-  --shadow-md:          var(--shadow);
-  --shadow-lg:          var(--shadow-lg);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow);
+  --shadow-lg: var(--shadow-lg);
   --shadow-btn-primary: var(--shadow-btn-primary);
-  --shadow-focus-ring:  var(--shadow-focus-ring);
+  --shadow-focus-ring: var(--shadow-focus-ring);
 
   /* Typography */
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
@@ -128,4 +128,3 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 }
-

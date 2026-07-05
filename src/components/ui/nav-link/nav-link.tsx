@@ -22,7 +22,12 @@ export default function NavLink({
     <Link
       {...props}
       aria-current={active ? 'page' : undefined}
-      className={clsx(styles.link, styles[variant], active && styles[`${variant}Active`], className)}
+      className={clsx(
+        styles.link,
+        styles[variant],
+        active && styles[`${variant}Active`],
+        className,
+      )}
     >
       {children}
     </Link>
