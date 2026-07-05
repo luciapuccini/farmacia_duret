@@ -13,7 +13,7 @@
   border-radius: var(--radius-xl) 0 0 var(--radius-xl);
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background-image: repeating-linear-gradient(

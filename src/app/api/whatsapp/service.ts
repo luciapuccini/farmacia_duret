@@ -105,8 +105,8 @@ export async function sendTemplateMessage(
     );
   }
 
-  const messageId = (responsePayload as { messages?: Array<{ id?: unknown }> } | null)?.messages?.[0]
-    ?.id;
+  const messageId = (responsePayload as { messages?: Array<{ id?: unknown }> } | null)
+    ?.messages?.[0]?.id;
 
   return typeof messageId === 'string' ? messageId : null;
 }

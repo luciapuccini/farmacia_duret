@@ -280,7 +280,6 @@ export default function ReservasPage() {
               />
               <span className={styles.charCount}>{charCount} / 300</span>
             </div>
-
           </div>
 
           {/* Consent */}

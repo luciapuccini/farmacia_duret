@@ -1,29 +1,35 @@
 {
-	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
-	"entry": ["open-next.config.ts"],
-	"ignorePatterns": [
-		"src/ui/**/*.ts",
-		"src/ui/**/*.tsx",
-		"src/ui/**/*.scss",
-		"src/components/ui/**/*.ts",
-		"src/components/ui/**/*.tsx",
-		"src/components/ui/**/*.scss"
-	],
-	// ignoring shadcn & related external libs from our code quality audits
-	"ignoreDependencies": ["@opennextjs/cloudflare", "sass", "class-variance-authority", "lucide-react", "shadcn"],
-	"ignoreExports": [
-		{
-			"file": "**/*.module.scss",
-			"exports": ["up", "down"]
-		}
-	],
-	"health": {
-		"maxCrap": 120
-	},
-	"audit": {
-		"gate": "new-only",
-		"deadCodeBaseline": "fallow-baselines/dead-code.json",
-		"healthBaseline": "fallow-baselines/health.json",
-		"dupesBaseline": "fallow-baselines/dupes.json"
-	}
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": ["open-next.config.ts"],
+  "ignorePatterns": [
+    "src/ui/**/*.ts",
+    "src/ui/**/*.tsx",
+    "src/ui/**/*.scss",
+    "src/components/ui/**/*.ts",
+    "src/components/ui/**/*.tsx",
+    "src/components/ui/**/*.scss"
+  ],
+  // ignoring shadcn & related external libs from our code quality audits
+  "ignoreDependencies": [
+    "@opennextjs/cloudflare",
+    "sass",
+    "class-variance-authority",
+    "lucide-react",
+    "shadcn"
+  ],
+  "ignoreExports": [
+    {
+      "file": "**/*.module.scss",
+      "exports": ["up", "down"]
+    }
+  ],
+  "health": {
+    "maxCrap": 120
+  },
+  "audit": {
+    "gate": "new-only",
+    "deadCodeBaseline": "fallow-baselines/dead-code.json",
+    "healthBaseline": "fallow-baselines/health.json",
+    "dupesBaseline": "fallow-baselines/dupes.json"
+  }
 }

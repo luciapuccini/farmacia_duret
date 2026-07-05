@@ -143,9 +143,7 @@ export async function POST(request: Request) {
     if (error instanceof WhatsAppApiError) {
       console.warn('[whatsapp:orders] send failed', error.message);
       const publicMessage =
-        error.status === 502
-          ? 'No pudimos enviar el encargo por WhatsApp.'
-          : error.publicMessage;
+        error.status === 502 ? 'No pudimos enviar el encargo por WhatsApp.' : error.publicMessage;
 
       return Response.json({ ok: false, error: publicMessage }, { status: error.status });
     }

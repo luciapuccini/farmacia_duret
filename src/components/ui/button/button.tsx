@@ -17,7 +17,11 @@ export default function Button(props: ButtonProps) {
   const { variant = 'primary', className, children, type = 'button', ...buttonProps } = props;
 
   return (
-    <button type={type} {...buttonProps} className={clsx(styles.button, styles[variant], className)}>
+    <button
+      type={type}
+      {...buttonProps}
+      className={clsx(styles.button, styles[variant], className)}
+    >
       {children}
     </button>
   );

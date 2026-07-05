@@ -74,7 +74,9 @@ test.describe('Orders form', () => {
     await page.getByRole('combobox', { name: 'Código de país' }).selectOption('+598');
     await page.getByRole('textbox', { name: 'Nombre completo*' }).fill('Test User');
     await page.getByRole('textbox', { name: 'Teléfono*' }).fill('99 123 456');
-    await page.getByRole('textbox', { name: 'Comentarios para el farmacéutico' }).fill('Paracetamol');
+    await page
+      .getByRole('textbox', { name: 'Comentarios para el farmacéutico' })
+      .fill('Paracetamol');
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click();
 
     expect(submittedBody()).toContain('+598');

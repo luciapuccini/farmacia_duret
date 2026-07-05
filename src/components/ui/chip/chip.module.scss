@@ -13,7 +13,10 @@
   font-size: 0.84375rem;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
     border-color: var(--blue-500);
@@ -45,7 +48,9 @@
   color: var(--ink-500);
   font-size: 0.71875rem;
   font-weight: var(--font-weight-medium);
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .selected .count {

@@ -24,9 +24,7 @@
   ],
   "unused_types": [],
   "private_type_leaks": [],
-  "unused_dependencies": [
-    "package.json:@base-ui/react"
-  ],
+  "unused_dependencies": ["package.json:@base-ui/react"],
   "unused_dev_dependencies": [],
   "circular_dependencies": [],
   "re_export_cycles": [],

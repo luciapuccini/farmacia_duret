@@ -1,8 +1,8 @@
-import React from 'react'
-import styles from './container.module.scss'
+import React from 'react';
+import styles from './container.module.scss';
 
-type Props = { children?: React.ReactNode }
+type Props = { children?: React.ReactNode };
 
 export default function Container({ children }: Props) {
-  return <main className={styles.container}>{children}</main>
+  return <main className={styles.container}>{children}</main>;
 }

@@ -10,7 +10,9 @@
   font: inherit;
   font-size: 0.90625rem;
   box-sizing: border-box;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
   &::placeholder {
     color: var(--ink-400);

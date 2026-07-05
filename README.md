@@ -5,14 +5,13 @@ Website for Farmacia Duret (Villa Rosa, Buenos Aires) — product catalog, conta
 
 ## Stack
 
-
 | Layer         | Technology                                       |
-| --------------- | -------------------------------------------------- |
+| ------------- | ------------------------------------------------ |
 | Framework     | Next.js 16 (App Router)                          |
 | Language      | TypeScript                                       |
 | Styles        | SCSS Modules                                     |
 | Runtime       | Cloudflare Workers (via`@opennextjs/cloudflare`) |
-| Notifications | WhatsApp Cloud API templates                  |
+| Notifications | WhatsApp Cloud API templates                     |
 
 The app runs fully server-side on Cloudflare's edge network. Dynamic routes and API endpoints are handled by a Cloudflare Worker; static assets are served from Cloudflare's CDN.
 
@@ -133,8 +132,8 @@ src/
 
 ## Testing
 
-| Level | What it tests | Command |
-| --- | --- | --- |
-| Unit | Pure logic (helpers, utils) | `npm test` |
-| Integration | Module boundaries — API modules | `npm test` |
-| E2E | Full browser flow against a running dev server | `npm run test:e2e` |
+| Level       | What it tests                                  | Command            |
+| ----------- | ---------------------------------------------- | ------------------ |
+| Unit        | Pure logic (helpers, utils)                    | `npm test`         |
+| Integration | Module boundaries — API modules                | `npm test`         |
+| E2E         | Full browser flow against a running dev server | `npm run test:e2e` |

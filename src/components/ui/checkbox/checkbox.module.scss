@@ -23,7 +23,10 @@
   background: var(--bg);
   display: grid;
   place-items: center;
-  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
   &::after {
     content: '';
@@ -36,12 +39,12 @@
   }
 }
 
-.input:focus-visible+.box {
+.input:focus-visible + .box {
   box-shadow: var(--shadow-focus-ring);
   border-color: var(--blue-500);
 }
 
-.input:checked+.box {
+.input:checked + .box {
   background: var(--blue-600);
   border-color: var(--blue-600);
 

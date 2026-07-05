@@ -28,7 +28,9 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.column}>
             <p className={styles.brand}>Farmacia Duret</p>
-            <p className={styles.tagline}>Tu farmacia de confianza en Villa Rosa, Pilar del Este.</p>
+            <p className={styles.tagline}>
+              Tu farmacia de confianza en Villa Rosa, Pilar del Este.
+            </p>
           </div>
 
           <nav className={styles.column} aria-label="Navegación del sitio">
@@ -67,7 +69,12 @@ export default function Footer() {
                 </Link>
               </p>
               <p>
-                <Link href={whatsApp} className={styles.link} target="_blank" rel="noopener noreferrer">
+                <Link
+                  href={whatsApp}
+                  className={styles.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   WhatsApp
                 </Link>
               </p>
@@ -98,8 +105,8 @@ export default function Footer() {
             </ul>
           </nav>
           <p>
-            Para consultas y/o denuncias contactar a la Dirección General de Defensa y Protección
-            al Consumidor
+            Para consultas y/o denuncias contactar a la Dirección General de Defensa y Protección al
+            Consumidor
           </p>
           <p>
             © Copyright 2026. Todos los derechos reservados | Farmacia Duret, E. Casella 1743, B1631
