@@ -1,6 +1,16 @@
 import { test, expect, type Page } from '@playwright/test';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BASKET_KEY = 'basket_items';
+const CATALOGO_HAR = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  'fixtures/api_whatsapp_catalogo.har',
+);
+const CATALOGO_ERROR_HAR = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  'fixtures/api_whatsapp_catalogo_error.har',
+);
 
 const SAMPLE_PRODUCT = {
   id: '1',
@@ -13,6 +23,22 @@ const SAMPLE_PRODUCT = {
   filter: 'recien-nacido',
 };
 
+/** Matches the request body recorded in api_whatsapp_catalogo.har */
+const HAR_CATALOGO_PRODUCT = {
+  id: '12',
+  name: 'Máscara Sky High Black Waterproof',
+  brand: 'Maybelline',
+  image: null,
+  current_offer: null,
+  category: 'belleza',
+  subcategory: 'maquillaje',
+  filter: 'ojos',
+};
+
+const HAR_CATALOGO_PHONE = '+34675512388';
+/** Matches the request body recorded in api_whatsapp_catalogo_error.har */
+const HAR_ERROR_PHONE = '+54 9 11 1234-5678';
+
 function seedBasket(page: Page, products = [SAMPLE_PRODUCT]) {
   return page.addInitScript(({ key, items }) => localStorage.setItem(key, JSON.stringify(items)), {
     key: BASKET_KEY,
@@ -20,18 +46,10 @@ function seedBasket(page: Page, products = [SAMPLE_PRODUCT]) {
   });
 }
 
-async function interceptCatalogoRequest(page: Page, response: Record<string, unknown>) {
-  let submittedBody: string | undefined;
-
-  await page.route('**/api/whatsapp/catalogo', async (route) => {
-    submittedBody = route.request().postData() ?? undefined;
-    await route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify(response),
-    });
+async function replayCatalogoFromHar(page: Page, harPath = CATALOGO_HAR) {
+  await page.routeFromHAR(harPath, {
+    url: '**/api/whatsapp/catalogo',
   });
-
-  return () => submittedBody;
 }
 
 test.describe('Catalog basket page', () => {
@@ -72,59 +90,70 @@ test.describe('Catalog basket page', () => {
   });
 
   test('sends the catalog order via WhatsApp API on valid submission', async ({ page }) => {
-    const submittedBody = await interceptCatalogoRequest(page, {
-      ok: true,
-      messageId: 'wamid.test',
+    let submittedBody: string | undefined;
+
+    await replayCatalogoFromHar(page);
+    page.on('request', (request) => {
+      if (request.url().includes('/api/whatsapp/catalogo') && request.method() === 'POST') {
+        submittedBody = request.postData() ?? undefined;
+      }
     });
+
+    await seedBasket(page, [HAR_CATALOGO_PRODUCT]);
+    await page.goto('/basket');
+
+    await page.getByLabel('Teléfono').fill(HAR_CATALOGO_PHONE);
+    const responsePromise = page.waitForResponse('**/api/whatsapp/catalogo');
+    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    const response = await responsePromise;
+
+    expect(response.status()).toBe(200);
+    expect(await response.json()).toMatchObject({ ok: true });
+    expect(submittedBody).toContain('Máscara Sky High Black Waterproof');
+    expect(submittedBody).toContain(HAR_CATALOGO_PHONE);
+    await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Hacer pedido' })).not.toBeVisible();
+  });
+
+  test('clears the basket after a successful order', async ({ page }) => {
+    await replayCatalogoFromHar(page);
+    await seedBasket(page, [HAR_CATALOGO_PRODUCT]);
+    await page.goto('/basket');
+
+    await page.getByLabel('Teléfono').fill(HAR_CATALOGO_PHONE);
+    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+
+    await expect(page.getByText('Máscara Sky High Black Waterproof')).not.toBeVisible();
+    await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
+  });
+
+  test('shows an error message when the API call fails', async ({ page }) => {
+    await replayCatalogoFromHar(page, CATALOGO_ERROR_HAR);
     await seedBasket(page);
     await page.goto('/basket');
 
-    await page.getByLabel('Teléfono').fill('+54 9 11 1234-5678');
+    await page.getByLabel('Teléfono').fill(HAR_ERROR_PHONE);
+    const responsePromise = page.waitForResponse('**/api/whatsapp/catalogo');
     await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    const response = await responsePromise;
 
-    expect(submittedBody()).toContain('Pampers Premium Care Recién Nacido x24');
-    // expect(submittedBody()).toContain('+54911');
-  });
-
-  // test('clears the basket after a successful order', async ({ page }) => {
-  //   await interceptCatalogoRequest(page, { ok: true, messageId: 'wamid.test' });
-  //   await seedBasket(page);
-  //   await page.goto('/basket');
-
-  //   await page.getByLabel('Teléfono').fill('+54 9 11 1234-5678');
-  //   await page.getByRole('textbox', { name: 'Teléfono' }).click();
-  //   // FIXME: mock API, this is the only authorized phone right now
-  //   // 131030) Recipient phone number not in allowed list
-  //   await page.getByRole('textbox', { name: 'Teléfono' }).fill('+34675512388');
-  //   await page.getByRole('button', { name: 'Hacer pedido' }).click();
-
-  //   await expect(page.getByText('¡Pedido enviado! Te contactaremos por WhatsApp.')).toBeVisible();
-  //   await expect(page.getByText('Pampers Premium Care Recién Nacido x24')).not.toBeVisible();
-  // });
-
-  test('shows an error message when the API call fails', async ({ page }) => {
-    await interceptCatalogoRequest(page, {
+    expect(response.status()).toBe(502);
+    expect(await response.json()).toMatchObject({
       ok: false,
       error: 'No pudimos enviar el pedido por WhatsApp.',
     });
-    await seedBasket(page);
-    await page.goto('/basket');
-
-    await page.getByLabel('Teléfono').fill('+54 9 11 1234-5678');
-    await page.getByRole('button', { name: 'Hacer pedido' }).click();
-
     await expect(page.getByText('No pudimos enviar el pedido por WhatsApp.')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
   });
 });
 
-// test.describe('Catalog product page', () => {
-//   test('adds a product to the basket when Comprar is clicked', async ({ page }) => {
-//     await page.goto('/bebes?sc=panales&f=recien-nacido');
+test.describe('Catalog product page', () => {
+  test('adds a product to the basket when Comprar is clicked', async ({ page }) => {
+    await page.goto('/bebes?sc=panales&f=recien-nacido');
 
-//     await page.getByRole('button', { name: 'Comprar' }).first().click();
-//     await seedBasket(page);
-//     await page.goto('/basket');
-//     await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
-//   });
-// });
+    await page.getByRole('button', { name: 'Comprar' }).first().click();
+    await seedBasket(page);
+    await page.goto('/basket');
+    await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
+  });
+});
