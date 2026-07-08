@@ -1,4 +1,16 @@
 {
+  "finding_counts": {
+    "src/app/(catalog)/[category]/page.tsx": {
+      "crap_critical": {
+        "count": 1
+      }
+    },
+    "src/app/orders/page.tsx": {
+      "crap_critical": {
+        "count": 1
+      }
+    }
+  },
   "runtime_coverage_findings": [],
   "target_keys": []
 }

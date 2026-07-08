@@ -1,0 +1,67 @@
+.label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.req {
+  color: var(--blue-600);
+  margin-left: 2px;
+}
+
+.hint {
+  font-size: 12.5px;
+  color: var(--ink-500);
+}
+
+.error {
+  font-size: 12.5px;
+  color: var(--red-500);
+}
+
+/* ── Phone row ──────────────────────────────────────────── */
+
+.phoneRow {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  background: white;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: var(--blue-500);
+    box-shadow: var(--shadow-focus-ring);
+  }
+
+  input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    font-size: 14.5px;
+    color: var(--ink-900);
+    background: transparent;
+
+    &::placeholder {
+      color: var(--ink-400);
+    }
+  }
+}
+
+.phoneCc {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-700);
+  flex-shrink: 0;
+  white-space: nowrap;
+}

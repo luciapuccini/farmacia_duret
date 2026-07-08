@@ -20,9 +20,10 @@
     "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:thumb",
     "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:image",
     "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:meta",
-    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:title"
+    "src/app/(catalog)/[category]/components/SubCategoryGrid/SubCategoryGrid.module.scss:title",
+    "src/utils/phone.ts:ARGENTINA_DIAL_CODE"
   ],
-  "unused_types": [],
+  "unused_types": ["src/app/api/whatsapp/catalogo/schema.ts:CatalogoOrder"],
   "private_type_leaks": [],
   "unused_dependencies": ["package.json:@base-ui/react"],
   "unused_dev_dependencies": [],
