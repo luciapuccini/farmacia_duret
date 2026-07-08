@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import PhoneInput from '@/components/ui/phone-input/phone-input';
 import { type Product, clearBasket, getBasket, removeFromBasket } from '@/utils/basket';
 import { CatalogoOrderSchema } from '@/app/api/whatsapp/catalogo/schema';
 
@@ -11,6 +12,7 @@ export default function BasketPage() {
     typeof window === 'undefined' ? [] : getBasket(),
   );
   const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [error, setError] = useState('');
   const [status, setStatus] = useState<Status>('idle');
 
@@ -21,6 +23,7 @@ export default function BasketPage() {
 
   async function handleSubmit() {
     setError('');
+    setPhoneError('');
 
     const result = CatalogoOrderSchema.safeParse({
       to: phone,
@@ -28,7 +31,12 @@ export default function BasketPage() {
     });
 
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? 'Datos inválidos.');
+      const issue = result.error.issues[0];
+      if (issue?.path[0] === 'to') {
+        setPhoneError(issue.message);
+      } else {
+        setError(issue?.message ?? 'Datos inválidos.');
+      }
       return;
     }
 
@@ -76,17 +84,10 @@ export default function BasketPage() {
           </ul>
 
           <div className="mb-4 flex flex-col gap-1">
-            <label htmlFor="phone" className="text-sm font-medium">
-              Teléfono
-            </label>
-            <input
-              id="phone"
-              type="tel"
+            <PhoneInput
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              required
-              placeholder="+54 9 11 ..."
-              className="w-full max-w-xs rounded-md border px-3 py-2 text-sm"
+              error={phoneError}
             />
           </div>
 

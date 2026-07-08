@@ -1,6 +1,6 @@
 {
   "clone_groups": [
-    "e2e/catalogOrder.spec.ts:105-110|e2e/catalogOrder.spec.ts:135-140",
+    "e2e/catalogOrder.spec.ts:130-135|e2e/catalogOrder.spec.ts:160-165",
     "src/app/api/whatsapp/catalogo/route.ts:43-52|src/app/api/whatsapp/orders/route.ts:41-50",
     "src/app/contact/page.tsx:227-236|src/app/contact/page.tsx:239-248"
   ]

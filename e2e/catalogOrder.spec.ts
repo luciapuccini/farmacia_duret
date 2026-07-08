@@ -35,7 +35,7 @@ const HAR_CATALOGO_PRODUCT = {
   filter: 'ojos',
 };
 
-const HAR_CATALOGO_PHONE = '+34675512388';
+const HAR_CATALOGO_PHONE = '+54 9 11 6755-1238';
 /** Matches the request body recorded in api_whatsapp_catalogo_error.har */
 const HAR_ERROR_PHONE = '+54 9 11 1234-5678';
 
@@ -58,6 +58,12 @@ test.describe('Catalog basket page', () => {
 
     await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).not.toBeVisible();
+  });
+
+  test('shows the phone input when basket has items', async ({ page }) => {
+    await seedBasket(page);
+    await page.goto('/basket');
+    await expect(page.getByLabel('Teléfono')).toBeVisible();
   });
 
   test('shows basket items seeded in localStorage', async ({ page }) => {
@@ -87,6 +93,25 @@ test.describe('Catalog basket page', () => {
     await page.getByRole('button', { name: 'Hacer pedido' }).click();
 
     await expect(page.getByText('Ingresá un teléfono válido.')).toBeVisible();
+  });
+
+  test('blocks submission and shows an error when the phone is outside Argentina', async ({
+    page,
+  }) => {
+    let requestCount = 0;
+    await page.route('**/api/whatsapp/catalogo', async (route) => {
+      requestCount += 1;
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+    });
+
+    await seedBasket(page);
+    await page.goto('/basket');
+
+    await page.getByLabel('Teléfono').fill('+34 675 512 388');
+    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+
+    await expect(page.getByText('No soportamos telefonos fuera de Argentina')).toBeVisible();
+    expect(requestCount).toBe(0);
   });
 
   test('sends the catalog order via WhatsApp API on valid submission', async ({ page }) => {
