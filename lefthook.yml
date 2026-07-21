@@ -12,6 +12,10 @@ pre-commit:
       glob: '*.{ts,tsx,js,jsx}'
       run: npx eslint {staged_files}
 
+    - name: stylelint
+      glob: '*.scss'
+      run: npx stylelint {staged_files}
+
     - name: typecheck
       glob: '*.{ts,tsx}'
       run: npm run --silent typecheck
