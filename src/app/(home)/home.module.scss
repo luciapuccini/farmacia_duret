@@ -1,13 +1,5 @@
 @use '@/globals' as g;
 
-// .page section {
-//   padding: 0.5rem 0;
-
-  @include g.up(md) {
-    padding: 3rem 0;
-  }
-}
-
 .hero {
   display: grid;
   grid-template-columns: 1fr;
@@ -133,7 +125,6 @@
     font-size: 14px;
   }
 }
-
 
 .heroVisual {
   display: none;
