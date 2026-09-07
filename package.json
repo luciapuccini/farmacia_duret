@@ -8,7 +8,7 @@
     "build:cf": "opennextjs-cloudflare build",
     "build": "next build",
     "deploy:stg": "opennextjs-cloudflare deploy --env stg",
-    "deploy": "opennextjs-cloudflare deploy",
+    "deploy": "opennextjs-cloudflare deploy --env production",
     "dev": "next dev",
     "fallow:audit": "git diff --cached --unified=0 --no-ext-diff --relative | fallow audit --gate all --diff-file - --fail-on-issues",
     "fallow": "fallow audit",
