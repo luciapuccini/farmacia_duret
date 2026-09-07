@@ -32,36 +32,37 @@ npm run preview
 
 ### Environment variables
 
-Create an `.env.local` file in the project root, using `.env.example` as the template. Local development should use development/test values for the same variable names used in every environment. For example, use a test WhatsApp number as `NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER`; do not introduce separate test-only aliases.
+> ⚠️ I have only 1 worker set up, environment changes (stg or prod) overrides if deployed to CF
 
-`.env.prod` documents the production variable shape, but production values should be configured in Cloudflare rather than committed to the repo.
-
-Generate the webhook verification token with:
+1. Generate the webhook verification token with:
 
 ```bash
 npm run whatsapp:token:generate
 ```
 
-Use the generated value in both `.env.local` and Cloudflare's `WHATSAPP_WEBHOOK_VERIFY_TOKEN` secret. This value is chosen by us, not by Meta, and Meta sends it back during webhook verification.
+2. Use the generated value in both `.env.local` and Cloudflare's `WHATSAPP_WEBHOOK_VERIFY_TOKEN` secret. This value is chosen by us, not by Meta, and Meta sends it back during webhook verification.
+
+3. check also wrangler config (vars & secrets) to keep in sync
 
 ---
 
 ## Deploy to production
 
-### Prerequisites
-
-- A [Cloudflare account](https://dash.cloudflare.com)
-- Wrangler authenticated: `npx wrangler login`
-- The Worker name in `wrangler.jsonc` matches the name of your Worker in the Cloudflare dashboard (`farmacia-duret`)
-
-### Deploy
-
 ```bash
 npm run deploy
 ```
 
-1. Builds the Next.js app via the OpenNext Cloudflare adapter (outputs to `.open-next/`)
-2. Deploys the Worker and uploads static assets to Cloudflare
+1. Builds the Next.js app via the OpenNext Cloudflare adapter
+2. Deploys the Worker (using the `production` environment in `wrangler.jsonc`, i.e. `--env production`) and uploads static assets to Cloudflare
+
+The `production` environment supplies the custom-domain routes and the `WHATSAPP_*` vars. Secrets are scoped to the same environment and must be set with `--env production`:
+
+```bash
+npx wrangler secret put WHATSAPP_ACCESS_TOKEN --env production
+npx wrangler secret put WHATSAPP_WEBHOOK_VERIFY_TOKEN --env production
+```
+
+For staging, use `npm run deploy:stg` (targets the `stg` environment) ⚠️ overrides!.
 
 The live site URL is `https://farmaciaduret.online`.
 
@@ -97,15 +98,7 @@ To rotate the verify token, generate a new value, update Cloudflare, update Meta
 
 ## Code quality
 
-[Fallow](https://docs.fallow.tools) audits the codebase for dead code, unused dependencies, complexity, and duplication on every PR.
-
-```bash
-npx fallow audit
-```
-
-The audit runs in `new-only` mode — it only gates on issues introduced by the current branch (relative to `main`), so pre-existing findings don't block merges. Baselines live in `fallow-baselines/`.
-
-Shadcn UI components (`src/components/ui/`) and their dependency chain (`lucide-react`, `shadcn`) are excluded from the audit — they are generated/vendor code and not subject to our code quality rules.
+[TBD]
 
 ---
 

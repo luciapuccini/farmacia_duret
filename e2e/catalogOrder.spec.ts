@@ -167,7 +167,9 @@ test.describe('Catalog basket page', () => {
       ok: false,
       error: 'No pudimos enviar el pedido por WhatsApp.',
     });
-    await expect(page.getByText('No pudimos enviar el pedido por WhatsApp.')).toBeVisible();
+    await expect(
+      page.getByText('No pudimos enviar el pedido por WhatsApp.', { exact: true }),
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
   });
 });

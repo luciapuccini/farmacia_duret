@@ -64,23 +64,6 @@ export default function BasketPage() {
     <main>
       <Heading />
 
-      <div className="mb-4 flex flex-col justify-end gap-1">
-        <label htmlFor="phone" className="text-sm font-medium">
-          Teléfono
-        </label>
-        <input
-          id="phone"
-          type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-          placeholder="+54 9 11 ..."
-          className="w-full max-w-xs rounded-md border px-3 py-2 text-sm"
-        />
-      </div>
-
-      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
-
       {items.length === 0 ? (
         <p className="text-gray-500">Tu carrito está vacío.</p>
       ) : status === 'sent' ? (
