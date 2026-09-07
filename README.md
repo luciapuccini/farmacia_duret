@@ -32,8 +32,6 @@ npm run preview
 
 ### Environment variables
 
-> ⚠️ I have only 1 worker set up, environment changes (stg or prod) overrides if deployed to CF
-
 1. Generate the webhook verification token with:
 
 ```bash
@@ -62,9 +60,10 @@ npx wrangler secret put WHATSAPP_ACCESS_TOKEN --env production
 npx wrangler secret put WHATSAPP_WEBHOOK_VERIFY_TOKEN --env production
 ```
 
-For staging, use `npm run deploy:stg` (targets the `stg` environment) ⚠️ overrides!.
+For staging, use `npm run deploy:stg`
 
 The live site URL is `https://farmaciaduret.online`.
+Stg url: `https://farmacia-duret-stg.puccinilucia.workers.dev/`
 
 ---
 
