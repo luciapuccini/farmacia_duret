@@ -10,6 +10,7 @@
     "deploy:stg": "opennextjs-cloudflare deploy --env stg",
     "deploy": "opennextjs-cloudflare deploy",
     "dev": "next dev",
+    "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "start": "next start",
     "test:coverage": "vitest run --coverage",
