@@ -8,28 +8,8 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
-  fallow:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Fallow audit
-        uses: fallow-rs/fallow@v2
-        with:
-          command: audit
-          fail-on-issues: false
-          comment: true
-          review-comments: true
-          review-guidance: true
-
   verify:
     runs-on: ubuntu-latest
 

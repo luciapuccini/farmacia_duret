@@ -41,8 +41,5 @@ coverage
 # Playwright
 playwright-report
 
-## fallow local cache
-./fallow
-
 ## misc
 *.tsbuildinfo

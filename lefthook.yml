@@ -1,9 +1,6 @@
 pre-commit:
   parallel: true
   jobs:
-    - name: fallow
-      run: npm run --silent fallow:audit
-
     - name: prettier
       glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
       run: npx prettier --check {staged_files}
