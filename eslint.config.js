@@ -4,6 +4,36 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
+// Layering: a directory may only import the @/ layers listed as `allowed`.
+const ALL_LAYERS = ['@/app', '@/components'];
+
+const BOUNDARY_MESSAGE = 'Import-boundary violation';
+const RELATIVE_MESSAGE = 'Import-boundary violation: use the @/ alias instead of ../../';
+
+// Repeated per boundary because flat config lets the last matching block win the rule outright.
+const NO_DEEP_RELATIVE = ['../../*', '../../**'];
+
+const boundary = (files, allowed, extraBanned = []) => {
+  const banned = ALL_LAYERS.filter((name) => !allowed.includes(name)).flatMap((name) => [
+    name,
+    `${name}/**`,
+  ]);
+  return {
+    files,
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            ...(banned.length > 0 ? [{ group: banned, message: BOUNDARY_MESSAGE }] : []),
+            ...(extraBanned.length > 0 ? [{ group: extraBanned, message: RELATIVE_MESSAGE }] : []),
+          ],
+        },
+      ],
+    },
+  };
+};
+
 export default defineConfig([
   globalIgnores([
     '.next/**',
@@ -31,6 +61,14 @@ export default defineConfig([
       ],
     },
   },
+
+  boundary(['src/**/*.{ts,tsx}'], ALL_LAYERS, NO_DEEP_RELATIVE),
+  boundary(['src/components/**'], ['@/components'], NO_DEEP_RELATIVE),
+  boundary(
+    ['src/services/**', 'src/utils/**', 'src/config/**', 'src/types/**'],
+    [],
+    NO_DEEP_RELATIVE,
+  ),
 
   {
     files: ['src/components/ui/*.tsx'],
