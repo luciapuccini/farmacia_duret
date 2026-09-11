@@ -136,7 +136,7 @@ When creating new pages that would benefit from structured data, proactively sug
 
 ## Agent skills
 
-see rules in `.cursor`
+see rules in `.agent`
 
 ### Domain docs
 

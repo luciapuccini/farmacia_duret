@@ -4,13 +4,11 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
-// Layering: a directory may only import the @/ layers listed as `allowed`.
 const ALL_LAYERS = ['@/app', '@/components'];
 
 const BOUNDARY_MESSAGE = 'Import-boundary violation';
 const RELATIVE_MESSAGE = 'Import-boundary violation: use the @/ alias instead of ../../';
 
-// Repeated per boundary because flat config lets the last matching block win the rule outright.
 const NO_DEEP_RELATIVE = ['../../*', '../../**'];
 
 const boundary = (files, allowed, extraBanned = []) => {
