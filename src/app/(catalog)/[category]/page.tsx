@@ -141,7 +141,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       <div className={styles.sectHead}>
         <div>
           <p className={styles.sectLabel}>Catálogo</p>
-          <h2 className={styles.sectTitle}>Hacé tus pedidos por whatsapp.</h2>
+          <h2 className="text-xl font-extrabold text-ink-900 md:text-2xl">
+            Hacé tus pedidos por whatsapp.
+          </h2>
           <p className={styles.sectSub}>
             consultas hasta 5 productos, sujetos a disponibilidad y precios
           </p>

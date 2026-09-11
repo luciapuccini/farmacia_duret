@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { TextLink } from '@/components/ui';
-import { COUNTRY_CODES, DEFAULT_COUNTRY_DIAL } from '@/utils/countryCodes';
+import PhoneInput from '@/components/ui/phone-input/phone-input';
+import { PhoneSchema, REQUIRED_PHONE_MESSAGE } from '@/utils/phone';
 import InfoPanel from './components/InfoPanel/InfoPanel';
 import styles from './orders.module.scss';
 
@@ -33,11 +34,24 @@ function incrementCount(): number {
 
 type Status = 'idle' | 'submitting' | 'sent' | 'error';
 
+async function submitOrder(fd: FormData): Promise<void> {
+  const response = await fetch('/api/whatsapp/orders', {
+    method: 'POST',
+    body: fd,
+  });
+  const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+
+  if (!response.ok) {
+    throw new Error(payload?.error || 'No pudimos enviar el encargo.');
+  }
+}
+
 // ── Component ─────────────────────────────────────────────
 export default function ReservasPage() {
   const [charCount, setCharCount] = useState(0);
   const [consent, setConsent] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [submissionCount, setSubmissionCount] = useState(getCount);
   const [status, setStatus] = useState<Status>('idle');
 
@@ -56,22 +70,21 @@ export default function ReservasPage() {
     // Honeypot — silently accept
     if (fd.get('bot-field')) return;
 
-    setStatus('submitting');
     setErrorMessage('');
+    setPhoneError('');
+
+    const rawPhone = fd.get('phone');
+    const phoneResult = PhoneSchema.safeParse(typeof rawPhone === 'string' ? rawPhone : '');
+
+    if (!phoneResult.success) {
+      setPhoneError(phoneResult.error.issues[0]?.message ?? REQUIRED_PHONE_MESSAGE);
+      return;
+    }
+
+    setStatus('submitting');
 
     try {
-      const response = await fetch('/api/whatsapp/orders', {
-        method: 'POST',
-        body: fd,
-      });
-      const payload = (await response.json().catch(() => null)) as {
-        error?: string;
-      } | null;
-
-      if (!response.ok) {
-        throw new Error(payload?.error || 'No pudimos enviar el encargo.');
-      }
-
+      await submitOrder(fd);
       setSubmissionCount(incrementCount());
       setStatus('sent');
       form.reset();
@@ -87,6 +100,7 @@ export default function ReservasPage() {
   function resetForm() {
     setCharCount(0);
     setErrorMessage('');
+    setPhoneError('');
     setStatus('idle');
   }
 
@@ -144,7 +158,7 @@ export default function ReservasPage() {
           </p>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit} aria-label="Contanos de vos">
           {/* Honeypot */}
           <input name="bot-field" className={styles.hidden} aria-hidden="true" tabIndex={-1} />
 
@@ -189,40 +203,7 @@ export default function ReservasPage() {
 
             <div className={styles.row}>
               <div className={styles.field}>
-                <label htmlFor="phone" className={styles.label}>
-                  Teléfono<span className={styles.req}>*</span>
-                </label>
-                <div className={styles.phoneRow}>
-                  <span className={styles.phoneCc}>
-                    <select
-                      name="countryDial"
-                      aria-label="Código de país"
-                      defaultValue={DEFAULT_COUNTRY_DIAL}
-                      className={styles.phoneCcSelect}
-                    >
-                      {COUNTRY_CODES.map((c) => (
-                        <option key={c.iso} value={c.dial}>
-                          {c.flag} {c.dial}
-                        </option>
-                      ))}
-                    </select>
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </span>
-                  <input id="phone" name="phone" type="tel" placeholder="11 1234-5678" required />
-                </div>
-                <span className={styles.hint}>Te avisamos por WhatsApp.</span>
+                <PhoneInput hint="Te avisamos por WhatsApp." error={phoneError} />
               </div>
 
               <div className={styles.field}>

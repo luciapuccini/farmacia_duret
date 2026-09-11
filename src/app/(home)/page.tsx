@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import HeroVisual from '@/app/(home)/components/HeroVisual/HeroVisual';
 import { TextLink } from '@/components/ui';
-import styles from './home.module.scss';
 import Offers from './components/offers/offers';
+import styles from './home.module.scss';
 
 const description =
   'Farmacia de confianza en Villa Rosa, Pilar del Este. Medicamentos, dermocosmética, cuidado personal y productos para bebés. Encargá online por WhatsApp y retirá en sucursal.';
@@ -30,10 +30,9 @@ const phone = '7894 2852';
 
 export default function HomePage() {
   return (
-    <div className={styles.page}>
+    <div>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          {/* FIXME: could extract eyebrow to a separate component */}
           <p className={styles.heroEyebrow}>
             <span className={styles.heroEyebrowDot} aria-hidden="true" />
             Farmacia Duret · Villa Rosa
@@ -126,7 +125,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div role="presentation" className={styles.infoStrip}>
+      <section className={styles.infoStrip}>
         <div className={styles.infoMsg}>
           <span className={styles.infoIcon} aria-hidden="true">
             <svg
@@ -176,7 +175,7 @@ export default function HomePage() {
             <div className={styles.infoStatL}>Llamanos</div>
           </div>
         </div>
-      </div>
+      </section>
 
       <Offers />
     </div>
