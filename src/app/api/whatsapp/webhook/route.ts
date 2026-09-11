@@ -2,62 +2,63 @@ function getVerifyToken(): string | undefined {
   return process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN;
 }
 
+type WebhookChange = {
+  field?: unknown;
+  value?: {
+    messaging_product?: unknown;
+    metadata?: {
+      phone_number_id?: unknown;
+      display_phone_number?: unknown;
+    };
+    messages?: unknown[];
+    statuses?: unknown[];
+  };
+};
+
+type WebhookPayload = {
+  object?: unknown;
+  entry?: Array<{
+    changes?: WebhookChange[];
+  }>;
+};
+
+// Sums `value[key]` lengths across every change of every entry.
+function countChangeValues(body: WebhookPayload, key: 'messages' | 'statuses'): number {
+  return (
+    body.entry?.reduce(
+      (total, entry) =>
+        total +
+        (entry.changes?.reduce(
+          (changeTotal, change) => changeTotal + (change.value?.[key]?.length ?? 0),
+          0,
+        ) ?? 0),
+      0,
+    ) ?? 0
+  );
+}
+
+// Collects `select(change)` across every change, dropping falsy results.
+function collectFromChanges(
+  body: WebhookPayload,
+  select: (change: WebhookChange) => unknown,
+): unknown[] {
+  return body.entry?.flatMap((entry) => entry.changes?.map(select).filter(Boolean) ?? []) ?? [];
+}
+
 function summarizeWebhookPayload(payload: unknown) {
   if (!payload || typeof payload !== 'object') {
     return { valid: false };
   }
 
-  const body = payload as {
-    object?: unknown;
-    entry?: Array<{
-      changes?: Array<{
-        field?: unknown;
-        value?: {
-          messaging_product?: unknown;
-          metadata?: {
-            phone_number_id?: unknown;
-            display_phone_number?: unknown;
-          };
-          messages?: unknown[];
-          statuses?: unknown[];
-        };
-      }>;
-    }>;
-  };
+  const body = payload as WebhookPayload;
 
   return {
     object: body.object,
     entries: body.entry?.length ?? 0,
-    fields:
-      body.entry?.flatMap(
-        (entry) => entry.changes?.map((change) => change.field).filter(Boolean) ?? [],
-      ) ?? [],
-    messageCount:
-      body.entry?.reduce(
-        (total, entry) =>
-          total +
-          (entry.changes?.reduce(
-            (changeTotal, change) => changeTotal + (change.value?.messages?.length ?? 0),
-            0,
-          ) ?? 0),
-        0,
-      ) ?? 0,
-    statusCount:
-      body.entry?.reduce(
-        (total, entry) =>
-          total +
-          (entry.changes?.reduce(
-            (changeTotal, change) => changeTotal + (change.value?.statuses?.length ?? 0),
-            0,
-          ) ?? 0),
-        0,
-      ) ?? 0,
-    phoneNumberIds:
-      body.entry?.flatMap(
-        (entry) =>
-          entry.changes?.map((change) => change.value?.metadata?.phone_number_id).filter(Boolean) ??
-          [],
-      ) ?? [],
+    fields: collectFromChanges(body, (change) => change.field),
+    messageCount: countChangeValues(body, 'messages'),
+    statusCount: countChangeValues(body, 'statuses'),
+    phoneNumberIds: collectFromChanges(body, (change) => change.value?.metadata?.phone_number_id),
   };
 }
 
