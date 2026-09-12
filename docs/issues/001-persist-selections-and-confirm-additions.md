@@ -47,4 +47,4 @@ None - can start immediately.
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-12.

@@ -175,12 +175,38 @@ test.describe('Catalog basket page', () => {
 });
 
 test.describe('Catalog product page', () => {
-  test('adds a product to the basket when Comprar is clicked', async ({ page }) => {
-    await page.goto('/bebes?sc=panales&f=recien-nacido');
+  test('confirms and persists a catalog selection', async ({ page }) => {
+    const catalogUrl = '/bebes?sc=panales&f=recien-nacido';
+    await page.goto(catalogUrl);
 
-    await page.getByRole('button', { name: 'Comprar' }).first().click();
-    await seedBasket(page);
-    await page.goto('/basket');
-    await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
+    const addButton = page.getByRole('button', { name: /^Agregar / }).first();
+    const productName = (await addButton.getAttribute('aria-label'))?.replace(/^Agregar /, '');
+    if (!productName) throw new Error('The catalog product action has no accessible product name.');
+
+    await addButton.click();
+
+    const selectedButton = page.getByRole('button', {
+      name: `Agregado ✓: ${productName}`,
+    });
+    await expect(selectedButton).toBeDisabled();
+    await expect(
+      page.getByRole('status').filter({ hasText: `Agregaste ${productName} a tu consulta.` }),
+    ).toHaveText(`Agregaste ${productName} a tu consulta.`);
+    expect(
+      await page.evaluate(
+        ({ key, name }) =>
+          JSON.parse(localStorage.getItem(key) ?? '[]').filter(
+            (product: { name: string }) => product.name === name,
+          ).length,
+        { key: BASKET_KEY, name: productName },
+      ),
+    ).toBe(1);
+
+    await page.reload();
+    await expect(selectedButton).toBeDisabled();
+
+    await page.goto('/contact');
+    await page.goto(catalogUrl);
+    await expect(selectedButton).toBeDisabled();
   });
 });

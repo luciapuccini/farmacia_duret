@@ -65,6 +65,10 @@ $screens: (
   --shadow-btn-primary: 0 4px 14px -4px oklch(0.55 0.13 235 / 0.5);
   --shadow-focus-ring: 0 0 0 4px oklch(0.62 0.13 235 / 0.12);
 
+  // Motion
+  --motion-fast: 120ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
   // Gradients
   --gradient-brand: linear-gradient(
     90deg,
