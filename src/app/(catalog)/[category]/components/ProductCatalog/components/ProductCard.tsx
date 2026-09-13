@@ -4,8 +4,10 @@ import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/comp
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/className';
 import { Check } from 'lucide-react';
-import { type ComponentProps, type JSX, useEffect, useState } from 'react';
+import { type ComponentProps, useEffect, useState } from 'react';
 import { addToBasket, getBasket, subscribeToBasket, type Product } from '@/utils/basket';
+
+const FALLBACK_PRODUCT_IMAGE = '/images/products/fallback-product.webp';
 
 type ProductCardProps = ComponentProps<'article'> & {
   product: Product;
@@ -14,6 +16,7 @@ type ProductCardProps = ComponentProps<'article'> & {
 export function ProductCard({ product, className }: ProductCardProps) {
   const [isSelected, setIsSelected] = useState<boolean | null>(null);
   const [announcement, setAnnouncement] = useState('');
+  const [imageSrc, setImageSrc] = useState(product.image ?? FALLBACK_PRODUCT_IMAGE);
 
   useEffect(() => {
     const sync = () => setIsSelected(getBasket().some((item) => item.id === product.id));
@@ -29,11 +32,14 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
   return (
     <Card className={cn('not-prose h-fit w-full overflow-hidden', className)}>
-      {product.image ? (
-        <img src={product.image} alt={product.name} className="aspect-3/2 w-full object-cover" />
-      ) : (
-        <EmptyStateImg />
-      )}
+      <img
+        src={imageSrc}
+        alt={product.name}
+        width={960}
+        height={640}
+        className="aspect-3/2 w-full object-cover"
+        onError={() => setImageSrc(FALLBACK_PRODUCT_IMAGE)}
+      />
       <CardHeader>
         <CardTitle className="line-clamp-2 text-sm leading-snug">{product.name}</CardTitle>
         <CardDescription>{product.category}</CardDescription>
@@ -67,13 +73,3 @@ export function ProductCard({ product, className }: ProductCardProps) {
     </Card>
   );
 }
-
-const EmptyStateImg = (): JSX.Element => {
-  return (
-    // NOTE: --card-spacing is inherited css var from shadcn card, not my design tokens
-    <div
-      className="-mt-(--card-spacing) grid aspect-3/2 h-fit w-full place-items-center overflow-hidden [background:var(--bg-stripe-blue)]"
-      role="img"
-    />
-  );
-};
