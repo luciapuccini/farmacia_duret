@@ -4,7 +4,6 @@ import {
   addToBasket,
   clearBasket,
   getBasket,
-  getBasketSnapshot,
   removeFromBasket,
   subscribeToBasket,
   submitOrder,
@@ -44,6 +43,7 @@ function makeProduct(overrides: Partial<Product> = {}): Product {
 describe('basket', () => {
   beforeEach(() => {
     vi.stubGlobal('localStorage', makeLocalStorageMock());
+    vi.stubGlobal('window', new EventTarget());
   });
 
   afterEach(() => {
@@ -83,17 +83,7 @@ describe('basket', () => {
     });
   });
 
-  describe('snapshots', () => {
-    it('returns a stable snapshot until storage changes', () => {
-      const first = getBasketSnapshot();
-      const second = getBasketSnapshot();
-
-      expect(second).toBe(first);
-
-      addToBasket(makeProduct());
-      expect(getBasketSnapshot()).not.toBe(first);
-    });
-
+  describe('getBasket', () => {
     it('returns an empty basket for malformed stored JSON', () => {
       localStorage.setItem('basket_items', '{not-json');
 

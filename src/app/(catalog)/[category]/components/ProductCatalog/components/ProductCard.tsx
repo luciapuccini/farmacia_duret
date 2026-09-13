@@ -4,42 +4,26 @@ import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/comp
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/className';
 import { Check } from 'lucide-react';
-import { type ComponentProps, type JSX, useState, useSyncExternalStore } from 'react';
-import {
-  addToBasket,
-  getBasketSnapshot,
-  getServerBasketSnapshot,
-  subscribeToBasket,
-  type Product,
-} from '@/utils/basket';
+import { type ComponentProps, type JSX, useEffect, useState } from 'react';
+import { addToBasket, getBasket, subscribeToBasket, type Product } from '@/utils/basket';
 
 type ProductCardProps = ComponentProps<'article'> & {
   product: Product;
 };
 
 export function ProductCard({ product, className }: ProductCardProps) {
-  const basket = useSyncExternalStore(
-    subscribeToBasket,
-    getBasketSnapshot,
-    getServerBasketSnapshot,
-  );
-  const isHydrated = useSyncExternalStore(
-    subscribeToHydration,
-    getClientHydrationSnapshot,
-    getServerHydrationSnapshot,
-  );
+  const [isSelected, setIsSelected] = useState<boolean | null>(null);
   const [announcement, setAnnouncement] = useState('');
-  const isSelected = isHydrated && basket.some((item) => item.id === product.id);
+
+  useEffect(() => {
+    const sync = () => setIsSelected(getBasket().some((item) => item.id === product.id));
+    sync();
+    return subscribeToBasket(sync);
+  }, [product.id]);
 
   function addProduct() {
-    const outcome = addToBasket(product);
-
-    if (outcome === 'added') {
+    if (addToBasket(product) === 'added') {
       setAnnouncement(`Agregaste ${product.name} a tu consulta.`);
-    } else if (outcome === 'already-selected') {
-      setAnnouncement(`${product.name} ya está agregado a tu consulta.`);
-    } else {
-      setAnnouncement('Podés agregar hasta cinco productos a tu consulta.');
     }
   }
 
@@ -56,57 +40,26 @@ export function ProductCard({ product, className }: ProductCardProps) {
         <CardAction>
           <Button
             className={cn(
-              'min-h-11 flex-1 overflow-hidden transition-[background-color,border-color,color,box-shadow,opacity,transform] duration-[var(--motion-fast)] ease-[var(--ease-out)] motion-reduce:transition-none',
-              !isHydrated &&
-                'border-line bg-bg-soft text-ink-500 disabled:bg-bg-soft disabled:opacity-100',
+              'min-h-11 min-w-28 flex-1 transition-colors duration-[var(--motion-fast)] motion-reduce:transition-none',
+              isSelected === null && 'invisible',
               isSelected &&
                 'border-green-500 bg-green-100 text-green-700 disabled:border-green-500 disabled:bg-green-100 disabled:text-green-700 disabled:opacity-100',
             )}
             onClick={addProduct}
-            disabled={!isHydrated || isSelected}
-            aria-busy={!isHydrated}
-            aria-label={
-              !isHydrated
-                ? `Cargando selección: ${product.name}`
-                : isSelected
-                  ? `Agregado ✓: ${product.name}`
-                  : `Agregar ${product.name}`
-            }
+            disabled={isSelected !== false}
+            aria-hidden={isSelected === null}
+            aria-label={isSelected ? `Agregado ✓: ${product.name}` : `Agregar ${product.name}`}
           >
-            <span className="grid">
-              <span
-                className={cn(
-                  'col-start-1 row-start-1 transition-[opacity,transform] duration-[var(--motion-fast)] ease-[var(--ease-out)] motion-reduce:transform-none motion-reduce:transition-none',
-                  !isHydrated ? 'translate-y-0 opacity-100' : '-translate-y-1 opacity-0',
-                )}
-                aria-hidden={isHydrated}
-              >
-                Cargando…
-              </span>
-              <span
-                className={cn(
-                  'col-start-1 row-start-1 transition-[opacity,transform] duration-[var(--motion-fast)] ease-[var(--ease-out)] motion-reduce:transform-none motion-reduce:transition-none',
-                  isHydrated && !isSelected
-                    ? 'translate-y-0 opacity-100'
-                    : 'translate-y-1 opacity-0',
-                )}
-                aria-hidden={!isHydrated || isSelected}
-              >
-                Agregar
-              </span>
-              <span
-                className={cn(
-                  'col-start-1 row-start-1 inline-flex items-center justify-center gap-1 transition-[opacity,transform] duration-[var(--motion-fast)] ease-[var(--ease-out)] motion-reduce:transform-none motion-reduce:transition-none',
-                  isSelected ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0',
-                )}
-                aria-hidden={!isSelected}
-              >
+            {isSelected ? (
+              <span className="inline-flex animate-in items-center gap-1 duration-[var(--motion-fast)] fade-in motion-reduce:animate-none">
                 Agregado
                 <Check aria-hidden="true" />
               </span>
-            </span>
+            ) : (
+              'Agregar'
+            )}
           </Button>
-          <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          <span className="sr-only" role="status">
             {announcement}
           </span>
         </CardAction>
@@ -124,15 +77,3 @@ const EmptyStateImg = (): JSX.Element => {
     />
   );
 };
-
-function subscribeToHydration(): () => void {
-  return () => undefined;
-}
-
-function getClientHydrationSnapshot(): boolean {
-  return true;
-}
-
-function getServerHydrationSnapshot(): boolean {
-  return false;
-}
