@@ -44,4 +44,4 @@ Use the shared basket snapshot from the prerequisite slice. Apply the motion and
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-13.

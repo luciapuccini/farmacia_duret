@@ -209,4 +209,101 @@ test.describe('Catalog product page', () => {
     await page.goto(catalogUrl);
     await expect(selectedButton).toBeDisabled();
   });
+
+  test('reveals and updates the mobile inquiry action from the shared basket', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/bebes?sc=panales');
+
+    const inquiryAction = page.getByRole('link', { name: /Revisar consulta/ });
+    await expect(inquiryAction).not.toBeVisible();
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .nth(0)
+      .click();
+    await expect(inquiryAction).toHaveAccessibleName('Revisar consulta. 1 de 5 productos');
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .nth(0)
+      .click();
+    await expect(inquiryAction).toHaveAccessibleName('Revisar consulta. 2 de 5 productos');
+    await expect(page.getByText('2 de 5 productos')).toBeVisible();
+  });
+
+  test('opens the basket from the mobile inquiry action', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await seedBasket(page);
+    await page.goto('/bebes?sc=panales&f=recien-nacido');
+
+    await page.getByRole('link', { name: 'Revisar consulta. 1 de 5 productos' }).click();
+
+    await expect(page).toHaveURL('/basket');
+  });
+
+  test('shows the inquiry action only on mobile catalog routes', async ({ page }) => {
+    await seedBasket(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/bebes?sc=panales&f=recien-nacido');
+    await expect(
+      page.getByRole('link', { name: 'Revisar consulta. 1 de 5 productos' }),
+    ).toBeVisible();
+
+    for (const path of ['/', '/contact', '/orders', '/basket']) {
+      await page.goto(path);
+      await expect(page.getByRole('link', { name: /Revisar consulta/ })).not.toBeVisible();
+    }
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/bebes?sc=panales&f=recien-nacido');
+    await expect(page.getByRole('link', { name: /Revisar consulta/ })).not.toBeVisible();
+  });
+
+  test('keeps catalog content usable at 320 pixels without covering the last action', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.goto('/bebes?sc=panales');
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .first()
+      .click();
+
+    const inquiryAction = page.getByRole('link', { name: /Revisar consulta/ });
+    await expect(inquiryAction).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    const finalProductAction = page.getByRole('button', { name: /^Agregar / }).last();
+    const [finalProductBox, inquiryBox] = await Promise.all([
+      finalProductAction.boundingBox(),
+      inquiryAction.boundingBox(),
+    ]);
+
+    if (!finalProductBox || !inquiryBox) {
+      throw new Error('Expected the catalog and inquiry actions to have visible bounds.');
+    }
+    expect(inquiryBox.height).toBeGreaterThanOrEqual(44);
+    expect(finalProductBox.y + finalProductBox.height).toBeLessThanOrEqual(inquiryBox.y);
+  });
+
+  test('reaches the mobile inquiry state with reduced motion enabled', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/bebes?sc=panales&f=recien-nacido');
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .first()
+      .click();
+    const inquiryAction = page.getByRole('link', {
+      name: 'Revisar consulta. 1 de 5 productos',
+    });
+    await expect(inquiryAction).toBeVisible();
+
+    await inquiryAction.click();
+    await expect(page).toHaveURL('/basket');
+  });
 });
