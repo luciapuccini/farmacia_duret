@@ -66,13 +66,18 @@ describe('basket', () => {
       expect(localStorage.getItem('basket_items')).toBe(stored);
     });
 
-    it('enforces a max of 5 items', () => {
-      ['1', '2', '3', '4', '5'].forEach((id) => addToBasket(makeProduct({ id })));
+    it('adds the fifth product and rejects a sixth without changing storage', () => {
+      ['1', '2', '3', '4'].forEach((id) => addToBasket(makeProduct({ id })));
+
+      expect(getBasket().map((product) => product.id)).toEqual(['1', '2', '3', '4']);
+      expect(addToBasket(makeProduct({ id: '5' }))).toBe('added');
+      expect(getBasket().map((product) => product.id)).toEqual(['1', '2', '3', '4', '5']);
+
       const stored = localStorage.getItem('basket_items');
 
       expect(addToBasket(makeProduct({ id: '6' }))).toBe('limit-reached');
       expect(getBasket()).toHaveLength(5);
-      expect(getBasket().map((p) => p.id)).not.toContain('6');
+      expect(getBasket().map((product) => product.id)).toEqual(['1', '2', '3', '4', '5']);
       expect(localStorage.getItem('basket_items')).toBe(stored);
     });
 

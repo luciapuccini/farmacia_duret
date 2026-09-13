@@ -41,4 +41,4 @@ This is a boundary-state slice, not a quantity or inventory feature. Preserve th
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-13.

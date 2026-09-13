@@ -241,6 +241,79 @@ test.describe('Catalog product page', () => {
     await expect(page.getByText('2 de 5 productos')).toBeVisible();
   });
 
+  test('completes five selections and restores availability after basket removal', async ({
+    page,
+  }) => {
+    const catalogUrl = '/bebes?sc=panales';
+    const selectedNames: string[] = [];
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(catalogUrl);
+
+    for (let index = 0; index < 5; index += 1) {
+      const addButton = page.getByRole('button', { name: /^Agregar / }).first();
+      const productName = (await addButton.getAttribute('aria-label'))?.replace(/^Agregar /, '');
+      if (!productName) throw new Error('The catalog product action has no accessible name.');
+      selectedNames.push(productName);
+      await addButton.click();
+    }
+
+    for (const productName of selectedNames) {
+      await expect(page.getByRole('button', { name: `Agregado ✓: ${productName}` })).toBeDisabled();
+    }
+
+    const limitButton = page.getByRole('button', { name: /^Máximo alcanzado:/ }).first();
+    await expect(limitButton).toBeDisabled();
+    await expect(limitButton).toHaveText('Máximo alcanzado');
+    await expect(limitButton).toHaveAccessibleDescription(
+      'Quitá un producto de tu consulta para seleccionar otro.',
+    );
+    await expect(
+      page.getByRole('status').filter({
+        hasText: `Agregaste ${selectedNames[4]} a tu consulta. Consulta completa: 5 de 5 productos.`,
+      }),
+    ).toHaveText(
+      `Agregaste ${selectedNames[4]} a tu consulta. Consulta completa: 5 de 5 productos.`,
+    );
+    await expect(
+      page.getByRole('link', { name: 'Consulta completa. 5 de 5 productos' }),
+    ).toBeVisible();
+
+    const storedAtLimit = await page.evaluate((key) => localStorage.getItem(key), BASKET_KEY);
+    expect(JSON.parse(storedAtLimit ?? '[]')).toHaveLength(5);
+    await limitButton.evaluate((button: HTMLButtonElement) => button.click());
+    expect(await page.evaluate((key) => localStorage.getItem(key), BASKET_KEY)).toBe(storedAtLimit);
+
+    await page.reload();
+    for (const productName of selectedNames) {
+      await expect(page.getByRole('button', { name: `Agregado ✓: ${productName}` })).toBeDisabled();
+    }
+    await expect(page.getByRole('button', { name: /^Máximo alcanzado:/ }).first()).toBeDisabled();
+    await expect(
+      page.getByRole('link', { name: 'Consulta completa. 5 de 5 productos' }),
+    ).toBeVisible();
+
+    await page.getByRole('link', { name: 'Consulta completa. 5 de 5 productos' }).click();
+    await page
+      .getByRole('listitem')
+      .filter({ hasText: selectedNames[0] })
+      .getByRole('button', { name: 'Borrar' })
+      .click();
+    await page.goBack();
+
+    await expect(page).toHaveURL(catalogUrl);
+    await expect(page.getByRole('button', { name: `Agregar ${selectedNames[0]}` })).toBeEnabled();
+    await expect(page.getByRole('button', { name: /^Agregar / })).toHaveCount(2);
+    await expect(
+      page.getByRole('link', { name: 'Revisar consulta. 4 de 5 productos' }),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        (key) => JSON.parse(localStorage.getItem(key) ?? '[]').length,
+        BASKET_KEY,
+      ),
+    ).toBe(4);
+  });
+
   test('opens the basket from the mobile inquiry action', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await seedBasket(page);

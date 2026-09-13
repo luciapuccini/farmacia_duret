@@ -4,7 +4,7 @@ import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/comp
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/className';
 import { Check } from 'lucide-react';
-import { type ComponentProps, useEffect, useState } from 'react';
+import { type ComponentProps, useEffect, useId, useState } from 'react';
 import { addToBasket, getBasket, subscribeToBasket, type Product } from '@/utils/basket';
 
 const FALLBACK_PRODUCT_IMAGE = '/images/products/fallback-product.webp';
@@ -14,19 +14,34 @@ type ProductCardProps = ComponentProps<'article'> & {
 };
 
 export function ProductCard({ product, className }: ProductCardProps) {
-  const [isSelected, setIsSelected] = useState<boolean | null>(null);
+  const [basket, setBasket] = useState<Product[] | null>(null);
   const [announcement, setAnnouncement] = useState('');
   const [imageSrc, setImageSrc] = useState(product.image ?? FALLBACK_PRODUCT_IMAGE);
+  const limitDescriptionId = useId();
 
   useEffect(() => {
-    const sync = () => setIsSelected(getBasket().some((item) => item.id === product.id));
+    const sync = () => setBasket(getBasket());
     sync();
     return subscribeToBasket(sync);
-  }, [product.id]);
+  }, []);
+
+  const isSelected = basket?.some((item) => item.id === product.id) ?? null;
+  const isAtLimit = basket !== null && basket.length >= 5 && !isSelected;
 
   function addProduct() {
-    if (addToBasket(product) === 'added') {
-      setAnnouncement(`Agregaste ${product.name} a tu consulta.`);
+    const outcome = addToBasket(product);
+
+    if (outcome === 'added') {
+      setAnnouncement(
+        getBasket().length === 5
+          ? `Agregaste ${product.name} a tu consulta. Consulta completa: 5 de 5 productos.`
+          : `Agregaste ${product.name} a tu consulta.`,
+      );
+    } else if (outcome === 'limit-reached') {
+      setBasket(getBasket());
+      setAnnouncement(
+        'Alcanzaste el máximo de 5 productos. Quitá uno de tu consulta para seleccionar otro.',
+      );
     }
   }
 
@@ -48,23 +63,37 @@ export function ProductCard({ product, className }: ProductCardProps) {
             className={cn(
               'min-h-11 min-w-28 flex-1 transition-colors duration-[var(--motion-fast)] motion-reduce:transition-none',
               isSelected === null && 'invisible',
-              isSelected &&
-                'border-green-500 bg-green-100 text-green-700 disabled:border-green-500 disabled:bg-green-100 disabled:text-green-700 disabled:opacity-100',
+              isSelected && 'border-green-500 bg-green-100 text-green-700 disabled:opacity-100',
+              isAtLimit && 'border-ink-300 bg-bg-soft text-ink-700 disabled:opacity-100',
             )}
             onClick={addProduct}
-            disabled={isSelected !== false}
+            disabled={isSelected !== false || isAtLimit}
             aria-hidden={isSelected === null}
-            aria-label={isSelected ? `Agregado ✓: ${product.name}` : `Agregar ${product.name}`}
+            aria-label={
+              isSelected
+                ? `Agregado ✓: ${product.name}`
+                : isAtLimit
+                  ? `Máximo alcanzado: ${product.name}`
+                  : `Agregar ${product.name}`
+            }
+            aria-describedby={isAtLimit ? limitDescriptionId : undefined}
           >
             {isSelected ? (
               <span className="inline-flex animate-in items-center gap-1 duration-[var(--motion-fast)] fade-in motion-reduce:animate-none">
                 Agregado
                 <Check aria-hidden="true" />
               </span>
+            ) : isAtLimit ? (
+              'Máximo alcanzado'
             ) : (
               'Agregar'
             )}
           </Button>
+          {isAtLimit && (
+            <span id={limitDescriptionId} className="sr-only">
+              Quitá un producto de tu consulta para seleccionar otro.
+            </span>
+          )}
           <span className="sr-only" role="status">
             {announcement}
           </span>
