@@ -266,7 +266,12 @@ test.describe('Catalog product page', () => {
 
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/bebes?sc=panales&f=recien-nacido');
-    await expect(page.getByRole('link', { name: /Revisar consulta/ })).not.toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Revisar consulta: 1 de 5 productos seleccionados' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Revisar consulta. 1 de 5 productos' }),
+    ).not.toBeVisible();
   });
 
   test('keeps catalog content usable at 320 pixels without covering the last action', async ({
@@ -315,5 +320,178 @@ test.describe('Catalog product page', () => {
 
     await inquiryAction.click();
     await expect(page).toHaveURL('/basket');
+  });
+
+  test('shows the desktop inquiry control only after a catalog product is selected', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/bebes?sc=panales');
+
+    const inquiryAction = page.getByRole('link', {
+      name: 'Revisar consulta: 1 de 5 productos seleccionados',
+    });
+    await expect(inquiryAction).not.toBeVisible();
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .first()
+      .click();
+    await expect(inquiryAction).toBeVisible();
+    await expect(inquiryAction).toContainText('Consulta');
+    await expect(inquiryAction).toContainText('1 de 5');
+  });
+
+  test('updates the desktop inquiry progress on the current catalog page', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/bebes?sc=panales');
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .first()
+      .click();
+    await expect(
+      page.getByRole('link', { name: 'Revisar consulta: 1 de 5 productos seleccionados' }),
+    ).toBeVisible();
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .first()
+      .click();
+    await expect(
+      page.getByRole('link', { name: 'Revisar consulta: 2 de 5 productos seleccionados' }),
+    ).toBeVisible();
+  });
+
+  test('opens the basket from the desktop inquiry control', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await seedBasket(page);
+    await page.goto('/bebes?sc=panales&f=recien-nacido');
+
+    await page
+      .getByRole('link', { name: 'Revisar consulta: 1 de 5 productos seleccionados' })
+      .click();
+
+    await expect(page).toHaveURL('/basket');
+  });
+
+  test('keeps the desktop inquiry control available while the catalog scrolls', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 600 });
+    await seedBasket(page);
+    await page.goto('/bebes?sc=panales');
+
+    const inquiryAction = page.getByRole('link', {
+      name: 'Revisar consulta: 1 de 5 productos seleccionados',
+    });
+
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    await expect(inquiryAction).toBeVisible();
+
+    const afterScroll = await inquiryAction.boundingBox();
+    if (!afterScroll) throw new Error('Expected desktop inquiry control bounds after scrolling.');
+    expect(afterScroll.y).toBeGreaterThanOrEqual(0);
+    expect(afterScroll.y + afterScroll.height).toBeLessThanOrEqual(100);
+  });
+
+  test('uses the desktop inquiry control at 768 pixels and keeps the mobile action below it', async ({
+    page,
+  }) => {
+    await seedBasket(page);
+    const desktopInquiry = page.getByRole('link', {
+      name: 'Revisar consulta: 1 de 5 productos seleccionados',
+    });
+    const mobileInquiry = page.getByRole('link', { name: 'Revisar consulta. 1 de 5 productos' });
+
+    await page.setViewportSize({ width: 768, height: 800 });
+    await page.goto('/bebes?sc=panales');
+    await expect(desktopInquiry).toBeVisible();
+    await expect(mobileInquiry).not.toBeVisible();
+
+    await page.setViewportSize({ width: 767, height: 800 });
+    await expect(desktopInquiry).not.toBeVisible();
+    await expect(mobileInquiry).toBeVisible();
+  });
+
+  test('scopes the desktop inquiry control to valid catalog category routes', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await seedBasket(page);
+
+    const inquiryAction = page.getByRole('link', {
+      name: 'Revisar consulta: 1 de 5 productos seleccionados',
+    });
+
+    await page.goto('/bebes?sc=panales');
+    await expect(inquiryAction).toBeVisible();
+
+    for (const path of ['/', '/contact', '/orders', '/basket', '/offers', '/not-a-catalog-route']) {
+      await page.goto(path);
+      await expect(inquiryAction).not.toBeVisible();
+    }
+  });
+
+  test('provides a keyboard focus state and a 44 pixel desktop inquiry target', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await seedBasket(page);
+    await page.goto('/bebes?sc=panales');
+
+    const inquiryAction = page.getByRole('link', {
+      name: 'Revisar consulta: 1 de 5 productos seleccionados',
+    });
+    await inquiryAction.focus();
+    await expect(inquiryAction).toBeFocused();
+    expect(await inquiryAction.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(
+      'solid',
+    );
+
+    const bounds = await inquiryAction.boundingBox();
+    if (!bounds) throw new Error('Expected visible desktop inquiry control bounds.');
+    expect(bounds.width).toBeGreaterThanOrEqual(44);
+    expect(bounds.height).toBeGreaterThanOrEqual(44);
+
+    await inquiryAction.press('Enter');
+    await expect(page).toHaveURL('/basket');
+  });
+
+  test('shows the completed desktop inquiry state at five products', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await seedBasket(
+      page,
+      Array.from({ length: 5 }, (_, index) => ({
+        ...SAMPLE_PRODUCT,
+        id: `desktop-product-${index}`,
+        name: `Producto desktop ${index + 1}`,
+      })),
+    );
+    await page.goto('/bebes?sc=panales');
+
+    await expect(
+      page.getByRole('link', { name: 'Consulta completa: 5 de 5 productos seleccionados' }),
+    ).toBeVisible();
+  });
+
+  test('reaches the desktop inquiry final state with reduced motion enabled', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/bebes?sc=panales');
+
+    await page
+      .getByRole('button', { name: /^Agregar / })
+      .first()
+      .click();
+    const inquiryAction = page.getByRole('link', {
+      name: 'Revisar consulta: 1 de 5 productos seleccionados',
+    });
+    await expect(inquiryAction).toBeVisible();
+    expect(
+      await inquiryAction.evaluate((element) => ({
+        animationName: getComputedStyle(element).animationName,
+        transform: getComputedStyle(element).transform,
+      })),
+    ).toEqual({ animationName: 'none', transform: 'none' });
   });
 });

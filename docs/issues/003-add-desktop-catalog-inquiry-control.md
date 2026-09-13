@@ -41,4 +41,4 @@ Use the same observable basket snapshot as the product action and keep the contr
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-13.
