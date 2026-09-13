@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { Product } from '@/utils/basket';
 
 const BASKET_KEY = 'basket_items';
 const CATALOGO_HAR = path.join(
@@ -12,19 +13,28 @@ const CATALOGO_ERROR_HAR = path.join(
   'fixtures/api_whatsapp_catalogo_error.har',
 );
 
-const SAMPLE_PRODUCT = {
+const SAMPLE_PRODUCT: Product = {
   id: '1',
   name: 'Pampers Premium Care Recién Nacido x24',
   brand: 'Pampers',
-  image: null,
+  image: '/images/products/01-newborn-diapers.webp',
   current_offer: null,
   category: 'bebes',
   subcategory: 'panales',
   filter: 'recien-nacido',
 };
 
+const SECOND_SAMPLE_PRODUCT: Product = {
+  ...SAMPLE_PRODUCT,
+  id: '2',
+  name: 'Huggies Natural Care Classic x60',
+  brand: 'Huggies',
+  image: '/images/products/02-classic-diapers.webp',
+  filter: 'panales-descartables',
+};
+
 /** Matches the request body recorded in api_whatsapp_catalogo.har */
-const HAR_CATALOGO_PRODUCT = {
+const HAR_CATALOGO_PRODUCT: Product = {
   id: '12',
   name: 'Máscara Sky High Black Waterproof',
   brand: 'Maybelline',
@@ -66,22 +76,110 @@ test.describe('Catalog basket page', () => {
     await expect(page.getByLabel('Teléfono')).toBeVisible();
   });
 
-  test('shows basket items seeded in localStorage', async ({ page }) => {
-    await seedBasket(page);
+  test('shows a hydrated basket review with local thumbnails and guidance', async ({ page }) => {
+    const hydrationErrors: string[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error' && /hydration/i.test(message.text())) {
+        hydrationErrors.push(message.text());
+      }
+    });
+
+    await seedBasket(page, [SAMPLE_PRODUCT, SECOND_SAMPLE_PRODUCT]);
     await page.goto('/basket');
 
-    await expect(page.getByText('Pampers Premium Care Recién Nacido x24')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Revisá tu consulta' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Ruta de navegación' })).toContainText(
+      'Carrito',
+    );
+
+    const productList = page.getByRole('region', { name: 'Productos seleccionados' });
+    await expect(productList.getByText(SAMPLE_PRODUCT.name)).toBeVisible();
+    await expect(productList.getByText(SECOND_SAMPLE_PRODUCT.name)).toBeVisible();
+    await expect(productList.locator('img')).toHaveCount(2);
+    await expect(productList.locator('img').first()).toHaveAttribute(
+      'src',
+      '/images/products/01-newborn-diapers.webp',
+    );
+    await expect(page.getByText('2 de 5 productos', { exact: true })).toBeVisible();
+
+    const guidance = page.getByRole('complementary', { name: 'Cómo sigue' });
+    await expect(guidance).toContainText('disponibilidad, precio y detalles de retiro');
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
+    await expect(page.getByText('Tu carrito está vacío.')).not.toBeVisible();
+    expect(hydrationErrors).toEqual([]);
   });
 
-  test('removes an item when Borrar is clicked', async ({ page }) => {
+  test('removes an item immediately and updates count and storage', async ({ page }) => {
+    await seedBasket(page, [SAMPLE_PRODUCT, SECOND_SAMPLE_PRODUCT]);
+    await page.goto('/basket');
+
+    await page
+      .getByRole('button', { name: `Borrar ${SAMPLE_PRODUCT.name} de la consulta` })
+      .click();
+
+    await expect(page.getByText(SAMPLE_PRODUCT.name)).not.toBeVisible();
+    await expect(page.getByText(SECOND_SAMPLE_PRODUCT.name)).toBeVisible();
+    await expect(page.getByText('1 de 5 productos', { exact: true })).toBeVisible();
+    expect(
+      await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? '[]'), BASKET_KEY),
+    ).toEqual([SECOND_SAMPLE_PRODUCT]);
+  });
+
+  test('supports keyboard removal with a visible 44 pixel focus target', async ({ page }) => {
     await seedBasket(page);
     await page.goto('/basket');
 
-    await page.getByRole('button', { name: 'Borrar' }).click();
+    const removeButton = page.getByRole('button', {
+      name: `Borrar ${SAMPLE_PRODUCT.name} de la consulta`,
+    });
+    await removeButton.focus();
+    await expect(removeButton).toBeFocused();
+    expect(await removeButton.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe(
+      'none',
+    );
 
-    await expect(page.getByText('Pampers Premium Care Recién Nacido x24')).not.toBeVisible();
-    await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
+    const bounds = await removeButton.boundingBox();
+    if (!bounds) throw new Error('Expected visible removal control bounds.');
+    expect(bounds.width).toBeGreaterThanOrEqual(44);
+    expect(bounds.height).toBeGreaterThanOrEqual(44);
+
+    await removeButton.press('Enter');
+    await expect(page.getByText(SAMPLE_PRODUCT.name)).not.toBeVisible();
+    expect(await page.evaluate((key) => localStorage.getItem(key), BASKET_KEY)).toBe('[]');
+  });
+
+  test('keeps products first and avoids overflow at responsive basket widths', async ({ page }) => {
+    await seedBasket(page, [SAMPLE_PRODUCT, SECOND_SAMPLE_PRODUCT]);
+
+    for (const viewport of [
+      { width: 320, height: 760 },
+      { width: 768, height: 900 },
+      { width: 1280, height: 800 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto('/basket');
+
+      const productList = page.getByRole('region', { name: 'Productos seleccionados' });
+      const guidance = page.getByRole('complementary', { name: 'Cómo sigue' });
+      const [productBounds, guidanceBounds] = await Promise.all([
+        productList.boundingBox(),
+        guidance.boundingBox(),
+      ]);
+      if (!productBounds || !guidanceBounds) throw new Error('Expected responsive basket bounds.');
+
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      ).toBe(true);
+
+      if (viewport.width < 1024) {
+        expect(productBounds.y).toBeLessThan(guidanceBounds.y);
+      } else {
+        expect(productBounds.x).toBeLessThan(guidanceBounds.x);
+        expect(await guidance.evaluate((element) => getComputedStyle(element).position)).toBe(
+          'sticky',
+        );
+      }
+    }
   });
 
   test('shows a phone validation error when submitting without a phone number', async ({
@@ -296,7 +394,7 @@ test.describe('Catalog product page', () => {
     await page
       .getByRole('listitem')
       .filter({ hasText: selectedNames[0] })
-      .getByRole('button', { name: 'Borrar' })
+      .getByRole('button', { name: `Borrar ${selectedNames[0]} de la consulta` })
       .click();
     await page.goBack();
 

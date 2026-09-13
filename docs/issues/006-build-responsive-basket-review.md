@@ -48,4 +48,4 @@ Visually, build a lighter sibling of the existing order experience using the est
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-13.
