@@ -37,4 +37,4 @@ Keep the behavior deliberately simple. Do not add history tracking, last-categor
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-13.

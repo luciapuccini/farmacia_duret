@@ -64,10 +64,44 @@ async function replayCatalogoFromHar(page: Page, harPath = CATALOGO_HAR) {
 
 test.describe('Catalog basket page', () => {
   test('shows empty state when basket has no items', async ({ page }) => {
+    const hydrationErrors: string[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error' && /hydration/i.test(message.text())) {
+        hydrationErrors.push(message.text());
+      }
+    });
+
+    await page.setViewportSize({ width: 320, height: 760 });
     await page.goto('/basket');
 
-    await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
+    const emptyState = page.getByRole('region', { name: 'Todavía no agregaste productos.' });
+    await expect(emptyState).toContainText('Podés seleccionar hasta 5 productos');
+    await expect(emptyState.getByRole('link', { name: 'Seguir explorando' })).toHaveCount(1);
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).not.toBeVisible();
+
+    const exploreLink = emptyState.getByRole('link', { name: 'Seguir explorando' });
+    await exploreLink.focus();
+    await expect(exploreLink).toBeFocused();
+    expect(await exploreLink.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe(
+      'none',
+    );
+
+    const bounds = await exploreLink.boundingBox();
+    if (!bounds) throw new Error('Expected visible catalog return link bounds.');
+    expect(bounds.width).toBeGreaterThanOrEqual(44);
+    expect(bounds.height).toBeGreaterThanOrEqual(44);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    expect(hydrationErrors).toEqual([]);
+  });
+
+  test('returns to the default catalog from the empty state', async ({ page }) => {
+    await page.goto('/basket');
+
+    await page.getByRole('link', { name: 'Seguir explorando' }).click();
+
+    await expect(page).toHaveURL('/dermocosmetica?sc=rostro&f=anti-edad');
   });
 
   test('shows the phone input when basket has items', async ({ page }) => {
@@ -105,7 +139,9 @@ test.describe('Catalog basket page', () => {
     const guidance = page.getByRole('complementary', { name: 'Cómo sigue' });
     await expect(guidance).toContainText('disponibilidad, precio y detalles de retiro');
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
-    await expect(page.getByText('Tu carrito está vacío.')).not.toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
+    ).not.toBeVisible();
     expect(hydrationErrors).toEqual([]);
   });
 
@@ -145,6 +181,10 @@ test.describe('Catalog basket page', () => {
 
     await removeButton.press('Enter');
     await expect(page.getByText(SAMPLE_PRODUCT.name)).not.toBeVisible();
+    await expect(
+      page.getByRole('region', { name: 'Todavía no agregaste productos.' }),
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Seguir explorando' })).toHaveCount(1);
     expect(await page.evaluate((key) => localStorage.getItem(key), BASKET_KEY)).toBe('[]');
   });
 
@@ -234,7 +274,9 @@ test.describe('Catalog basket page', () => {
     expect(await response.json()).toMatchObject({ ok: true });
     expect(submittedBody).toContain('Máscara Sky High Black Waterproof');
     expect(submittedBody).toContain(HAR_CATALOGO_PHONE);
-    await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Hacer pedido' })).not.toBeVisible();
   });
 
@@ -247,7 +289,9 @@ test.describe('Catalog basket page', () => {
     await page.getByRole('button', { name: 'Hacer pedido' }).click();
 
     await expect(page.getByText('Máscara Sky High Black Waterproof')).not.toBeVisible();
-    await expect(page.getByText('Tu carrito está vacío.')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
+    ).toBeVisible();
   });
 
   test('shows an error message when the API call fails', async ({ page }) => {
