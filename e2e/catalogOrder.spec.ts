@@ -222,6 +222,16 @@ test.describe('Catalog product page', () => {
       .nth(0)
       .click();
     await expect(inquiryAction).toHaveAccessibleName('Revisar consulta. 1 de 5 productos');
+    const actionColors = await inquiryAction.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        foreground: styles.color,
+        background: styles.backgroundColor,
+        page: getComputedStyle(document.body).backgroundColor,
+      };
+    });
+    expect(actionColors.foreground).toBe(actionColors.page);
+    expect(actionColors.foreground).not.toBe(actionColors.background);
 
     await page
       .getByRole('button', { name: /^Agregar / })

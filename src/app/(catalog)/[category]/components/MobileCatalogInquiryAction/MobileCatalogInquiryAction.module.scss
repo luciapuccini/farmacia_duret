@@ -23,6 +23,10 @@
   }
 }
 
+.action {
+  color: var(--bg);
+}
+
 .count {
   animation: count-feedback var(--motion-fast) var(--ease-out) both;
 }

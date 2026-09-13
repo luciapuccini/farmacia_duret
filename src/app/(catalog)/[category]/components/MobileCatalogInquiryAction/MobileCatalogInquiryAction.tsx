@@ -28,7 +28,10 @@ export function MobileCatalogInquiryAction() {
       <div className={styles.region}>
         <Link
           href="/basket"
-          className="pointer-events-auto mx-auto flex min-h-16 w-full max-w-lg touch-manipulation items-center gap-3 rounded-xl bg-ink-900 px-4 py-3 text-white shadow-lg transition-[background-color,box-shadow] duration-[var(--motion-fast)] outline-none hover:bg-blue-700 focus-visible:ring-3 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2 motion-reduce:transition-none"
+          className={clsx(
+            styles.action,
+            'pointer-events-auto mx-auto flex min-h-16 w-full max-w-lg touch-manipulation items-center gap-3 rounded-xl bg-ink-900 px-4 py-3 shadow-lg transition-[background-color,box-shadow] duration-[var(--motion-fast)] outline-none hover:bg-blue-700 focus-visible:ring-3 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2 motion-reduce:transition-none',
+          )}
           aria-label={`${actionLabel}. ${count} de 5 productos`}
         >
           <span
