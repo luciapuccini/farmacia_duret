@@ -48,6 +48,8 @@ const HAR_CATALOGO_PRODUCT: Product = {
 const HAR_CATALOGO_PHONE = '+54 9 11 6755-1238';
 /** Matches the request body recorded in api_whatsapp_catalogo_error.har */
 const HAR_ERROR_PHONE = '+54 9 11 1234-5678';
+const SUBMISSION_ERROR =
+  'No pudimos enviar la consulta por WhatsApp. Tu selección y tu teléfono siguen acá.';
 
 function seedBasket(page: Page, products = [SAMPLE_PRODUCT]) {
   return page.addInitScript(({ key, items }) => localStorage.setItem(key, JSON.stringify(items)), {
@@ -77,7 +79,9 @@ test.describe('Catalog basket page', () => {
     const emptyState = page.getByRole('region', { name: 'Todavía no agregaste productos.' });
     await expect(emptyState).toContainText('Podés seleccionar hasta 5 productos');
     await expect(emptyState.getByRole('link', { name: 'Seguir explorando' })).toHaveCount(1);
-    await expect(page.getByRole('button', { name: 'Hacer pedido' })).not.toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }),
+    ).not.toBeVisible();
 
     const exploreLink = emptyState.getByRole('link', { name: 'Seguir explorando' });
     await exploreLink.focus();
@@ -107,7 +111,12 @@ test.describe('Catalog basket page', () => {
   test('shows the phone input when basket has items', async ({ page }) => {
     await seedBasket(page);
     await page.goto('/basket');
-    await expect(page.getByLabel('Teléfono')).toBeVisible();
+
+    const phoneInput = page.getByLabel('Teléfono');
+    await expect(phoneInput).toBeVisible();
+    await expect(phoneInput).toHaveAttribute('type', 'tel');
+    await expect(phoneInput).toHaveAttribute('inputmode', 'tel');
+    await expect(phoneInput).toHaveAttribute('autocomplete', 'tel-national');
   });
 
   test('shows a hydrated basket review with local thumbnails and guidance', async ({ page }) => {
@@ -138,7 +147,7 @@ test.describe('Catalog basket page', () => {
 
     const guidance = page.getByRole('complementary', { name: 'Cómo sigue' });
     await expect(guidance).toContainText('disponibilidad, precio y detalles de retiro');
-    await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Enviar consulta por WhatsApp' })).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
     ).not.toBeVisible();
@@ -211,6 +220,47 @@ test.describe('Catalog basket page', () => {
         await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
       ).toBe(true);
 
+      const submitAction = page.getByRole('button', { name: 'Enviar consulta por WhatsApp' });
+      await expect(submitAction).toHaveCount(1);
+      await submitAction.focus();
+      await expect(submitAction).toBeFocused();
+
+      const actionBounds = await submitAction.boundingBox();
+      if (!actionBounds) throw new Error('Expected responsive submit action bounds.');
+      expect(actionBounds.width).toBeGreaterThanOrEqual(44);
+      expect(actionBounds.height).toBeGreaterThanOrEqual(44);
+      expect(
+        await submitAction.evaluate((element) => getComputedStyle(element).boxShadow),
+      ).not.toBe('none');
+
+      if (viewport.width < 768) {
+        const mobileAction = page.getByRole('region', { name: 'Acción de consulta' });
+        await expect(mobileAction).toBeVisible();
+        await expect(
+          guidance.getByRole('button', { name: 'Enviar consulta por WhatsApp' }),
+        ).not.toBeVisible();
+        expect(
+          await mobileAction.evaluate((element) =>
+            parseFloat(getComputedStyle(element).paddingBottom),
+          ),
+        ).toBeGreaterThanOrEqual(12);
+
+        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+        const [phoneBounds, mobileActionBounds] = await Promise.all([
+          page.getByLabel('Teléfono').boundingBox(),
+          mobileAction.boundingBox(),
+        ]);
+        if (!phoneBounds || !mobileActionBounds) {
+          throw new Error('Expected mobile phone field and action bounds.');
+        }
+        expect(phoneBounds.y + phoneBounds.height).toBeLessThanOrEqual(mobileActionBounds.y);
+      } else {
+        await expect(page.getByRole('region', { name: 'Acción de consulta' })).not.toBeVisible();
+        await expect(
+          guidance.getByRole('button', { name: 'Enviar consulta por WhatsApp' }),
+        ).toBeVisible();
+      }
+
       if (viewport.width < 1024) {
         expect(productBounds.y).toBeLessThan(guidanceBounds.y);
       } else {
@@ -228,9 +278,30 @@ test.describe('Catalog basket page', () => {
     await seedBasket(page);
     await page.goto('/basket');
 
-    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
+
+    const phoneInput = page.getByLabel('Teléfono');
+    await expect(page.getByText('Ingresá un teléfono válido.')).toBeVisible();
+    await expect(phoneInput).toHaveAttribute('aria-invalid', 'true');
+    await expect(phoneInput).toHaveAttribute('aria-describedby', 'phone-error');
+    await expect(phoneInput).toBeFocused();
+  });
+
+  test('blocks an invalid phone before sending the inquiry', async ({ page }) => {
+    let requestCount = 0;
+    await page.route('**/api/whatsapp/catalogo', async (route) => {
+      requestCount += 1;
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+    });
+
+    await seedBasket(page);
+    await page.goto('/basket');
+
+    await page.getByLabel('Teléfono').fill('12345');
+    await page.getByLabel('Teléfono').press('Enter');
 
     await expect(page.getByText('Ingresá un teléfono válido.')).toBeVisible();
+    expect(requestCount).toBe(0);
   });
 
   test('blocks submission and shows an error when the phone is outside Argentina', async ({
@@ -246,13 +317,13 @@ test.describe('Catalog basket page', () => {
     await page.goto('/basket');
 
     await page.getByLabel('Teléfono').fill('+34 675 512 388');
-    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
 
     await expect(page.getByText('No soportamos telefonos fuera de Argentina')).toBeVisible();
     expect(requestCount).toBe(0);
   });
 
-  test('sends the catalog order via WhatsApp API on valid submission', async ({ page }) => {
+  test('submits with Enter and sends the catalog inquiry payload', async ({ page }) => {
     let submittedBody: string | undefined;
 
     await replayCatalogoFromHar(page);
@@ -267,17 +338,72 @@ test.describe('Catalog basket page', () => {
 
     await page.getByLabel('Teléfono').fill(HAR_CATALOGO_PHONE);
     const responsePromise = page.waitForResponse('**/api/whatsapp/catalogo');
-    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    await page.getByLabel('Teléfono').press('Enter');
     const response = await responsePromise;
 
     expect(response.status()).toBe(200);
     expect(await response.json()).toMatchObject({ ok: true });
-    expect(submittedBody).toContain('Máscara Sky High Black Waterproof');
-    expect(submittedBody).toContain(HAR_CATALOGO_PHONE);
+    expect(submittedBody ? JSON.parse(submittedBody) : undefined).toEqual({
+      to: HAR_CATALOGO_PHONE,
+      items: [HAR_CATALOGO_PRODUCT.name],
+    });
     await expect(
       page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
     ).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Hacer pedido' })).not.toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }),
+    ).not.toBeVisible();
+  });
+
+  test('shows sending progress and prevents a duplicate request', async ({ page }) => {
+    let requestCount = 0;
+    let releaseResponse!: () => void;
+    let markRequestStarted!: () => void;
+    const responseGate = new Promise<void>((resolve) => {
+      releaseResponse = resolve;
+    });
+    const requestStarted = new Promise<void>((resolve) => {
+      markRequestStarted = resolve;
+    });
+
+    await page.route('**/api/whatsapp/catalogo', async (route) => {
+      requestCount += 1;
+      markRequestStarted();
+      await responseGate;
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+    });
+
+    await seedBasket(page);
+    await page.goto('/basket');
+    await page.getByLabel('Teléfono').fill(HAR_ERROR_PHONE);
+
+    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
+    await requestStarted;
+
+    const sendingAction = page.getByRole('button', { name: 'Enviando consulta…' });
+    await expect(sendingAction).toBeVisible();
+    await expect(sendingAction).toBeDisabled();
+    await expect(page.getByRole('status')).toContainText('Enviando consulta por WhatsApp.');
+
+    await page.getByLabel('Teléfono').press('Enter');
+    await page.waitForTimeout(50);
+    expect(requestCount).toBe(1);
+
+    releaseResponse();
+    await expect(
+      page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
+    ).toBeVisible();
+  });
+
+  test('keeps submission feedback with reduced motion enabled', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await seedBasket(page);
+    await page.goto('/basket');
+
+    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
+
+    await expect(page.getByText('Ingresá un teléfono válido.')).toBeVisible();
+    await expect(page.getByLabel('Teléfono')).toBeFocused();
   });
 
   test('clears the basket after a successful order', async ({ page }) => {
@@ -286,7 +412,7 @@ test.describe('Catalog basket page', () => {
     await page.goto('/basket');
 
     await page.getByLabel('Teléfono').fill(HAR_CATALOGO_PHONE);
-    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
 
     await expect(page.getByText('Máscara Sky High Black Waterproof')).not.toBeVisible();
     await expect(
@@ -294,14 +420,17 @@ test.describe('Catalog basket page', () => {
     ).toBeVisible();
   });
 
-  test('shows an error message when the API call fails', async ({ page }) => {
+  test('shows one static error and preserves the inquiry when the API call fails', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 760 });
     await replayCatalogoFromHar(page, CATALOGO_ERROR_HAR);
     await seedBasket(page);
     await page.goto('/basket');
 
     await page.getByLabel('Teléfono').fill(HAR_ERROR_PHONE);
     const responsePromise = page.waitForResponse('**/api/whatsapp/catalogo');
-    await page.getByRole('button', { name: 'Hacer pedido' }).click();
+    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
     const response = await responsePromise;
 
     expect(response.status()).toBe(502);
@@ -309,10 +438,29 @@ test.describe('Catalog basket page', () => {
       ok: false,
       error: 'No pudimos enviar el pedido por WhatsApp.',
     });
+    const mobileAction = page.getByRole('region', { name: 'Acción de consulta' });
+    await expect(mobileAction.getByText(SUBMISSION_ERROR, { exact: true })).toBeVisible();
     await expect(
-      page.getByText('No pudimos enviar el pedido por WhatsApp.', { exact: true }),
-    ).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Hacer pedido' })).toBeVisible();
+      page
+        .getByRole('complementary', { name: 'Cómo sigue' })
+        .getByText(SUBMISSION_ERROR, { exact: true }),
+    ).not.toBeVisible();
+    await expect(page.getByRole('button', { name: 'Enviar consulta por WhatsApp' })).toBeVisible();
+    await expect(page.getByLabel('Teléfono')).toHaveValue(HAR_ERROR_PHONE);
+    await expect(page.getByText(SAMPLE_PRODUCT.name)).toBeVisible();
+    expect(
+      await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? '[]'), BASKET_KEY),
+    ).toEqual([SAMPLE_PRODUCT]);
+
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    const [phoneBounds, mobileActionBounds] = await Promise.all([
+      page.getByLabel('Teléfono').boundingBox(),
+      mobileAction.boundingBox(),
+    ]);
+    if (!phoneBounds || !mobileActionBounds) {
+      throw new Error('Expected preserved mobile field and action bounds.');
+    }
+    expect(phoneBounds.y + phoneBounds.height).toBeLessThanOrEqual(mobileActionBounds.y);
   });
 });
 

@@ -26,6 +26,8 @@ export default function PhoneInput({ hint, error, value, onChange }: PhoneInputP
           id="phone"
           name="phone"
           type="tel"
+          inputMode="tel"
+          autoComplete="tel-national"
           placeholder="11 1234-5678"
           required
           aria-invalid={error ? true : undefined}

@@ -46,4 +46,4 @@ Use the existing catalog inquiry API and WhatsApp template contract unchanged. T
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and verified on 2026-09-14.

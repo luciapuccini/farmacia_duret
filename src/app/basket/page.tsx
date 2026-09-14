@@ -2,7 +2,7 @@
 
 import { ArrowRight, PackageOpen, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useRef, useState } from 'react';
 import PhoneInput from '@/components/ui/phone-input/phone-input';
 import { type Product, clearBasket, getBasket, removeFromBasket } from '@/utils/basket';
 import { CatalogoOrderSchema } from '@/app/api/whatsapp/catalogo/schema';
@@ -10,6 +10,8 @@ import Heading from './components/Heading';
 
 type Status = 'idle' | 'sending' | 'sent';
 const FALLBACK_PRODUCT_IMAGE = '/images/products/fallback-product.webp';
+const SUBMISSION_ERROR =
+  'No pudimos enviar la consulta por WhatsApp. Tu selección y tu teléfono siguen acá.';
 
 export default function BasketPage() {
   const [items, setItems] = useState<Product[] | null>(null);
@@ -17,6 +19,7 @@ export default function BasketPage() {
   const [phoneError, setPhoneError] = useState('');
   const [error, setError] = useState('');
   const [status, setStatus] = useState<Status>('idle');
+  const isSubmitting = useRef(false);
 
   useEffect(() => {
     const loadBasket = window.setTimeout(() => setItems(getBasket()), 0);
@@ -28,7 +31,11 @@ export default function BasketPage() {
     setItems((current) => current?.filter((product) => product.id !== id) ?? []);
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (isSubmitting.current) return;
+
     setError('');
     setPhoneError('');
 
@@ -41,28 +48,34 @@ export default function BasketPage() {
       const issue = result.error.issues[0];
       if (issue?.path[0] === 'to') {
         setPhoneError(issue.message);
+        document.getElementById('phone')?.focus();
       } else {
         setError(issue?.message ?? 'Datos inválidos.');
       }
       return;
     }
 
+    isSubmitting.current = true;
     setStatus('sending');
 
-    const response = await fetch('/api/whatsapp/catalogo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(result.data),
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch('/api/whatsapp/catalogo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result.data),
+      });
+      const data = (await response.json()) as { ok?: boolean };
 
-    if (data.ok) {
+      if (!response.ok || !data.ok) throw new Error('Catalog inquiry submission failed.');
+
       clearBasket();
       setItems([]);
       setStatus('sent');
-    } else {
-      setError(data.error ?? 'No pudimos enviar el pedido.');
+    } catch {
+      setError(SUBMISSION_ERROR);
       setStatus('idle');
+    } finally {
+      isSubmitting.current = false;
     }
   }
 
@@ -118,7 +131,12 @@ export default function BasketPage() {
       ) : status === 'sent' ? (
         <p className="text-green-700">¡Pedido enviado! Te contactaremos por WhatsApp.</p>
       ) : (
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.75fr)] lg:gap-8">
+        <form
+          noValidate
+          onSubmit={handleSubmit}
+          aria-busy={status === 'sending'}
+          className="grid items-start gap-6 pb-[calc(9rem+env(safe-area-inset-bottom))] md:pb-0 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.75fr)] lg:gap-8"
+        >
           <section aria-labelledby="selected-products-heading" className="min-w-0">
             <div className="mb-3 flex items-end justify-between gap-4">
               <h2 id="selected-products-heading" className="text-lg font-bold text-ink-900">
@@ -236,25 +254,64 @@ export default function BasketPage() {
                 <div className="flex flex-col gap-1">
                   <PhoneInput
                     value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
+                    onChange={(event) => {
+                      setPhone(event.target.value);
+                      setPhoneError('');
+                    }}
                     error={phoneError}
                   />
                 </div>
 
-                {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+                {error && (
+                  <p
+                    id="desktop-submit-error"
+                    role="alert"
+                    className="mt-4 hidden text-sm text-red-500 md:block"
+                  >
+                    {error}
+                  </p>
+                )}
 
                 <button
-                  type="button"
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={status === 'sending'}
-                  className="mt-4 inline-flex min-h-11 w-full touch-manipulation items-center justify-center rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-btn-primary transition-colors duration-[var(--motion-fast)] hover:bg-blue-700 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none"
+                  aria-describedby={error ? 'desktop-submit-error' : undefined}
+                  className="mt-4 hidden min-h-11 w-full touch-manipulation items-center justify-center rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-btn-primary transition-[background-color,opacity] duration-[var(--motion-fast)] ease-[var(--ease-out)] hover:bg-blue-700 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none md:inline-flex"
                 >
-                  {status === 'sending' ? 'Enviando...' : 'Hacer pedido'}
+                  {status === 'sending' ? 'Enviando consulta…' : 'Enviar consulta por WhatsApp'}
                 </button>
               </div>
             </div>
           </aside>
-        </div>
+
+          <div
+            role="region"
+            aria-label="Acción de consulta"
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-blue-100 bg-bg px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden"
+          >
+            {error && (
+              <p
+                id="mobile-submit-error"
+                role="alert"
+                className="mx-auto mb-2 max-w-lg text-sm text-red-500"
+              >
+                {error}
+              </p>
+            )}
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              aria-describedby={error ? 'mobile-submit-error' : undefined}
+              className="mx-auto flex min-h-11 w-full max-w-lg touch-manipulation items-center justify-center rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-btn-primary transition-[background-color,opacity] duration-[var(--motion-fast)] ease-[var(--ease-out)] hover:bg-blue-700 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none"
+            >
+              {status === 'sending' ? 'Enviando consulta…' : 'Enviar consulta por WhatsApp'}
+            </button>
+          </div>
+
+          <span role="status" className="sr-only">
+            {status === 'sending' ? 'Enviando consulta por WhatsApp.' : ''}
+          </span>
+        </form>
       )}
     </main>
   );
