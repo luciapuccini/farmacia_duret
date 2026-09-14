@@ -18,6 +18,7 @@ type Props = {
   errorMessage: string;
   onReset: () => void;
   onSubmit: (e: SyntheticEvent<HTMLFormElement>) => void;
+  phoneError: string;
   remaining: number;
   setCharCount: (value: number) => void;
   setConsent: (value: boolean) => void;
@@ -30,6 +31,7 @@ export default function OrderForm({
   errorMessage,
   onReset,
   onSubmit,
+  phoneError,
   remaining,
   setCharCount,
   setConsent,
@@ -47,11 +49,11 @@ export default function OrderForm({
           </p>
         </div>
 
-        <form className={styles.form} onSubmit={onSubmit}>
+        <form className={styles.form} onSubmit={onSubmit} aria-label="Contanos de vos">
           {/* Honeypot */}
           <input name="bot-field" className={styles.hidden} aria-hidden="true" tabIndex={-1} />
 
-          <IdentityFields />
+          <IdentityFields phoneError={phoneError} />
 
           <NotesField charCount={charCount} setCharCount={setCharCount} />
 

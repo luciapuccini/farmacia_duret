@@ -2,7 +2,7 @@ import ContactRow from '../ContactRow/ContactRow';
 
 import styles from '@/app/orders/orders.module.scss';
 
-export default function IdentityFields() {
+export default function IdentityFields({ phoneError }: { phoneError: string }) {
   return (
     <div className={styles.group}>
       <div className={styles.groupTitle}>
@@ -42,7 +42,7 @@ export default function IdentityFields() {
         </div>
       </div>
 
-      <ContactRow />
+      <ContactRow phoneError={phoneError} />
     </div>
   );
 }

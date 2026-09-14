@@ -44,6 +44,13 @@ test.describe('Orders form', () => {
     await expect(page.getByRole('heading', { name: 'Pedí por WhatsApp, sin' })).toBeVisible();
   });
 
+  test('phone input shows the fixed Argentina dial code and number field', async ({ page }) => {
+    await page.goto('/orders');
+    const form = page.getByRole('form', { name: 'Contanos de vos' });
+    await expect(form.getByText('+54')).toBeVisible();
+    await expect(form.getByRole('textbox', { name: 'Teléfono*' })).toBeVisible();
+  });
+
   test('sends the order through the WhatsApp API after a valid submission', async ({ page }) => {
     const submittedBody = await captureOrderRequest(page, {
       ok: true,
@@ -71,7 +78,6 @@ test.describe('Orders form', () => {
     });
     await page.goto('/orders');
 
-    await page.getByRole('combobox', { name: 'Código de país' }).selectOption('+598');
     await page.getByRole('textbox', { name: 'Nombre completo*' }).fill('Test User');
     await page.getByRole('textbox', { name: 'Teléfono*' }).fill('99 123 456');
     await page
@@ -79,8 +85,25 @@ test.describe('Orders form', () => {
       .fill('Paracetamol');
     await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click();
 
-    expect(submittedBody()).toContain('+598');
+    expect(submittedBody()).toContain('+54');
     await expect(page.getByText('Encargo enviado por WhatsApp')).toBeVisible();
+  });
+
+  test('blocks submission and shows an error when the phone is outside Argentina', async ({
+    page,
+  }) => {
+    const requestCount = await countOrderRequests(page);
+    await page.goto('/orders');
+
+    await page.getByRole('textbox', { name: 'Nombre completo*' }).fill('Test User');
+    await page.getByRole('textbox', { name: 'Teléfono*' }).fill('+34 675 512 388');
+    await page
+      .getByRole('textbox', { name: 'Comentarios para el farmacéutico' })
+      .fill('Paracetamol');
+    await page.getByRole('button', { name: 'Enviar por WhatsApp' }).click();
+
+    await expect(page.getByText('No soportamos telefonos fuera de Argentina')).toBeVisible();
+    expect(requestCount()).toBe(0);
   });
 
   test('does not submit while privacy consent is unchecked', async ({ page }) => {

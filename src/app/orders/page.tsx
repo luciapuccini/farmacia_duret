@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PhoneSchema, REQUIRED_PHONE_MESSAGE } from '@/utils/phone';
 import { getOrderCount, MAX_ORDERS_PER_DAY, recordOrder } from '@/utils/ordersRateLimit';
 import LimitPanel from './components/LimitPanel/LimitPanel';
 import OrderForm, { type Status } from './components/OrderForm/OrderForm';
@@ -10,6 +11,7 @@ export default function ReservasPage() {
   const [charCount, setCharCount] = useState(0);
   const [consent, setConsent] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [submissionCount, setSubmissionCount] = useState(getOrderCount);
   const [status, setStatus] = useState<Status>('idle');
 
@@ -28,8 +30,18 @@ export default function ReservasPage() {
     // Honeypot — silently accept
     if (fd.get('bot-field')) return;
 
-    setStatus('submitting');
     setErrorMessage('');
+    setPhoneError('');
+
+    const rawPhone = fd.get('phone');
+    const phoneResult = PhoneSchema.safeParse(typeof rawPhone === 'string' ? rawPhone : '');
+
+    if (!phoneResult.success) {
+      setPhoneError(phoneResult.error.issues[0]?.message ?? REQUIRED_PHONE_MESSAGE);
+      return;
+    }
+
+    setStatus('submitting');
 
     try {
       const response = await fetch('/api/whatsapp/orders', {
@@ -59,6 +71,7 @@ export default function ReservasPage() {
   function resetForm() {
     setCharCount(0);
     setErrorMessage('');
+    setPhoneError('');
     setStatus('idle');
   }
 
@@ -77,6 +90,7 @@ export default function ReservasPage() {
       errorMessage={errorMessage}
       onReset={resetForm}
       onSubmit={handleSubmit}
+      phoneError={phoneError}
       remaining={remaining}
       setCharCount={setCharCount}
       setConsent={setConsent}

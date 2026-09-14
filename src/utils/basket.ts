@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const KEY = 'basket_items';
+const UPDATE_EVENT = 'basket:update';
 
 const ProductSchema = z.object({
   id: z.string(),
@@ -14,35 +15,45 @@ const ProductSchema = z.object({
 });
 
 export type Product = z.infer<typeof ProductSchema>;
+export type AddToBasketOutcome = 'added' | 'already-selected' | 'limit-reached';
+
+function storeBasket(items: Product[]): void {
+  localStorage.setItem(KEY, JSON.stringify(items));
+  window.dispatchEvent(new Event(UPDATE_EVENT));
+}
+
+export function subscribeToBasket(listener: EventListener): () => void {
+  window.addEventListener(UPDATE_EVENT, listener);
+  return () => window.removeEventListener(UPDATE_EVENT, listener);
+}
 
 export function getBasket(): Product[] {
   if (typeof localStorage === 'undefined') return [];
   try {
-    const raw = JSON.parse(localStorage.getItem(KEY) ?? '[]');
-    return z.array(ProductSchema).parse(raw);
+    return z.array(ProductSchema).parse(JSON.parse(localStorage.getItem(KEY) ?? '[]'));
   } catch {
     return [];
   }
 }
 
-export function addToBasket(product: Product): boolean {
-  const stored = getBasket();
-  if (stored.some((p) => p.id === product.id) || stored.length >= 5) return false;
+export function addToBasket(product: Product): AddToBasketOutcome {
   const validated = ProductSchema.parse(product);
-  localStorage.setItem(KEY, JSON.stringify([...stored, validated]));
-  if (typeof window !== 'undefined') window.dispatchEvent(new Event('basket:update'));
-  return true;
+  const stored = getBasket();
+
+  if (stored.some((item) => item.id === validated.id)) return 'already-selected';
+  if (stored.length >= 5) return 'limit-reached';
+
+  storeBasket([...stored, validated]);
+  return 'added';
 }
 
 export function removeFromBasket(id: string): void {
-  const next = getBasket().filter((p) => p.id !== id);
-  localStorage.setItem(KEY, JSON.stringify(next));
-  if (typeof window !== 'undefined') window.dispatchEvent(new Event('basket:update'));
+  storeBasket(getBasket().filter((product) => product.id !== id));
 }
 
 export function clearBasket(): void {
   localStorage.removeItem(KEY);
-  if (typeof window !== 'undefined') window.dispatchEvent(new Event('basket:update'));
+  window.dispatchEvent(new Event(UPDATE_EVENT));
 }
 
 export function submitOrder(items: Product[], onSubmit: (items: Product[]) => void): void {

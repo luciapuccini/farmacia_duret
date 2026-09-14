@@ -15,7 +15,7 @@ function CategoryFilters({ category, activeSc }: TCategoryFiltersProps) {
   const [openPanels, setOpenPanels] = useState<string[]>(activeSc ? [activeSc] : []);
 
   return (
-    <aside className="w-60">
+    <aside className="w-full md:w-60 md:shrink-0">
       <Accordion value={openPanels} onValueChange={setOpenPanels} multiple>
         {category.subcategories?.map((sc) => (
           <CollapsibleSection key={sc.name} subcategory={sc} />

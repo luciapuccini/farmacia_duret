@@ -1,2 +1,4 @@
 # .gitignore is honored automatically; this is only for tracked files.
 package-lock.json
+.claude/settings.local.json
+*.md

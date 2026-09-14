@@ -13,7 +13,7 @@ export default function ProductCatalog({ url }: Props) {
   return (
     <div className="flex w-full">
       {products.length > 0 ? (
-        <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+        <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(280px,100%),1fr))] gap-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

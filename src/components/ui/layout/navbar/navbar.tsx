@@ -2,8 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { ShoppingBag } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { NavLink } from '@/components/ui';
+import categories from '@/services/catalog/data/categories.json';
+import type { TCategory } from '@/types/types';
+import { getBasket, subscribeToBasket, type Product } from '@/utils/basket';
+import { nameToSlug } from '@/utils/nameToSlug';
 
 import type { TCatalogLocation } from './categoryNode';
 import Drawer from './components/drawer/drawer';
@@ -12,6 +17,7 @@ import styles from './navbar.module.scss';
 
 export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [basket, setBasket] = useState<Product[] | null>(null);
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -22,6 +28,17 @@ export default function Navbar() {
   };
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isCatalogRoute = (categories as TCategory[]).some(
+    (category) => pathname === `/${nameToSlug(category.name)}`,
+  );
+  const count = basket?.length ?? 0;
+  const inquiryLabel = count === 5 ? 'Consulta completa' : 'Consulta';
+
+  useEffect(() => {
+    const sync = () => setBasket(getBasket());
+    sync();
+    return subscribeToBasket(sync);
+  }, []);
 
   return (
     <>
@@ -61,6 +78,24 @@ export default function Navbar() {
           </nav>
 
           <div className={styles.navActions}>
+            {isCatalogRoute && count > 0 && (
+              <Link
+                href="/basket"
+                className={styles.inquiryAction}
+                aria-label={`${
+                  count === 5 ? 'Consulta completa' : 'Revisar consulta'
+                }: ${count} de 5 productos seleccionados`}
+              >
+                <ShoppingBag size={16} aria-hidden="true" />
+                <span className={styles.inquiryCopy}>
+                  <span className={styles.inquiryLabel}>{inquiryLabel}</span>
+                  <span key={count} className={styles.inquiryCount}>
+                    {count} de 5
+                  </span>
+                </span>
+              </Link>
+            )}
+
             {/* TODO: Revisit CTA-styled navigation links once their shared semantics are clearer. */}
             <Link href="/orders" className={styles.navEncargo}>
               <svg
