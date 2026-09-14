@@ -71,3 +71,12 @@
     background: var(--bg-soft);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .primary {
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none;
+    }
+  }
+}

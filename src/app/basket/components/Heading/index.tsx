@@ -1,33 +1,25 @@
-'use client';
-
 import { ChevronRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Heading() {
-  const router = useRouter();
-
   return (
-    <div className="mb-3">
-      <div className="flex">
-        <div
-          className="cursor-pointer hover:underline"
-          role="presentation"
-          onClick={() => {
-            router.back();
-          }}
+    <header className="mb-6 md:mb-8">
+      <nav aria-label="Ruta de navegación" className="mb-3 flex items-center gap-1">
+        <Link
+          href="/dermocosmetica?sc=rostro&f=anti-edad"
+          className="rounded-sm text-xs font-bold tracking-widest text-ink-500 uppercase underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
-          <p className="mb-2 text-xs font-bold tracking-widest text-ink-500 uppercase">Catálogo</p>
-        </div>
-        <ChevronRight className="mx-1 h-[14px] w-[14px] text-ink-500" />
-        <p className="mb-2 text-xs font-bold tracking-widest text-ink-500 uppercase">Carrito</p>
-      </div>
-      <h2 className="text-xl font-extrabold text-ink-900 md:text-2xl">
-        Hacé tus pedidos por whatsapp.
-      </h2>
-
-      <p className="m-0 max-w-1/2 text-sm text-ink-700">
-        completa tu telefono y nosotros te contactamos para mas información sobre tus productos.
+          Catálogo
+        </Link>
+        <ChevronRight aria-hidden="true" className="size-3.5 text-ink-400" />
+        <span className="text-xs font-bold tracking-widest text-ink-500 uppercase">Carrito</span>
+      </nav>
+      <h1 className="max-w-2xl text-3xl font-extrabold tracking-tight text-ink-900 md:text-4xl">
+        Revisá tu consulta
+      </h1>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-700 md:text-base">
+        Confirmá que estos sean los productos sobre los que querés recibir información.
       </p>
-    </div>
+    </header>
   );
 }

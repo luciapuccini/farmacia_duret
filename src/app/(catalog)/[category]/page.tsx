@@ -5,7 +5,7 @@ import type { TCatalogUrlParams, TCategory, TSubcategory } from '@/types/types';
 import { nameToSlug } from '@/utils/nameToSlug';
 import CategoryFilters from './components/CategoryFilters/CategoryFilters';
 import ProductCatalog from './components/ProductCatalog/ProductCatalog';
-import { BasketBadge } from './components/BasketBadge/BasketBadge';
+import { MobileCatalogInquiryAction } from './components/MobileCatalogInquiryAction/MobileCatalogInquiryAction';
 import styles from './page.module.scss';
 
 type Slug = string;
@@ -148,12 +148,12 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             consultas hasta 5 productos, sujetos a disponibilidad y precios
           </p>
         </div>
-        <BasketBadge />
       </div>
-      <div className="flex gap-8 py-4">
+      <div className="flex flex-col gap-4 py-4 md:flex-row md:gap-8">
         <CategoryFilters category={categoryObject} activeSc={subcategory} />
         <ProductCatalog url={{ category: cat, subcategory: subc, filter: fil }} />
       </div>
+      <MobileCatalogInquiryAction />
     </div>
   );
 }
