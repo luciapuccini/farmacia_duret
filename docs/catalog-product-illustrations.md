@@ -26,7 +26,7 @@ The complete set received human visual approval on 2026-09-13.
 | 8 | Toallitas Pampers Sensitive x52 | `/images/products/08-sensitive-wipes-pack.webp` |
 | 9 | Óleo Calcáreo Johnson's 200ml | `/images/products/09-baby-cleansing-oil.webp` |
 | 10 | Shampoo Bebé Johnson's Neutro 400ml | `/images/products/10-baby-shampoo.webp` |
-| 11 | Labial Mate Color Riche 01 Rouge Caresse | `/images/products/11-matte-lipstick.webp` |
+| 11 | Labial Mate Color Riche 01 Rouge Caresse | `/images/products/13-liquid-foundation.webp` |
 | 12 | Máscara Sky High Black Waterproof | `/images/products/12-waterproof-mascara.webp` |
 | 13 | Base Líquida ColorStay 24H Natural Beige | `/images/products/13-liquid-foundation.webp` |
 | 14 | Crema Retinol Anti-Edad Día SPF30 50ml | `/images/products/14-day-face-cream.webp` |
@@ -36,6 +36,9 @@ The complete set received human visual approval on 2026-09-13.
 | 18 | Jabón Líquido Protex Antibacterial 400ml | `/images/products/18-liquid-hand-soap.webp` |
 | 19 | Ibuprofeno 400mg x20 comprimidos | `/images/products/19-pain-relief-tablets.webp` |
 | 20 | Loratadina 10mg x10 comprimidos | `/images/products/20-allergy-tablets.webp` |
+
+Product 11 uses the reviewed neutral illustration for product 13. The original lipstick asset remains
+in the static set but is not referenced after the final UI review found it unreliable in the catalog.
 
 ## Fallback asset
 

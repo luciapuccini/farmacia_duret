@@ -52,4 +52,38 @@ This issue is a review and correction gate, not authorization for unrelated clea
 
 ## STATUS
 
-TODO — mark as DONE once implemented successfully and validated with the user.
+DONE — implemented and validated on 2026-09-14.
+
+## Final review record
+
+### User-story coverage
+
+| Stories | Verified behavior | Evidence |
+| --- | --- | --- |
+| 1–9 | Local, illustrative catalog artwork and fallback image | `catalog-images.test.ts`, asset review, catalog browser check |
+| 10–22 | Stored selections, add feedback, limit state, and route-scoped inquiry controls | `catalogOrder.spec.ts` |
+| 23–37 | Responsive basket, local thumbnails, immediate removal, and empty return path | `catalogOrder.spec.ts`, browser review |
+| 38–46 | Argentine phone input, keyboard submission, sending, validation, and static failure feedback | `catalogOrder.spec.ts` |
+| 47–52 | Cleared basket, persistent success state, and user-initiated WhatsApp continuation | `catalogOrder.spec.ts`, browser review |
+| 53–56 | Reduced motion, touch targets, safe areas, and no horizontal overflow | `catalogOrder.spec.ts`, browser review |
+
+### Review result
+
+- The catalog remains a product inquiry. It has no price, payment, total, quantity, inventory, or checkout behavior.
+- Catalog changes remain limited to local imagery, selection feedback, inquiry controls, and the five-product limit.
+- The basket retains the approved light consultation-slip treatment, responsive composition, one-step removal, form states, and WhatsApp continuation.
+- The WhatsApp API route, template contract, and webhook were not changed.
+- The original product-11 illustration was replaced in catalog data with an existing reviewed local illustration after user QA found the former asset unreliable. No remote image source was introduced.
+- No unrelated changes were made.
+
+### Validation evidence
+
+- 42 unit tests passed.
+- TypeScript, formatting, lint, and production build passed.
+- 31 catalog and basket end-to-end tests passed.
+- Browser review passed at 320, 390, 768, and 1280 pixels. It verified the corrected product image, the empty-state action, target sizes, and no horizontal overflow.
+- The user confirmed the overall experience and requested the two corrections completed in this issue.
+
+### Suggested next step
+
+- Add a project UI Craft brief before a future design finalization. This enables the formal finalization gate; it is not required for the completed catalog and basket scope.

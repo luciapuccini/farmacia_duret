@@ -1,8 +1,8 @@
 'use client';
 
-import { ArrowRight, CheckCircle2, MessageCircle, PackageOpen, Trash2 } from 'lucide-react';
-import Link from 'next/link';
+import { CheckCircle2, MessageCircle, PackageOpen, Trash2 } from 'lucide-react';
 import { type FormEvent, useEffect, useRef, useState } from 'react';
+import { TextLink } from '@/components/ui';
 import PhoneInput from '@/components/ui/phone-input/phone-input';
 import { type Product, clearBasket, getBasket, removeFromBasket } from '@/utils/basket';
 import { CatalogoOrderSchema } from '@/app/api/whatsapp/catalogo/schema';
@@ -164,13 +164,13 @@ export default function BasketPage() {
             <p className="mt-3 text-sm leading-relaxed text-ink-700 sm:text-base">
               Podés seleccionar hasta 5 productos del catálogo y enviarnos tu consulta por WhatsApp.
             </p>
-            <Link
+            <TextLink
               href="/dermocosmetica?sc=rostro&f=anti-edad"
-              className="mt-6 inline-flex min-h-11 w-full touch-manipulation items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-btn-primary transition-colors duration-[var(--motion-fast)] hover:bg-blue-700 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none sm:w-auto"
+              variant="primary"
+              className="mt-6 min-h-11 w-full touch-manipulation sm:w-auto"
             >
               Seguir explorando
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </Link>
+            </TextLink>
           </div>
         </section>
       ) : (
