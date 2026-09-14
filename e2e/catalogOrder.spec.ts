@@ -52,10 +52,17 @@ const SUBMISSION_ERROR =
   'No pudimos enviar la consulta por WhatsApp. Tu selección y tu teléfono siguen acá.';
 
 function seedBasket(page: Page, products = [SAMPLE_PRODUCT]) {
-  return page.addInitScript(({ key, items }) => localStorage.setItem(key, JSON.stringify(items)), {
-    key: BASKET_KEY,
-    items: products,
-  });
+  return page.addInitScript(
+    ({ key, items }) => {
+      if (sessionStorage.getItem('catalog-basket-seeded')) return;
+      localStorage.setItem(key, JSON.stringify(items));
+      sessionStorage.setItem('catalog-basket-seeded', 'true');
+    },
+    {
+      key: BASKET_KEY,
+      items: products,
+    },
+  );
 }
 
 async function replayCatalogoFromHar(page: Page, harPath = CATALOGO_HAR) {
@@ -347,9 +354,7 @@ test.describe('Catalog basket page', () => {
       to: HAR_CATALOGO_PHONE,
       items: [HAR_CATALOGO_PRODUCT.name],
     });
-    await expect(
-      page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Consulta enviada.' })).toBeVisible();
     await expect(
       page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }),
     ).not.toBeVisible();
@@ -390,9 +395,7 @@ test.describe('Catalog basket page', () => {
     expect(requestCount).toBe(1);
 
     releaseResponse();
-    await expect(
-      page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Consulta enviada.' })).toBeVisible();
   });
 
   test('keeps submission feedback with reduced motion enabled', async ({ page }) => {
@@ -406,7 +409,8 @@ test.describe('Catalog basket page', () => {
     await expect(page.getByLabel('Teléfono')).toBeFocused();
   });
 
-  test('clears the basket after a successful order', async ({ page }) => {
+  test('clears the basket and offers a user-initiated WhatsApp handoff', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await replayCatalogoFromHar(page);
     await seedBasket(page, [HAR_CATALOGO_PRODUCT]);
     await page.goto('/basket');
@@ -414,10 +418,32 @@ test.describe('Catalog basket page', () => {
     await page.getByLabel('Teléfono').fill(HAR_CATALOGO_PHONE);
     await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
 
-    await expect(page.getByText('Máscara Sky High Black Waterproof')).not.toBeVisible();
+    await expect(page).toHaveURL('/basket');
+    await expect(page.getByRole('heading', { name: 'Consulta enviada.' })).toBeVisible();
+    await expect(page.getByText('Farmacia Duret ya te envió un mensaje.')).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'Todavía no agregaste productos.' }),
-    ).toBeVisible();
+    ).not.toBeVisible();
+    await expect(page.getByText('Máscara Sky High Black Waterproof')).not.toBeVisible();
+    await expect(page.getByLabel('Teléfono')).not.toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }),
+    ).not.toBeVisible();
+    await expect(page.getByRole('region', { name: 'Acción de consulta' })).not.toBeVisible();
+    expect(await page.evaluate((key) => localStorage.getItem(key), BASKET_KEY)).toBeNull();
+
+    const whatsappLink = page.getByRole('link', { name: 'Continuar en WhatsApp' });
+    await expect(whatsappLink).toHaveAttribute('href', 'https://wa.me/5491178942852');
+    await expect(whatsappLink).toHaveAttribute('target', '_blank');
+    expect(
+      await page
+        .getByRole('region', { name: 'Consulta enviada.' })
+        .evaluate((element) => getComputedStyle(element).animationName),
+    ).toBe('none');
+
+    await page.goto('/bebes?sc=panales');
+    await expect(page.getByRole('button', { name: /^Agregar / }).first()).toBeEnabled();
+    await expect(page.getByRole('link', { name: /Revisar consulta/ })).not.toBeVisible();
   });
 
   test('shows one static error and preserves the inquiry when the API call fails', async ({
