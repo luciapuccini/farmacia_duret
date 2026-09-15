@@ -1,23 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui';
-
+import { AnalysisProgress } from './components/AnalysisProgress';
+import { ScanError } from './components/ScanError';
+import { ScanResults } from './components/ScanResults';
+import { DemoImage, IdleOverview, ScanAction, ScanIntro } from './components/ScanSetup';
+import { ANALYSIS_STEPS } from './scan-steps';
 import { scanImage } from './scan';
-
-type ScanResult = Awaited<ReturnType<typeof scanImage>>;
-type Status = 'idle' | 'loading' | 'success' | 'error';
+import type { ScanResult, ScanStatus } from './scan.types';
 
 export default function ScanButton() {
-  const [status, setStatus] = useState<Status>('idle');
+  const [status, setStatus] = useState<ScanStatus>('idle');
   const [result, setResult] = useState<ScanResult | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (status !== 'loading') return;
+
+    const interval = window.setInterval(() => {
+      setActiveStep((currentStep) => Math.min(currentStep + 1, ANALYSIS_STEPS.length - 1));
+    }, 1800);
+
+    return () => window.clearInterval(interval);
+  }, [status]);
 
   async function handleScan() {
     setStatus('loading');
     setResult(null);
     setErrorMessage('');
+    setActiveStep(0);
 
     try {
       const scanResult = await scanImage();
@@ -30,22 +43,20 @@ export default function ScanButton() {
   }
 
   return (
-    <section className="flex w-full max-w-3xl flex-col items-center gap-6">
-      <Button onClick={handleScan} disabled={status === 'loading'}>
-        {status === 'loading' ? 'Analizando…' : 'Analizar imagen'}
-      </Button>
+    <section aria-labelledby="scan-title" className="w-full">
+      <ScanIntro />
 
-      {status === 'error' && (
-        <p role="alert" className="text-center text-sm text-red-700">
-          {errorMessage}
-        </p>
-      )}
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:gap-8">
+        <DemoImage />
 
-      {status === 'success' && result && (
-        <pre className="w-full overflow-x-auto rounded-xl bg-slate-950 p-5 text-sm whitespace-pre-wrap text-slate-100">
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+        <div className="min-w-0">
+          <ScanAction status={status} onScan={handleScan} />
+          {status === 'idle' && <IdleOverview />}
+          {status === 'loading' && <AnalysisProgress activeStep={activeStep} />}
+          {status === 'error' && <ScanError message={errorMessage} />}
+          {status === 'success' && result && <ScanResults result={result} />}
+        </div>
+      </div>
     </section>
   );
 }

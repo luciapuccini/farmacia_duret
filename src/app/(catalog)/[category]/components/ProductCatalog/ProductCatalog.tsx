@@ -1,5 +1,4 @@
 import { TCatalogUrlParams } from '@/types/types';
-import styles from './ProductCatalog.module.scss';
 import { getProducts } from '@/services/actions/catalog';
 import { ProductCard } from './components/ProductCard';
 
@@ -19,7 +18,9 @@ export default function ProductCatalog({ url }: Props) {
           ))}
         </div>
       ) : (
-        <p className={styles.empty}>No hay productos disponibles en esta categoría.</p>
+        <p className="m-0 py-8 text-[0.9rem] text-ink-500">
+          No hay productos disponibles en esta categoría.
+        </p>
       )}
     </div>
   );
