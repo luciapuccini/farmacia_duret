@@ -7,6 +7,28 @@ import LimitPanel from './components/LimitPanel/LimitPanel';
 import OrderForm, { type Status } from './components/OrderForm/OrderForm';
 import SentPanel from './components/SentPanel/SentPanel';
 
+function canSubmit(isLimited: boolean, consent: boolean, status: Status): boolean {
+  return !isLimited && consent && status !== 'submitting';
+}
+
+function getPhoneError(formData: FormData): string | null {
+  const rawPhone = formData.get('phone');
+  const result = PhoneSchema.safeParse(typeof rawPhone === 'string' ? rawPhone : '');
+  return result.success ? null : (result.error.issues[0]?.message ?? REQUIRED_PHONE_MESSAGE);
+}
+
+async function submitOrder(formData: FormData): Promise<void> {
+  const response = await fetch('/api/whatsapp/orders', {
+    method: 'POST',
+    body: formData,
+  });
+  const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+
+  if (!response.ok) {
+    throw new Error(payload?.error || 'No pudimos enviar el encargo.');
+  }
+}
+
 export default function ReservasPage() {
   const [charCount, setCharCount] = useState(0);
   const [consent, setConsent] = useState(true);
@@ -20,7 +42,7 @@ export default function ReservasPage() {
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (isLimited || !consent || status === 'submitting') {
+    if (!canSubmit(isLimited, consent, status)) {
       return;
     }
 
@@ -33,29 +55,17 @@ export default function ReservasPage() {
     setErrorMessage('');
     setPhoneError('');
 
-    const rawPhone = fd.get('phone');
-    const phoneResult = PhoneSchema.safeParse(typeof rawPhone === 'string' ? rawPhone : '');
+    const nextPhoneError = getPhoneError(fd);
 
-    if (!phoneResult.success) {
-      setPhoneError(phoneResult.error.issues[0]?.message ?? REQUIRED_PHONE_MESSAGE);
+    if (nextPhoneError) {
+      setPhoneError(nextPhoneError);
       return;
     }
 
     setStatus('submitting');
 
     try {
-      const response = await fetch('/api/whatsapp/orders', {
-        method: 'POST',
-        body: fd,
-      });
-      const payload = (await response.json().catch(() => null)) as {
-        error?: string;
-      } | null;
-
-      if (!response.ok) {
-        throw new Error(payload?.error || 'No pudimos enviar el encargo.');
-      }
-
+      await submitOrder(fd);
       setSubmissionCount(recordOrder());
       setStatus('sent');
       form.reset();
