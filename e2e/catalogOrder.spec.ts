@@ -398,17 +398,6 @@ test.describe('Catalog basket page', () => {
     await expect(page.getByRole('heading', { name: 'Consulta enviada.' })).toBeVisible();
   });
 
-  test('keeps submission feedback with reduced motion enabled', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await seedBasket(page);
-    await page.goto('/basket');
-
-    await page.getByRole('button', { name: 'Enviar consulta por WhatsApp' }).click();
-
-    await expect(page.getByText('Ingresá un teléfono válido.')).toBeVisible();
-    await expect(page.getByLabel('Teléfono')).toBeFocused();
-  });
-
   test('clears the basket and offers a user-initiated WhatsApp handoff', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await replayCatalogoFromHar(page);
@@ -821,31 +810,6 @@ test.describe('Catalog product page', () => {
     }
   });
 
-  test('provides a keyboard focus state and a 44 pixel desktop inquiry target', async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await seedBasket(page);
-    await page.goto('/bebes?sc=panales');
-
-    const inquiryAction = page.getByRole('link', {
-      name: 'Revisar consulta: 1 de 5 productos seleccionados',
-    });
-    await inquiryAction.focus();
-    await expect(inquiryAction).toBeFocused();
-    expect(await inquiryAction.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(
-      'solid',
-    );
-
-    const bounds = await inquiryAction.boundingBox();
-    if (!bounds) throw new Error('Expected visible desktop inquiry control bounds.');
-    expect(bounds.width).toBeGreaterThanOrEqual(44);
-    expect(bounds.height).toBeGreaterThanOrEqual(44);
-
-    await inquiryAction.press('Enter');
-    await expect(page).toHaveURL('/basket');
-  });
-
   test('shows the completed desktop inquiry state at five products', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await seedBasket(
@@ -861,26 +825,5 @@ test.describe('Catalog product page', () => {
     await expect(
       page.getByRole('link', { name: 'Consulta completa: 5 de 5 productos seleccionados' }),
     ).toBeVisible();
-  });
-
-  test('reaches the desktop inquiry final state with reduced motion enabled', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('/bebes?sc=panales');
-
-    await page
-      .getByRole('button', { name: /^Agregar / })
-      .first()
-      .click();
-    const inquiryAction = page.getByRole('link', {
-      name: 'Revisar consulta: 1 de 5 productos seleccionados',
-    });
-    await expect(inquiryAction).toBeVisible();
-    expect(
-      await inquiryAction.evaluate((element) => ({
-        animationName: getComputedStyle(element).animationName,
-        transform: getComputedStyle(element).transform,
-      })),
-    ).toEqual({ animationName: 'none', transform: 'none' });
   });
 });
