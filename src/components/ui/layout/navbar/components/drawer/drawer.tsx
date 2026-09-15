@@ -4,20 +4,16 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import categories from '@/services/catalog/data/categories.json';
-import type { TCategory, TFilters, TSubcategory } from '@/types/types';
+import type { TCategory, TSubcategory } from '@/types/types';
 import { NavLink } from '@/components/ui';
-import { nameToSlug } from '@/utils/nameToSlug';
+import {
+  categoryNode,
+  type TCatalogLocation,
+  type TCatalogNode,
+} from '@/components/ui/layout/navbar/categoryNode';
+
+import { FilterDrawerItem, SecondLevelDrawerItem, TopLevelDrawerItem } from './drawerItem';
 import styles from './drawer.module.scss';
-
-function filterHref(categorySlug: string, subcategorySlug: string, filterSlug: string) {
-  const searchParams = new URLSearchParams({ sc: subcategorySlug, f: filterSlug });
-  return `/${categorySlug}?${searchParams.toString()}`;
-}
-
-function subcategoryHref(categorySlug: string, subcategorySlug: string) {
-  const searchParams = new URLSearchParams({ sc: subcategorySlug });
-  return `/${categorySlug}?${searchParams.toString()}`;
-}
 
 interface DrawerProps {
   isOpen: boolean;
@@ -25,259 +21,74 @@ interface DrawerProps {
 }
 
 type DrawerNavItemProps = {
-  category: TCategory | TSubcategory;
+  category: TCatalogNode;
   depth?: number;
   onNavigate: () => void;
   parentCategorySlug?: string;
-  pathname: string;
-  activeSubcategory: string | null;
-  activeFilter: string | null;
+  location: TCatalogLocation;
 };
-
-function ChevronDown() {
-  return (
-    <svg
-      className={styles.chevron}
-      width="10"
-      height="6"
-      viewBox="0 0 10 6"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M1 1l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ChevronRight() {
-  return (
-    <svg
-      className={styles.chevron}
-      width="6"
-      height="10"
-      viewBox="0 0 6 10"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M1 1l4 4-4 4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ToggleChevron({ isOpen }: { isOpen: boolean }) {
-  return isOpen ? <ChevronDown /> : <ChevronRight />;
-}
-
-function TopLevelDrawerItem({
-  category,
-  categoryPath,
-  hasChildren,
-  isActive,
-  isOpen,
-  onNavigate,
-  onToggle,
-}: {
-  category: TCategory;
-  categoryPath: string;
-  hasChildren: boolean;
-  isActive: (href: string) => boolean;
-  isOpen: boolean;
-  onNavigate: () => void;
-  onToggle: () => void;
-}) {
-  return (
-    <div className={styles.drawerItemHeader}>
-      <NavLink
-        href={categoryPath}
-        active={isActive(categoryPath)}
-        onClick={onNavigate}
-        variant="drawer"
-      >
-        {category.name}
-      </NavLink>
-
-      {hasChildren && (
-        <button
-          type="button"
-          className={styles.drawerToggle}
-          onClick={onToggle}
-          aria-label={`${isOpen ? 'Ocultar' : 'Mostrar'} ${category.name}`}
-          aria-expanded={isOpen}
-        >
-          <ToggleChevron isOpen={isOpen} />
-        </button>
-      )}
-    </div>
-  );
-}
-
-function SecondLevelDrawerItem({
-  category,
-  categorySlug,
-  parentCategorySlug,
-  hasFilters,
-  isActive,
-  isOpen,
-  onNavigate,
-  onToggle,
-}: {
-  category: TSubcategory;
-  categorySlug: string;
-  parentCategorySlug: string;
-  hasFilters: boolean;
-  isActive: (href: string) => boolean;
-  isOpen: boolean;
-  onNavigate: () => void;
-  onToggle: () => void;
-}) {
-  const href = subcategoryHref(parentCategorySlug, categorySlug);
-
-  return (
-    <div className={styles.drawerItemHeader}>
-      <NavLink href={href} active={isActive(href)} onClick={onNavigate} variant="drawer">
-        {category.name}
-      </NavLink>
-
-      {hasFilters && (
-        <button
-          type="button"
-          className={styles.drawerToggle}
-          onClick={onToggle}
-          aria-label={`${isOpen ? 'Ocultar' : 'Mostrar'} ${category.name}`}
-          aria-expanded={isOpen}
-        >
-          <ToggleChevron isOpen={isOpen} />
-        </button>
-      )}
-    </div>
-  );
-}
-
-function FilterDrawerItem({
-  categorySlug,
-  subcategorySlug,
-  filter,
-  pathname,
-  activeSubcategory,
-  activeFilter,
-  onNavigate,
-}: {
-  categorySlug: string;
-  subcategorySlug: string;
-  filter: TFilters;
-  pathname: string;
-  activeSubcategory: string | null;
-  activeFilter: string | null;
-  onNavigate: () => void;
-}) {
-  const filterSlug = nameToSlug(filter.name);
-  const href = filter.url || filterHref(categorySlug, subcategorySlug, filterSlug);
-  const isActive =
-    pathname === `/${categorySlug}` &&
-    activeSubcategory === subcategorySlug &&
-    activeFilter === filterSlug;
-
-  return (
-    <NavLink href={href} active={isActive} onClick={onNavigate} variant="drawer">
-      {filter.name}
-    </NavLink>
-  );
-}
 
 function DrawerNavItem({
   category,
   depth = 0,
   onNavigate,
   parentCategorySlug,
-  pathname,
-  activeSubcategory,
-  activeFilter,
+  location,
 }: DrawerNavItemProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const hasSubcategories = 'subcategories' in category && Boolean(category.subcategories?.length);
-  const hasFilters = 'filters' in category && Boolean(category.filters?.length);
-  const categoryPath = `/${nameToSlug(category.name)}`;
-  const categorySlug = nameToSlug(category.name);
-  const isActiveLink = (href: string) => pathname === href;
+  const node = categoryNode(category, depth, parentCategorySlug, location);
   const toggleOpen = () => setIsOpen((open) => !open);
-
-  let content = null;
-
-  if (depth === 0) {
-    content = (
-      <TopLevelDrawerItem
-        category={category as TCategory}
-        categoryPath={categoryPath}
-        hasChildren={Boolean(hasSubcategories)}
-        isActive={isActiveLink}
-        isOpen={isOpen}
-        onNavigate={onNavigate}
-        onToggle={toggleOpen}
-      />
-    );
-  }
-
-  if (depth === 1 && parentCategorySlug) {
-    content = (
-      <SecondLevelDrawerItem
-        category={category as TSubcategory}
-        categorySlug={categorySlug}
-        parentCategorySlug={parentCategorySlug}
-        hasFilters={Boolean(hasFilters)}
-        isActive={(href) =>
-          pathname === `/${parentCategorySlug}` && href.includes(`sc=${categorySlug}`)
-        }
-        isOpen={isOpen}
-        onNavigate={onNavigate}
-        onToggle={toggleOpen}
-      />
-    );
-  }
 
   return (
     <div className={styles.drawerItem} data-depth={depth}>
-      {content}
+      {depth === 0 && (
+        <TopLevelDrawerItem
+          category={category as TCategory}
+          href={node.href}
+          hasChildren={node.hasSubcategories}
+          isActive={node.isActive}
+          isOpen={isOpen}
+          onNavigate={onNavigate}
+          onToggle={toggleOpen}
+        />
+      )}
 
-      {hasSubcategories && isOpen && (
+      {depth === 1 && parentCategorySlug && (
+        <SecondLevelDrawerItem
+          category={category as TSubcategory}
+          href={node.href}
+          hasFilters={node.hasFilters}
+          isActive={node.isParentActive}
+          isOpen={isOpen}
+          onNavigate={onNavigate}
+          onToggle={toggleOpen}
+        />
+      )}
+
+      {node.hasSubcategories && isOpen && (
         <div className={styles.drawerSubmenu}>
-          {category.subcategories?.map((subcategory) => (
+          {node.subcategories.map((subcategory) => (
             <DrawerNavItem
               key={subcategory.name}
               category={subcategory}
               depth={depth + 1}
               onNavigate={onNavigate}
-              parentCategorySlug={categorySlug}
-              pathname={pathname}
-              activeSubcategory={activeSubcategory}
-              activeFilter={activeFilter}
+              parentCategorySlug={node.slug}
+              location={location}
             />
           ))}
         </div>
       )}
 
-      {hasFilters && isOpen && parentCategorySlug && (
+      {node.hasFilters && isOpen && parentCategorySlug && (
         <div className={styles.drawerSubmenu}>
-          {category.filters?.map((filter) => (
+          {node.filters.map((filter) => (
             <div key={filter.name} className={styles.drawerItem} data-depth={depth + 1}>
               <FilterDrawerItem
                 categorySlug={parentCategorySlug}
-                subcategorySlug={categorySlug}
+                subcategorySlug={node.slug}
                 filter={filter}
-                pathname={pathname}
-                activeSubcategory={activeSubcategory}
-                activeFilter={activeFilter}
+                location={location}
                 onNavigate={onNavigate}
               />
             </div>
@@ -291,8 +102,11 @@ function DrawerNavItem({
 export default function Drawer({ isOpen, onClose }: DrawerProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const activeSubcategory = searchParams.get('sc');
-  const activeFilter = searchParams.get('f');
+  const location: TCatalogLocation = {
+    pathname,
+    activeSubcategory: searchParams.get('sc'),
+    activeFilter: searchParams.get('f'),
+  };
 
   return (
     <>
@@ -334,9 +148,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
               key={category.name}
               category={category}
               onNavigate={onClose}
-              pathname={pathname}
-              activeSubcategory={activeSubcategory}
-              activeFilter={activeFilter}
+              location={location}
             />
           ))}
           <div className={styles.drawerItem} data-depth={0}>
