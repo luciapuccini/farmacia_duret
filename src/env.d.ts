@@ -13,9 +13,6 @@ declare global {
     WHATSAPP_CATALOGO_TEMPLATE_NAME?: string;
     WHATSAPP_TEMPLATE_LANGUAGE?: string;
   }
-  interface CloudflareEnv {
-    ASSETS: { fetch: (input: Request | URL | string) => Promise<Response> };
-  }
   namespace NodeJS {
     interface ProcessEnv extends RuntimeEnv {
       NODE_ENV?: 'development' | 'production' | 'test';
