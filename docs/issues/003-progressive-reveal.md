@@ -17,18 +17,18 @@ Design inspiration: `docs/design/scan_farma_mock.png`, second screen ("Estamos m
 
 ## Acceptance criteria
 
-- [ ] "Analizando tu foto…" and a summary skeleton show right after "Analizar".
-- [ ] The summary shows when it is complete, before the rest of the answer arrives.
-- [ ] The medical caution shows before any pattern or solution.
-- [ ] Each pattern and each solution shows as a complete item. There is never half a sentence.
-- [ ] "Preparando más sugerencias…" shows under the last item while streaming, and goes away at `done`.
-- [ ] With `prefers-reduced-motion`, items appear with no animation.
-- [ ] Each streamed item passes its sub-schema check before it is sent. `done` is sent only after the full schema check.
-- [ ] The vendored partial JSON parser is imported in the extractor module only.
-- [ ] Fake steps, their timer and the progress component are removed.
-- [ ] Unit tests for the extractor: half summary emits nothing; summary emits when the next key starts; array element emits when the next element starts; last array element emits when the next key starts; no duplicates across consecutive snapshots; items in schema order.
-- [ ] The e2e from `002` still passes.
-- [ ] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
+- [x] "Analizando tu foto…" and a summary skeleton show right after "Analizar".
+- [x] The summary shows when it is complete, before the rest of the answer arrives.
+- [x] The medical caution shows before any pattern or solution.
+- [x] Each pattern and each solution shows as a complete item. There is never half a sentence.
+- [x] "Preparando más sugerencias…" shows under the last item while streaming, and goes away at `done`.
+- [x] With `prefers-reduced-motion`, items appear with no animation.
+- [x] Each streamed item passes its sub-schema check before it is sent. `done` is sent only after the full schema check.
+- [x] The vendored partial JSON parser is imported in the extractor module only.
+- [x] Fake steps, their timer and the progress component are removed.
+- [x] Unit tests for the extractor: half summary emits nothing; summary emits when the next key starts; array element emits when the next element starts; last array element emits when the next key starts; no duplicates across consecutive snapshots; items in schema order.
+- [x] The e2e from `002` still passes.
+- [x] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
 
 ## Blocked by
 
@@ -43,4 +43,4 @@ Design inspiration: `docs/design/scan_farma_mock.png`, second screen ("Estamos m
 
 ## STATUS
 
-TODO
+DONE
