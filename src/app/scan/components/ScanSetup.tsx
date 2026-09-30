@@ -27,12 +27,10 @@ export function ScanIntro() {
 
 export function PhotoPicker({
   previewUrl,
-  disabled,
   errorMessage,
   onPick,
 }: {
   previewUrl: string | null;
-  disabled: boolean;
   errorMessage: string;
   onPick: (file: File) => void;
 }) {
@@ -74,7 +72,6 @@ export function PhotoPicker({
           />
           <Button
             variant="secondary"
-            disabled={disabled}
             onClick={() => inputRef.current?.click()}
             className="absolute right-3 bottom-3 min-h-11 touch-manipulation px-4"
           >

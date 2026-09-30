@@ -67,29 +67,33 @@ export async function POST(request: Request) {
       write({ type: 'status', stage: 'analyzing' });
 
       try {
-        const stream = openai.responses.stream({
-          model: MODEL,
-          reasoning: { effort: 'medium' },
-          instructions: SYSTEM_PROMPT,
-          input: [
-            {
-              role: 'user',
-              content: [
-                {
-                  type: 'input_text',
-                  text: 'Analizá los patrones visibles de la piel en esta imagen.',
-                },
-                {
-                  type: 'input_image',
-                  image_url: `data:${image.type};base64,${imageBase64}`,
-                  detail: 'high',
-                },
-              ],
-            },
-          ],
-          text: { format: zodTextFormat(SkinScanResultSchema, 'skin_scan') },
-          store: false,
-        });
+        const stream = openai.responses.stream(
+          {
+            model: MODEL,
+            reasoning: { effort: 'medium' },
+            instructions: SYSTEM_PROMPT,
+            input: [
+              {
+                role: 'user',
+                content: [
+                  {
+                    type: 'input_text',
+                    text: 'Analizá los patrones visibles de la piel en esta imagen.',
+                  },
+                  {
+                    type: 'input_image',
+                    image_url: `data:${image.type};base64,${imageBase64}`,
+                    detail: 'high',
+                  },
+                ],
+              },
+            ],
+            text: { format: zodTextFormat(SkinScanResultSchema, 'skin_scan') },
+            store: false,
+          },
+          // When the customer leaves or picks a new photo, the model stops generating.
+          { signal: request.signal },
+        );
 
         // Send each item as soon as it is complete in the JSON text written so far.
         let snapshot = '';
@@ -105,10 +109,13 @@ export async function POST(request: Request) {
         writeNew(resultToEvents(result).slice(emittedCount));
         write({ type: 'done' });
       } catch (error) {
+        // The customer cancelled the request. Nobody reads the stream, so do not write to it.
+        if (request.signal.aborted) return;
+
         console.error('Skin scan failed.', error);
         write({ type: 'error', code: 'analysis_failed' });
       } finally {
-        controller.close();
+        if (!request.signal.aborted) controller.close();
       }
     },
   });

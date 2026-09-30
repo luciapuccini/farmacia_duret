@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ScanDisclaimer } from './components/ScanDisclaimer';
 import { ScanError } from './components/ScanError';
@@ -77,12 +77,16 @@ export default function ScanFlow() {
   const [items, setItems] = useState<ScanItems>(EMPTY_SCAN_ITEMS);
   const [uploadError, setUploadError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  // The running scan request. A new pick or leaving the page cancels it.
+  const scanRequestRef = useRef<AbortController | null>(null);
 
   // Revoke the old preview URL when it is replaced, and on unmount.
   useEffect(() => {
     if (!previewUrl) return;
     return () => URL.revokeObjectURL(previewUrl);
   }, [previewUrl]);
+
+  useEffect(() => () => scanRequestRef.current?.abort(), []);
 
   function handlePick(pickedFile: File) {
     const validation = validateUpload(pickedFile);
@@ -91,6 +95,7 @@ export default function ScanFlow() {
       return;
     }
 
+    scanRequestRef.current?.abort();
     setUploadError('');
     setFile(pickedFile);
     setPreviewUrl(URL.createObjectURL(pickedFile));
@@ -101,6 +106,9 @@ export default function ScanFlow() {
   async function handleAnalyze() {
     if (!file) return;
 
+    const scanRequest = new AbortController();
+    scanRequestRef.current = scanRequest;
+
     setStatus('streaming');
     setItems(EMPTY_SCAN_ITEMS);
     setErrorMessage('');
@@ -110,9 +118,14 @@ export default function ScanFlow() {
 
     try {
       let isDone = false;
-      const response = await fetch('/api/scan', { method: 'POST', body: formData });
+      const response = await fetch('/api/scan', {
+        method: 'POST',
+        body: formData,
+        signal: scanRequest.signal,
+      });
 
       await readScanStream(response, (event) => {
+        if (scanRequest.signal.aborted) return;
         if (event.type === 'error') throw new ScanRequestError(event.code);
         if (event.type === 'done') isDone = true;
         setItems((currentItems) => appendEvent(currentItems, event));
@@ -121,6 +134,9 @@ export default function ScanFlow() {
       if (!isDone) throw new ScanRequestError('analysis_failed');
       setStatus('done');
     } catch (error) {
+      // A cancelled scan is not an error: a new pick or unmount already replaced it.
+      if (scanRequest.signal.aborted) return;
+
       const code = error instanceof ScanRequestError ? error.code : 'analysis_failed';
       setItems(EMPTY_SCAN_ITEMS);
       setErrorMessage(ERROR_MESSAGES[code]);
@@ -133,19 +149,14 @@ export default function ScanFlow() {
       <ScanIntro />
 
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:gap-8">
-        <PhotoPicker
-          previewUrl={previewUrl}
-          disabled={status === 'streaming'}
-          errorMessage={uploadError}
-          onPick={handlePick}
-        />
+        <PhotoPicker previewUrl={previewUrl} errorMessage={uploadError} onPick={handlePick} />
 
         <div className="min-w-0">
-          {file && <ScanAction status={status} onAnalyze={handleAnalyze} />}
+          {file && status !== 'error' && <ScanAction status={status} onAnalyze={handleAnalyze} />}
           {(status === 'streaming' || status === 'done') && (
             <ScanResults items={items} isStreaming={status === 'streaming'} />
           )}
-          {status === 'error' && <ScanError message={errorMessage} />}
+          {status === 'error' && <ScanError message={errorMessage} onRetry={handleAnalyze} />}
           <ScanDisclaimer />
         </div>
       </div>

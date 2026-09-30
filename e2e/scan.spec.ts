@@ -79,4 +79,72 @@ test.describe('Skin scan', () => {
     await expect(page.getByRole('button', { name: 'Analizar' })).toHaveCount(0);
     expect(requestCount).toBe(0);
   });
+
+  test('shows errors, removes partial results and retries with the same photo', async ({
+    page,
+  }) => {
+    const toNdjson = (events: object[]) =>
+      events.map((event) => JSON.stringify(event)).join('\n') + '\n';
+    const responses = [
+      { status: 500, contentType: 'application/json', body: '{"error":"server_config"}' },
+      {
+        status: 200,
+        contentType: 'application/x-ndjson',
+        body: toNdjson([
+          SCAN_EVENTS[0],
+          { type: 'summary', text: 'Resumen parcial que no debe quedar.' },
+          { type: 'error', code: 'analysis_failed' },
+        ]),
+      },
+      { status: 200, contentType: 'application/x-ndjson', body: toNdjson(SCAN_EVENTS) },
+    ];
+    const sentImages: number[] = [];
+    await page.route('**/api/scan', async (route) => {
+      sentImages.push(route.request().postDataBuffer()?.length ?? 0);
+      await route.fulfill(responses[sentImages.length - 1]);
+    });
+
+    await page.goto('/scan');
+    await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
+    await page.getByRole('button', { name: 'Analizar' }).tap();
+
+    // Next.js also renders a route announcer with role="alert", so filter on the notice text.
+    const alert = page.getByRole('alert').filter({ hasText: 'No pudimos completar el análisis' });
+    await expect(alert).toContainText('El análisis no está disponible en este momento.');
+
+    await alert.getByRole('button', { name: 'Reintentar' }).tap();
+    await expect(alert).toContainText('No pudimos analizar la foto.');
+    await expect(page.getByText('Resumen parcial que no debe quedar.')).toHaveCount(0);
+
+    await alert.getByRole('button', { name: 'Reintentar' }).tap();
+    await expect(page.getByText('Se observa una piel con brillo leve en la zona T.')).toBeVisible();
+    await expect(alert).toHaveCount(0);
+
+    expect(sentImages).toHaveLength(3);
+    expect(new Set(sentImages).size).toBe(1);
+  });
+
+  test('cancels the running scan when a new photo is picked', async ({ page }) => {
+    let requestCount = 0;
+    // Never answer, so that the scan stays in progress.
+    await page.route('**/api/scan', () => {
+      requestCount += 1;
+    });
+
+    await page.goto('/scan');
+    await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
+    await page.getByRole('button', { name: 'Analizar' }).tap();
+    await expect(page.getByText('Estamos mirando tu foto')).toBeVisible();
+
+    const requestFailed = page.waitForEvent('requestfailed', (request) =>
+      request.url().includes('/api/scan'),
+    );
+    await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
+
+    await requestFailed;
+    await expect(page.getByText('Estamos mirando tu foto')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Analizar' })).toBeEnabled();
+    await expect(page.getByText('No pudimos completar el análisis')).toHaveCount(0);
+    expect(requestCount).toBe(1);
+  });
 });
