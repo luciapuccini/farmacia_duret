@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import { AnalysisProgress } from './components/AnalysisProgress';
 import { ScanDisclaimer } from './components/ScanDisclaimer';
 import { ScanError } from './components/ScanError';
 import { EMPTY_SCAN_ITEMS, ScanResults, type ScanItems } from './components/ScanResults';
 import { PhotoPicker, ScanAction, ScanIntro } from './components/ScanSetup';
-import { ANALYSIS_STEPS } from './scan-steps';
 import type { ScanErrorCode, ScanEvent } from './scan.schema';
 import { validateUpload, type UploadRejection } from './upload';
 
@@ -79,23 +77,12 @@ export default function ScanFlow() {
   const [items, setItems] = useState<ScanItems>(EMPTY_SCAN_ITEMS);
   const [uploadError, setUploadError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [activeStep, setActiveStep] = useState(0);
 
   // Revoke the old preview URL when it is replaced, and on unmount.
   useEffect(() => {
     if (!previewUrl) return;
     return () => URL.revokeObjectURL(previewUrl);
   }, [previewUrl]);
-
-  useEffect(() => {
-    if (status !== 'streaming') return;
-
-    const interval = window.setInterval(() => {
-      setActiveStep((currentStep) => Math.min(currentStep + 1, ANALYSIS_STEPS.length - 1));
-    }, 1800);
-
-    return () => window.clearInterval(interval);
-  }, [status]);
 
   function handlePick(pickedFile: File) {
     const validation = validateUpload(pickedFile);
@@ -117,7 +104,6 @@ export default function ScanFlow() {
     setStatus('streaming');
     setItems(EMPTY_SCAN_ITEMS);
     setErrorMessage('');
-    setActiveStep(0);
 
     const formData = new FormData();
     formData.append('image', file);
@@ -156,9 +142,10 @@ export default function ScanFlow() {
 
         <div className="min-w-0">
           {file && <ScanAction status={status} onAnalyze={handleAnalyze} />}
-          {status === 'streaming' && <AnalysisProgress activeStep={activeStep} />}
+          {(status === 'streaming' || status === 'done') && (
+            <ScanResults items={items} isStreaming={status === 'streaming'} />
+          )}
           {status === 'error' && <ScanError message={errorMessage} />}
-          {status === 'done' && <ScanResults items={items} />}
           <ScanDisclaimer />
         </div>
       </div>

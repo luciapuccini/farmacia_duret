@@ -1,12 +1,8 @@
 import OpenAI from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 
-import {
-  SkinScanResultSchema,
-  type ScanErrorCode,
-  type ScanEvent,
-  type ScanResult,
-} from '@/app/scan/scan.schema';
+import { extractCompletedEvents, resultToEvents } from '@/app/scan/scan-extractor';
+import { SkinScanResultSchema, type ScanErrorCode, type ScanEvent } from '@/app/scan/scan.schema';
 import { validateUpload } from '@/app/scan/upload';
 
 export const runtime = 'nodejs';
@@ -31,15 +27,6 @@ Respondé en español de Argentina.
 
 function errorResponse(code: ScanErrorCode, status: number) {
   return Response.json({ error: code }, { status });
-}
-
-function resultToEvents(result: ScanResult): ScanEvent[] {
-  return [
-    { type: 'summary', text: result.summary },
-    { type: 'medicalCheck', ...result.medicalCheckFirst },
-    ...result.visiblePatterns.map((text): ScanEvent => ({ type: 'pattern', text })),
-    ...result.cosmeticSolutions.map((solution): ScanEvent => ({ type: 'solution', ...solution })),
-  ];
 }
 
 export async function POST(request: Request) {
@@ -71,37 +58,51 @@ export async function POST(request: Request) {
       const write = (event: ScanEvent) =>
         controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
 
+      let emittedCount = 0;
+      const writeNew = (events: ScanEvent[]) => {
+        events.forEach(write);
+        emittedCount += events.length;
+      };
+
       write({ type: 'status', stage: 'analyzing' });
 
       try {
-        const response = await openai.responses
-          .stream({
-            model: MODEL,
-            reasoning: { effort: 'medium' },
-            instructions: SYSTEM_PROMPT,
-            input: [
-              {
-                role: 'user',
-                content: [
-                  {
-                    type: 'input_text',
-                    text: 'Analizá los patrones visibles de la piel en esta imagen.',
-                  },
-                  {
-                    type: 'input_image',
-                    image_url: `data:${image.type};base64,${imageBase64}`,
-                    detail: 'high',
-                  },
-                ],
-              },
-            ],
-            text: { format: zodTextFormat(SkinScanResultSchema, 'skin_scan') },
-            store: false,
-          })
-          .finalResponse();
+        const stream = openai.responses.stream({
+          model: MODEL,
+          reasoning: { effort: 'medium' },
+          instructions: SYSTEM_PROMPT,
+          input: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'input_text',
+                  text: 'Analizá los patrones visibles de la piel en esta imagen.',
+                },
+                {
+                  type: 'input_image',
+                  image_url: `data:${image.type};base64,${imageBase64}`,
+                  detail: 'high',
+                },
+              ],
+            },
+          ],
+          text: { format: zodTextFormat(SkinScanResultSchema, 'skin_scan') },
+          store: false,
+        });
 
+        // Send each item as soon as it is complete in the JSON text written so far.
+        let snapshot = '';
+        for await (const event of stream) {
+          if (event.type !== 'response.output_text.delta') continue;
+          snapshot += event.delta;
+          writeNew(extractCompletedEvents(snapshot, emittedCount));
+        }
+
+        // The last item is complete only in the final response. Check the full result first.
+        const response = await stream.finalResponse();
         const result = SkinScanResultSchema.parse(response.output_parsed);
-        resultToEvents(result).forEach(write);
+        writeNew(resultToEvents(result).slice(emittedCount));
         write({ type: 'done' });
       } catch (error) {
         console.error('Skin scan failed.', error);
