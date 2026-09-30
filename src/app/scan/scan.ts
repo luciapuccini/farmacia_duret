@@ -1,14 +1,13 @@
 'use server';
 
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
-
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import OpenAI from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
+import demoImage from './young-man-portrait.jpg';
+
 const MODEL = 'gpt-5.6-luna';
-const IMAGE_PATH = path.join(process.cwd(), 'src/app/scan/young-man-portrait.jpg');
 
 const SYSTEM_PROMPT = `
 Sos un asistente para una prueba de concepto de cuidado cosmético de la piel de una farmacia.
@@ -44,6 +43,17 @@ const SkinScanResultSchema = z.object({
   disclaimer: z.string(),
 });
 
+async function readDemoImageAsBase64() {
+  const { env } = getCloudflareContext();
+  const response = await env.ASSETS.fetch(new URL(demoImage.src, 'https://assets.local'));
+
+  if (!response.ok) {
+    throw new Error(`Could not read the demo image: ${response.status}.`);
+  }
+
+  return Buffer.from(await response.arrayBuffer()).toString('base64');
+}
+
 export async function scanImage() {
   const apiKey = process.env.OPENAI_API_KEY?.trim();
 
@@ -51,7 +61,7 @@ export async function scanImage() {
     throw new Error('OPENAI_API_KEY is not configured.');
   }
 
-  const image = await readFile(IMAGE_PATH);
+  const image = await readDemoImageAsBase64();
   const openai = new OpenAI({ apiKey });
   const response = await openai.responses.parse({
     model: MODEL,
@@ -67,7 +77,7 @@ export async function scanImage() {
           },
           {
             type: 'input_image',
-            image_url: `data:image/jpeg;base64,${image.toString('base64')}`,
+            image_url: `data:image/jpeg;base64,${image}`,
             detail: 'high',
           },
         ],
