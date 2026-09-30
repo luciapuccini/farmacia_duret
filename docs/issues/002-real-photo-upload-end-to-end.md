@@ -21,18 +21,18 @@ Design inspiration: `docs/design/scan_farma_mock.png`, first screen (photo box w
 
 ## Acceptance criteria
 
-- [ ] On a phone, the customer can take a photo with the camera or pick one from the gallery. On desktop, the customer can pick a file.
-- [ ] A preview shows after the pick. "Cambiar foto" replaces the photo. Nothing is sent before "Analizar".
-- [ ] The consent line is visible next to "Analizar".
-- [ ] A non-JPEG/PNG/WEBP file or a file over 10 MB shows an immediate Spanish message, and no request is sent.
-- [ ] The server runs the same validation and answers 400 / 413 with JSON before streaming. A missing API key answers 500.
-- [ ] The route answers with NDJSON events from the PRD contract, and sends `done` only after the full schema check passes.
-- [ ] The result renders in the order summary, medical caution, patterns, solutions. The fixed disclaimer from `001` stays visible.
-- [ ] Nothing is stored. `store: false` is set.
-- [ ] The server action, demo photo, demo image component, idle overview and `ASSETS` fetch are removed. The empty folders are removed.
-- [ ] Unit test: validation accepts JPEG, PNG and WEBP up to 10 MB, and rejects HEIC, PDF and files over 10 MB with the correct reason.
-- [ ] E2E (Pixel 7, set in the spec, no config change): mock `/api/scan` with canned NDJSON, `setInputFiles` with a fixture image, check the preview, tap "Analizar", check the four sections and the disclaimer.
-- [ ] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
+- [x] On a phone, the customer can take a photo with the camera or pick one from the gallery. On desktop, the customer can pick a file.
+- [x] A preview shows after the pick. "Cambiar foto" replaces the photo. Nothing is sent before "Analizar".
+- [x] The consent line is visible next to "Analizar".
+- [x] A non-JPEG/PNG/WEBP file or a file over 10 MB shows an immediate Spanish message, and no request is sent.
+- [x] The server runs the same validation and answers 400 / 413 with JSON before streaming. A missing API key answers 500.
+- [x] The route answers with NDJSON events from the PRD contract, and sends `done` only after the full schema check passes.
+- [x] The result renders in the order summary, medical caution, patterns, solutions. The fixed disclaimer from `001` stays visible.
+- [x] Nothing is stored. `store: false` is set.
+- [x] The server action, demo photo, demo image component, idle overview and `ASSETS` fetch are removed. The empty folders are removed.
+- [x] Unit test: validation accepts JPEG, PNG and WEBP up to 10 MB, and rejects HEIC, PDF and files over 10 MB with the correct reason.
+- [x] E2E (Pixel 7, set in the spec, no config change): mock `/api/scan` with canned NDJSON, `setInputFiles` with a fixture image, check the preview, tap "Analizar", check the four sections and the disclaimer.
+- [x] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
 
 ## Blocked by
 
@@ -50,4 +50,4 @@ Design inspiration: `docs/design/scan_farma_mock.png`, first screen (photo box w
 
 ## STATUS
 
-TODO
+DONE
