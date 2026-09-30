@@ -96,7 +96,7 @@ Shared utility functions are in `src/utils/`:
 ### Types
 
 Shared TypeScript types live in `src/types/types.ts`.
-see rules in `.cursor/typescript.mdc`
+see rules in `.agents/rules/developer_preferences.md`
 
 ### Config
 
@@ -108,11 +108,12 @@ Unit tests live in `src/tests/unit/`. files use _.test.ts
 End to end test with playwrite live in `e2e`. files use _.spec.ts
 filenames intentionally different match for simplicity confing between vitest vs playwright.
 
-see rules in `.cursor/testing.mdc`
+`vitest.config.ts` and `playwright.config.ts` are the source of truth for what runs where.
+General coding rules, including how far to take test coverage, are in `.agents/rules/developer_preferences.md`.
 
 ### How does this project get data?
 
-- Static catalog data currently lives under `src/data/` as local JSON fixtures.
+- Static catalog data currently lives under `src/services/catalog/data/` as local JSON fixtures (`categories.json`, `products.json`, `dashboard-orders.json`).
 - Server actions for catalog live in `src/services/actions/catalog.ts`.
 - Client-server communication belongs under `src/services/` when we add external integrations.
 - `src/app/api` is used for route handlers such as the current WhatsApp integration.
