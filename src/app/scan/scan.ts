@@ -22,12 +22,15 @@ tratamientos de enfermedades. Si observás algo que parezca intenso, preocupante
 recomendación meramente cosmética, o si la imagen no permite evaluarlo con seguridad, marcá
 medicalCheckFirst.suggested como true y explicá el motivo sin nombrar un diagnóstico.
 
-Respondé en español de Argentina. El disclaimer debe aclarar siempre que el análisis de una foto es
-limitado y no reemplaza una evaluación profesional.
+Respondé en español de Argentina.
 `.trim();
 
 const SkinScanResultSchema = z.object({
   summary: z.string(),
+  medicalCheckFirst: z.object({
+    suggested: z.boolean(),
+    reason: z.string().nullable(),
+  }),
   visiblePatterns: z.array(z.string()),
   cosmeticSolutions: z.array(
     z.object({
@@ -36,11 +39,6 @@ const SkinScanResultSchema = z.object({
       precautions: z.string(),
     }),
   ),
-  medicalCheckFirst: z.object({
-    suggested: z.boolean(),
-    reason: z.string().nullable(),
-  }),
-  disclaimer: z.string(),
 });
 
 async function readDemoImageAsBase64() {

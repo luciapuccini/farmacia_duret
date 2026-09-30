@@ -19,6 +19,21 @@ export function ScanResults({ result }: { result: ScanResult }) {
 
       <p className="mt-5 text-base leading-7 text-ink-700">{result.summary}</p>
 
+      {result.medicalCheckFirst.suggested && (
+        <aside className="mt-6 rounded-[var(--radius-lg)] border border-warn/25 bg-warn/10 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-ink-700" />
+            <div>
+              <h3 className="text-sm font-semibold text-ink-900">Antes de elegir un producto</h3>
+              <p className="mt-1 text-sm leading-6 text-ink-700">
+                {result.medicalCheckFirst.reason ??
+                  'Por prudencia, conviene consultar con un profesional antes de iniciar una rutina.'}
+              </p>
+            </div>
+          </div>
+        </aside>
+      )}
+
       {result.visiblePatterns.length > 0 && (
         <section className="mt-7 border-t border-line pt-6" aria-labelledby="visible-patterns">
           <h3 id="visible-patterns" className="text-sm font-semibold text-ink-900">
@@ -65,25 +80,6 @@ export function ScanResults({ result }: { result: ScanResult }) {
           </ol>
         </section>
       )}
-
-      {result.medicalCheckFirst.suggested && (
-        <aside className="mt-6 rounded-[var(--radius-lg)] border border-warn/25 bg-warn/10 p-4">
-          <div className="flex items-start gap-3">
-            <AlertTriangle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-ink-700" />
-            <div>
-              <h3 className="text-sm font-semibold text-ink-900">Antes de elegir un producto</h3>
-              <p className="mt-1 text-sm leading-6 text-ink-700">
-                {result.medicalCheckFirst.reason ??
-                  'Por prudencia, conviene consultar con un profesional antes de iniciar una rutina.'}
-              </p>
-            </div>
-          </div>
-        </aside>
-      )}
-
-      <p className="mt-6 rounded-[var(--radius)] bg-bg-soft px-4 py-3 text-xs leading-5 text-ink-500">
-        {result.disclaimer}
-      </p>
     </article>
   );
 }

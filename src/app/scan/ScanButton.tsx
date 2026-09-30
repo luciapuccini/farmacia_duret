@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { AnalysisProgress } from './components/AnalysisProgress';
+import { ScanDisclaimer } from './components/ScanDisclaimer';
 import { ScanError } from './components/ScanError';
 import { ScanResults } from './components/ScanResults';
 import { DemoImage, IdleOverview, ScanAction, ScanIntro } from './components/ScanSetup';
@@ -55,6 +56,7 @@ export default function ScanButton() {
           {status === 'loading' && <AnalysisProgress activeStep={activeStep} />}
           {status === 'error' && <ScanError message={errorMessage} />}
           {status === 'success' && result && <ScanResults result={result} />}
+          <ScanDisclaimer />
         </div>
       </div>
     </section>
