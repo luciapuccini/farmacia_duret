@@ -17,11 +17,11 @@ Design inspiration: `docs/design/scan_farma_mock.png`. The footer line on the fi
 
 ## Acceptance criteria
 
-- [ ] The schema has no `disclaimer` field, and its keys are in the new order.
-- [ ] The system prompt does not ask for a disclaimer. No other prompt rule changes.
-- [ ] The disclaimer text is hardcoded in the UI and is visible in all page states.
-- [ ] The demo scan still works, and the results show in the new order.
-- [ ] `npm run typecheck`, `npm run lint` and `npm test` pass.
+- [x] The schema has no `disclaimer` field, and its keys are in the new order.
+- [x] The system prompt does not ask for a disclaimer. No other prompt rule changes.
+- [x] The disclaimer text is hardcoded in the UI and is visible in all page states.
+- [x] The demo scan still works, and the results show in the new order.
+- [x] `npm run typecheck`, `npm run lint` and `npm test` pass.
 
 ## Blocked by
 
@@ -34,4 +34,4 @@ None - can start immediately
 
 ## STATUS
 
-TODO
+DONE
