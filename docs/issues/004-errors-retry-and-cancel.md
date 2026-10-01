@@ -16,15 +16,15 @@ Design inspiration: `docs/design/scan_farma_mock.png` has no error screen. Keep 
 
 ## Acceptance criteria
 
-- [ ] A 400, 413 or 500 answer from the route shows a Spanish error message and "Reintentar".
-- [ ] A mid-stream `error` event removes all partial results and shows the error with "Reintentar".
-- [ ] "Reintentar" sends the same photo again with no new pick.
-- [ ] The error notice uses `role="alert"`.
-- [ ] Picking a new photo during a scan cancels the running request.
-- [ ] Leaving the page during a scan cancels the running request.
-- [ ] The route passes the request abort signal to the OpenAI call.
-- [ ] There are no automatic retries.
-- [ ] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
+- [x] A 400, 413 or 500 answer from the route shows a Spanish error message and "Reintentar".
+- [x] A mid-stream `error` event removes all partial results and shows the error with "Reintentar".
+- [x] "Reintentar" sends the same photo again with no new pick.
+- [x] The error notice uses `role="alert"`.
+- [x] Picking a new photo during a scan cancels the running request.
+- [x] Leaving the page during a scan cancels the running request.
+- [x] The route passes the request abort signal to the OpenAI call.
+- [x] There are no automatic retries.
+- [x] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
 
 ## Blocked by
 
@@ -37,4 +37,4 @@ Design inspiration: `docs/design/scan_farma_mock.png` has no error screen. Keep 
 
 ## STATUS
 
-TODO
+DONE
