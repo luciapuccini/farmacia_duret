@@ -1,11 +1,17 @@
 import path from 'node:path';
 
-import { devices, expect, test } from '@playwright/test';
+import { devices, expect, test, type Locator } from '@playwright/test';
 
 const { defaultBrowserType: _browserType, ...pixel7 } = devices['Pixel 7'];
 test.use(pixel7);
 
 const PHOTO = path.join(import.meta.dirname, 'fixtures', 'skin-photo.jpg');
+
+async function boxOf(locator: Locator) {
+  const box = await locator.boundingBox();
+  if (!box) throw new Error('The element has no bounding box.');
+  return box;
+}
 
 const SCAN_EVENTS = [
   { type: 'status', stage: 'analyzing' },
@@ -41,6 +47,7 @@ test.describe('Skin scan', () => {
     await expect(
       page.getByText('No reemplaza una consulta profesional', { exact: false }),
     ).toBeVisible();
+    await expect(page.getByText('Luz natural · de frente · sin maquillaje')).toBeVisible();
 
     await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
 
@@ -48,7 +55,25 @@ test.describe('Skin scan', () => {
     await expect(page.getByText('tu foto se envía para analizarla y no se guarda')).toBeVisible();
     expect(requestCount).toBe(0);
 
+    // Thumb reach: the main action is in the lower half of the first screen, with no scroll.
+    const viewportHeight = page.viewportSize()?.height ?? 0;
+    const analyzeBox = await boxOf(page.getByRole('button', { name: 'Analizar' }));
+    expect(analyzeBox.y).toBeGreaterThan(viewportHeight / 2);
+    expect(analyzeBox.y + analyzeBox.height).toBeLessThanOrEqual(viewportHeight);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+
     await page.getByRole('button', { name: 'Analizar' }).tap();
+
+    const results = page.getByRole('article', { name: 'Resultado del análisis' });
+    await expect(results).toHaveAttribute('aria-busy', 'false');
+    await expect(page.getByRole('status')).toHaveText('Análisis listo');
+    const thumbnailBox = await boxOf(page.getByRole('img', { name: 'Foto seleccionada' }));
+    expect(thumbnailBox.width).toBeLessThanOrEqual(96);
+    expect(thumbnailBox.y).toBeLessThan((await boxOf(results)).y);
 
     await expect(page.getByText('Se observa una piel con brillo leve en la zona T.')).toBeVisible();
     await expect(page.getByText('Hay una zona enrojecida que conviene revisar.')).toBeVisible();
@@ -135,6 +160,11 @@ test.describe('Skin scan', () => {
     await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
     await page.getByRole('button', { name: 'Analizar' }).tap();
     await expect(page.getByText('Estamos mirando tu foto')).toBeVisible();
+    await expect(page.getByRole('article', { name: 'Resultado del análisis' })).toHaveAttribute(
+      'aria-busy',
+      'true',
+    );
+    await expect(page.getByRole('status')).toHaveText('');
 
     const requestFailed = page.waitForEvent('requestfailed', (request) =>
       request.url().includes('/api/scan'),
@@ -146,5 +176,29 @@ test.describe('Skin scan', () => {
     await expect(page.getByRole('button', { name: 'Analizar' })).toBeEnabled();
     await expect(page.getByText('No pudimos completar el análisis')).toHaveCount(0);
     expect(requestCount).toBe(1);
+  });
+});
+
+test.describe('Skin scan on desktop', () => {
+  test.use({ viewport: { width: 1280, height: 900 }, isMobile: false, hasTouch: false });
+
+  test('shows the photo and the results in two columns', async ({ page }) => {
+    await page.route('**/api/scan', async (route) => {
+      await route.fulfill({
+        contentType: 'application/x-ndjson',
+        body: SCAN_EVENTS.map((event) => JSON.stringify(event)).join('\n') + '\n',
+      });
+    });
+
+    await page.goto('/scan');
+    await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
+    await page.getByRole('button', { name: 'Analizar' }).click();
+
+    const results = page.getByRole('article', { name: 'Resultado del análisis' });
+    await expect(results).toHaveAttribute('aria-busy', 'false');
+    const photoBox = await boxOf(page.getByRole('img', { name: 'Foto seleccionada' }));
+    const resultsBox = await boxOf(results);
+    expect(photoBox.width).toBeGreaterThan(300);
+    expect(photoBox.x + photoBox.width).toBeLessThanOrEqual(resultsBox.x);
   });
 });

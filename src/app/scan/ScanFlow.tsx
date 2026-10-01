@@ -149,7 +149,12 @@ export default function ScanFlow() {
       <ScanIntro />
 
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:gap-8">
-        <PhotoPicker previewUrl={previewUrl} errorMessage={uploadError} onPick={handlePick} />
+        <PhotoPicker
+          previewUrl={previewUrl}
+          isCompact={status !== 'idle' && status !== 'selected'}
+          errorMessage={uploadError}
+          onPick={handlePick}
+        />
 
         <div className="min-w-0">
           {file && status !== 'error' && <ScanAction status={status} onAnalyze={handleAnalyze} />}

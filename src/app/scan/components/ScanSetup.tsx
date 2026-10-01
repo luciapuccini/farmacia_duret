@@ -27,14 +27,18 @@ export function ScanIntro() {
 
 export function PhotoPicker({
   previewUrl,
+  isCompact,
   errorMessage,
   onPick,
 }: {
   previewUrl: string | null;
+  /** After "Analizar": on mobile, the photo becomes a small thumbnail above the results. */
+  isCompact: boolean;
   errorMessage: string;
   onPick: (file: File) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const openPicker = () => inputRef.current?.click();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const pickedFile = event.target.files?.[0];
@@ -56,42 +60,17 @@ export function PhotoPicker({
         onChange={handleChange}
       />
 
-      {previewUrl ? (
-        <figure className="relative overflow-hidden rounded-[var(--radius-xl)] bg-bg-soft shadow-[var(--shadow)]">
-          {/* A local object URL: next/image cannot optimize it. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={previewUrl}
-            alt="Foto seleccionada"
-            className="aspect-[4/5] w-full object-cover select-none"
-            draggable={false}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-black/10 ring-inset"
-          />
-          <Button
-            variant="secondary"
-            onClick={() => inputRef.current?.click()}
-            className="absolute right-3 bottom-3 min-h-11 touch-manipulation px-4"
-          >
-            <ImagePlus aria-hidden="true" className="size-4" />
-            Cambiar foto
-          </Button>
-        </figure>
-      ) : (
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          className="flex aspect-[4/5] w-full touch-manipulation flex-col items-center justify-center gap-3 rounded-[var(--radius-xl)] border-2 border-dashed border-line bg-bg-soft px-6 text-center text-ink-700 transition-colors hover:border-blue-500 focus-visible:border-blue-500 motion-reduce:transition-none"
-        >
-          <span className="flex size-12 items-center justify-center rounded-full bg-bg-mint text-green-700">
-            <Camera aria-hidden="true" className="size-6" />
-          </span>
-          <span className="text-base font-semibold text-ink-900">Sacá o elegí una foto</span>
-          <span className="text-sm leading-6 text-ink-500">JPG, PNG o WEBP, hasta 10 MB</span>
-        </button>
+      {previewUrl && isCompact && (
+        <PhotoThumbnail previewUrl={previewUrl} onChange={openPicker} className="lg:hidden" />
       )}
+      {previewUrl && (
+        <PhotoPreview
+          previewUrl={previewUrl}
+          onChange={openPicker}
+          className={isCompact ? 'hidden lg:block' : undefined}
+        />
+      )}
+      {!previewUrl && <EmptyPicker onPick={openPicker} />}
 
       {errorMessage && (
         <p id="photo-error" role="alert" className="mt-3 text-sm leading-6 text-red-500">
@@ -99,6 +78,96 @@ export function PhotoPicker({
         </p>
       )}
     </div>
+  );
+}
+
+function EmptyPicker({ onPick }: { onPick: () => void }) {
+  return (
+    <>
+      <button
+        type="button"
+        onClick={onPick}
+        className="flex aspect-square w-full touch-manipulation flex-col items-center justify-center gap-3 rounded-[var(--radius-xl)] border-2 border-dashed border-line bg-bg-soft px-6 text-center text-ink-700 transition-colors hover:border-blue-500 focus-visible:border-blue-500 motion-reduce:transition-none lg:aspect-[4/5]"
+      >
+        <span className="flex size-12 items-center justify-center rounded-full bg-bg-mint text-green-700">
+          <Camera aria-hidden="true" className="size-6" />
+        </span>
+        <span className="text-base font-semibold text-ink-900">Sacá o elegí una foto</span>
+        <span className="text-sm leading-6 text-ink-500">JPG, PNG o WEBP, hasta 10 MB</span>
+      </button>
+      <p className="mt-2.5 text-center text-sm text-ink-500">
+        Luz natural · de frente · sin maquillaje
+      </p>
+    </>
+  );
+}
+
+function PhotoPreview({
+  previewUrl,
+  onChange,
+  className,
+}: {
+  previewUrl: string;
+  onChange: () => void;
+  className?: string;
+}) {
+  return (
+    <figure
+      className={`relative overflow-hidden rounded-[var(--radius-xl)] bg-bg-soft shadow-[var(--shadow)] ${className ?? ''}`}
+    >
+      {/* A local object URL: next/image cannot optimize it. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={previewUrl}
+        alt="Foto seleccionada"
+        className="aspect-square w-full object-cover select-none lg:aspect-[4/5]"
+        draggable={false}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-black/10 ring-inset"
+      />
+      <Button
+        variant="secondary"
+        onClick={onChange}
+        className="absolute right-3 bottom-3 min-h-11 touch-manipulation px-4"
+      >
+        <ImagePlus aria-hidden="true" className="size-4" />
+        Cambiar foto
+      </Button>
+    </figure>
+  );
+}
+
+function PhotoThumbnail({
+  previewUrl,
+  onChange,
+  className,
+}: {
+  previewUrl: string;
+  onChange: () => void;
+  className?: string;
+}) {
+  return (
+    <figure className={`flex items-center gap-4 ${className ?? ''}`}>
+      {/* A local object URL: next/image cannot optimize it. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={previewUrl}
+        alt="Foto seleccionada"
+        className="size-20 shrink-0 rounded-[var(--radius-lg)] object-cover shadow-[var(--shadow)] ring-1 ring-black/10 select-none"
+        draggable={false}
+      />
+      <figcaption className="min-w-0 flex-1 text-sm text-ink-500">Tu foto</figcaption>
+      <Button
+        variant="secondary"
+        onClick={onChange}
+        className="min-h-11 shrink-0 touch-manipulation px-4"
+      >
+        <ImagePlus aria-hidden="true" className="size-4" />
+        Cambiar foto
+      </Button>
+    </figure>
   );
 }
 
