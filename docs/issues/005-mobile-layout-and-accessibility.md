@@ -22,15 +22,15 @@ Write down any of these as next-step ideas in `006`.
 
 ## Acceptance criteria
 
-- [ ] On a Pixel 7 size screen, the page has no horizontal scroll, and "Analizar" is within thumb reach.
-- [ ] The empty state shows the photo tips.
-- [ ] After "Analizar", the photo shows as a small thumbnail above the results.
-- [ ] At the large breakpoint, the photo and the results are in two columns.
-- [ ] The results container has `aria-busy="true"` while streaming, and not after.
-- [ ] A screen reader hears "Análisis listo" one time at `done`, and is not interrupted by each item.
-- [ ] The user reviewed the layout on a phone and on desktop against the mock, and approved it.
-- [ ] The e2e from `002` still passes.
-- [ ] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
+- [x] On a Pixel 7 size screen, the page has no horizontal scroll, and "Analizar" is within thumb reach.
+- [x] The empty state shows the photo tips.
+- [x] After "Analizar", the photo shows as a small thumbnail above the results.
+- [x] At the large breakpoint, the photo and the results are in two columns.
+- [x] The results container has `aria-busy="true"` while streaming, and not after.
+- [x] A screen reader hears "Análisis listo" one time at `done`, and is not interrupted by each item.
+- [x] The user reviewed the layout on a phone and on desktop against the mock, and approved it.
+- [x] The e2e from `002` still passes.
+- [x] `npm run typecheck`, `npm run lint`, `npm test`, `npm run test:e2e` and `npm run build` pass.
 
 ## Blocked by
 
@@ -44,4 +44,4 @@ Write down any of these as next-step ideas in `006`.
 
 ## STATUS
 
-TODO
+DONE
