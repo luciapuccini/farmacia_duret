@@ -1,4 +1,5 @@
 import { AlertTriangle, CircleCheck, LoaderCircle } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
 import type { CosmeticSolution, ScanResult } from '../scan.schema';
 
@@ -19,7 +20,46 @@ export const EMPTY_SCAN_ITEMS: ScanItems = {
 // Each item fades in when it arrives. With reduced motion, it appears with no animation.
 const REVEAL = 'animate-fade-in motion-reduce:animate-none';
 
+/**
+ * Keeps the end of the results on the screen while items arrive.
+ * When the customer scrolls, touches or uses the keyboard during a scan, it stops for that scan.
+ */
+function useFollowLatest(items: ScanItems, isStreaming: boolean) {
+  const endRef = useRef<HTMLDivElement>(null);
+  const followRef = useRef(true);
+
+  useEffect(() => {
+    if (!isStreaming) return;
+
+    followRef.current = true;
+    const stopFollowing = () => {
+      followRef.current = false;
+    };
+    const events = ['wheel', 'touchmove', 'keydown'] as const;
+    for (const event of events) {
+      window.addEventListener(event, stopFollowing, { passive: true });
+    }
+    return () => {
+      for (const event of events) window.removeEventListener(event, stopFollowing);
+    };
+  }, [isStreaming]);
+
+  useEffect(() => {
+    if (!followRef.current) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    endRef.current?.scrollIntoView({
+      block: 'nearest',
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
+  }, [items, isStreaming]);
+
+  return endRef;
+}
+
 export function ScanResults({ items, isStreaming }: { items: ScanItems; isStreaming: boolean }) {
+  const endRef = useFollowLatest(items, isStreaming);
+
   return (
     <>
       {/* One polite announcement at done. The items do not interrupt the screen reader. */}
@@ -64,6 +104,7 @@ export function ScanResults({ items, isStreaming }: { items: ScanItems; isStream
             Preparando más sugerencias…
           </p>
         )}
+        <div ref={endRef} aria-hidden="true" className="scroll-mb-6" />
       </article>
     </>
   );

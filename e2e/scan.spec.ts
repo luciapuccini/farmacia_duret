@@ -79,11 +79,37 @@ test.describe('Skin scan', () => {
     await expect(page.getByText('Hay una zona enrojecida que conviene revisar.')).toBeVisible();
     await expect(page.getByText('Brillo en frente y nariz.')).toBeVisible();
     await expect(page.getByText('Poros visibles en mejillas.')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Limpiador suave' })).toBeVisible();
+    // Auto-scroll: the page follows the results, so the last item is on the screen.
+    await expect(page.getByRole('heading', { name: 'Limpiador suave' })).toBeInViewport();
     await expect(
       page.getByText('No reemplaza una consulta profesional', { exact: false }),
     ).toBeVisible();
     expect(requestCount).toBe(1);
+  });
+
+  test('stops following the results when the customer scrolls', async ({ page }) => {
+    let releaseResponse = () => {};
+    const responseReleased = new Promise<void>((resolve) => {
+      releaseResponse = resolve;
+    });
+    await page.route('**/api/scan', async (route) => {
+      await responseReleased;
+      await route.fulfill({
+        contentType: 'application/x-ndjson',
+        body: SCAN_EVENTS.map((event) => JSON.stringify(event)).join('\n') + '\n',
+      });
+    });
+
+    await page.goto('/scan');
+    await page.getByLabel('Elegir una foto').setInputFiles(PHOTO);
+    await page.getByRole('button', { name: 'Analizar' }).tap();
+    await expect(page.getByText('Estamos mirando tu foto')).toBeVisible();
+
+    await page.mouse.wheel(0, -200);
+    releaseResponse();
+
+    await expect(page.getByRole('heading', { name: 'Limpiador suave' })).toBeAttached();
+    await expect(page.getByRole('heading', { name: 'Limpiador suave' })).not.toBeInViewport();
   });
 
   test('rejects an unsupported file without a request', async ({ page }) => {
