@@ -95,6 +95,20 @@ To rotate the verify token, generate a new value, update Cloudflare, update Meta
 
 ---
 
+## Skin scan
+
+`/scan` lets a customer take or pick a photo and get a prudent cosmetic orientation. The page posts the photo to `/api/scan`. The route validates it (JPG, PNG or WEBP, 10 MB maximum), sends it to OpenAI with `store: false`, and streams the result as NDJSON events. The photo is not stored. See `docs/issues/prd.md`.
+
+Required variable: `OPENAI_API_KEY` (in `.env.local`, and as a Cloudflare secret):
+
+```bash
+npx wrangler secret put OPENAI_API_KEY --env production
+```
+
+Launch notes: there is no rate limit, so set a monthly spend limit on the OpenAI project. The raw photo, with its EXIF data, is sent to OpenAI.
+
+---
+
 ## Project structure
 
 ```
@@ -105,6 +119,8 @@ src/
     contact/              # Contact page
     offers/               # Offers page
     orders/               # Order form page
+    scan/                 # Skin scan page (photo upload, streamed results)
+    api/scan/             # Skin scan route (OpenAI, NDJSON stream)
     api/whatsapp/         # WhatsApp order route and webhook handlers
   ui/                     # Reusable UI primitives
     layout/               # Shared layout components like navbar and footer
