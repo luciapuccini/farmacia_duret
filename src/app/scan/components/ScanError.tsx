@@ -1,6 +1,8 @@
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 
-export function ScanError({ message }: { message: string }) {
+import { Button } from '@/components/ui';
+
+export function ScanError({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
     <div
       role="alert"
@@ -8,9 +10,13 @@ export function ScanError({ message }: { message: string }) {
     >
       <div className="flex items-start gap-3">
         <AlertTriangle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-red-500" />
-        <div>
+        <div className="min-w-0">
           <h2 className="text-sm font-semibold text-ink-900">No pudimos completar el análisis</h2>
           <p className="mt-1 text-sm leading-6 text-ink-700">{message}</p>
+          <Button onClick={onRetry} className="mt-4 min-h-11 touch-manipulation px-4">
+            <RotateCcw aria-hidden="true" className="size-4" />
+            Reintentar
+          </Button>
         </div>
       </div>
     </div>

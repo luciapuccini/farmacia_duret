@@ -1,10 +1,9 @@
-import { Check, LoaderCircle, ScanLine, Sparkles } from 'lucide-react';
-import Image from 'next/image';
+import { Camera, ImagePlus, LoaderCircle, ScanLine, Sparkles } from 'lucide-react';
+import { useRef } from 'react';
 
 import { Button } from '@/components/ui';
 
-import type { ScanStatus } from '../scan.types';
-import demoImage from '../young-man-portrait.jpg';
+import type { ScanStatus } from '../ScanFlow';
 
 export function ScanIntro() {
   return (
@@ -17,7 +16,7 @@ export function ScanIntro() {
         id="scan-title"
         className="max-w-xl text-3xl font-semibold tracking-[-0.035em] text-balance text-ink-900 sm:text-4xl"
       >
-        Una primera mirada para cuidar tu piel
+        Una foto, una guía para tu piel
       </h1>
       <p className="mt-3 max-w-xl text-base leading-7 text-ink-500">
         Analizamos lo que se ve en la foto y proponemos una rutina simple, sin diagnósticos.
@@ -26,77 +25,173 @@ export function ScanIntro() {
   );
 }
 
-export function DemoImage() {
+export function PhotoPicker({
+  previewUrl,
+  isCompact,
+  errorMessage,
+  onPick,
+}: {
+  previewUrl: string | null;
+  /** After "Analizar": on mobile, the photo becomes a small thumbnail above the results. */
+  isCompact: boolean;
+  errorMessage: string;
+  onPick: (file: File) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const openPicker = () => inputRef.current?.click();
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const pickedFile = event.target.files?.[0];
+    // Reset the input, so that the same file can be picked again.
+    event.target.value = '';
+    if (pickedFile) onPick(pickedFile);
+  }
+
   return (
-    <figure className="relative overflow-hidden rounded-[var(--radius-xl)] bg-bg-soft shadow-[var(--shadow)]">
-      <Image
-        src={demoImage}
-        alt="Retrato de demostración utilizado para el análisis cosmético de piel"
-        className="aspect-[4/5] w-full object-cover object-[center_32%] select-none"
-        sizes="(max-width: 1023px) calc(100vw - 32px), 400px"
-        placeholder="blur"
-        priority
+    <div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        aria-label="Elegir una foto"
+        aria-describedby={errorMessage ? 'photo-error' : undefined}
+        className="sr-only"
+        tabIndex={-1}
+        onChange={handleChange}
+      />
+
+      {previewUrl && isCompact && (
+        <PhotoThumbnail previewUrl={previewUrl} onChange={openPicker} className="lg:hidden" />
+      )}
+      {previewUrl && (
+        <PhotoPreview
+          previewUrl={previewUrl}
+          onChange={openPicker}
+          className={isCompact ? 'hidden lg:block' : undefined}
+        />
+      )}
+      {!previewUrl && <EmptyPicker onPick={openPicker} />}
+
+      {errorMessage && (
+        <p id="photo-error" role="alert" className="mt-3 text-sm leading-6 text-red-500">
+          {errorMessage}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function EmptyPicker({ onPick }: { onPick: () => void }) {
+  return (
+    <>
+      <button
+        type="button"
+        onClick={onPick}
+        className="flex aspect-square w-full touch-manipulation flex-col items-center justify-center gap-3 rounded-[var(--radius-xl)] border-2 border-dashed border-line bg-bg-soft px-6 text-center text-ink-700 transition-colors hover:border-blue-500 focus-visible:border-blue-500 motion-reduce:transition-none lg:aspect-[4/5]"
+      >
+        <span className="flex size-12 items-center justify-center rounded-full bg-bg-mint text-green-700">
+          <Camera aria-hidden="true" className="size-6" />
+        </span>
+        <span className="text-base font-semibold text-ink-900">Sacá o elegí una foto</span>
+        <span className="text-sm leading-6 text-ink-500">JPG, PNG o WEBP, hasta 10 MB</span>
+      </button>
+      <p className="mt-2.5 text-center text-sm text-ink-500">
+        Luz natural · de frente · sin maquillaje
+      </p>
+    </>
+  );
+}
+
+function PhotoPreview({
+  previewUrl,
+  onChange,
+  className,
+}: {
+  previewUrl: string;
+  onChange: () => void;
+  className?: string;
+}) {
+  return (
+    <figure
+      className={`relative overflow-hidden rounded-[var(--radius-xl)] bg-bg-soft shadow-[var(--shadow)] ${className ?? ''}`}
+    >
+      {/* A local object URL: next/image cannot optimize it. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={previewUrl}
+        alt="Foto seleccionada"
+        className="aspect-square w-full object-cover select-none lg:aspect-[4/5]"
         draggable={false}
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-black/10 ring-inset"
       />
-      <figcaption className="absolute top-3 left-3 flex items-center gap-2 rounded-[var(--radius-chip)] border border-white/70 bg-white/90 px-2.5 py-1.5 text-xs font-semibold text-ink-700 shadow-sm backdrop-blur-sm">
-        <span className="size-1.5 rounded-full bg-green-600" />
-        Foto de demo
-      </figcaption>
+      <Button
+        variant="secondary"
+        onClick={onChange}
+        className="absolute right-3 bottom-3 min-h-11 touch-manipulation px-4"
+      >
+        <ImagePlus aria-hidden="true" className="size-4" />
+        Cambiar foto
+      </Button>
     </figure>
   );
 }
 
-export function ScanAction({ status, onScan }: { status: ScanStatus; onScan: () => void }) {
+function PhotoThumbnail({
+  previewUrl,
+  onChange,
+  className,
+}: {
+  previewUrl: string;
+  onChange: () => void;
+  className?: string;
+}) {
+  return (
+    <figure className={`flex items-center gap-4 ${className ?? ''}`}>
+      {/* A local object URL: next/image cannot optimize it. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={previewUrl}
+        alt="Foto seleccionada"
+        className="size-20 shrink-0 rounded-[var(--radius-lg)] object-cover shadow-[var(--shadow)] ring-1 ring-black/10 select-none"
+        draggable={false}
+      />
+      <figcaption className="min-w-0 flex-1 text-sm text-ink-500">Tu foto</figcaption>
+      <Button
+        variant="secondary"
+        onClick={onChange}
+        className="min-h-11 shrink-0 touch-manipulation px-4"
+      >
+        <ImagePlus aria-hidden="true" className="size-4" />
+        Cambiar foto
+      </Button>
+    </figure>
+  );
+}
+
+export function ScanAction({ status, onAnalyze }: { status: ScanStatus; onAnalyze: () => void }) {
+  const isStreaming = status === 'streaming';
+
   return (
     <div className="border-b border-line pb-5">
       <Button
-        onClick={onScan}
-        disabled={status === 'loading'}
-        aria-describedby="scan-helper"
+        onClick={onAnalyze}
+        disabled={isStreaming}
+        aria-describedby="scan-consent"
         className="min-h-12 w-full touch-manipulation px-5 sm:w-auto"
       >
-        {status === 'loading' ? (
+        {isStreaming ? (
           <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
         ) : (
           <ScanLine aria-hidden="true" className="size-4" />
         )}
-        {status === 'loading'
-          ? 'Analizando imagen…'
-          : status === 'error'
-            ? 'Reintentar análisis'
-            : 'Analizar imagen'}
+        {isStreaming ? 'Analizando…' : 'Analizar'}
       </Button>
-      <p id="scan-helper" className="mt-2.5 text-sm leading-6 text-ink-500">
-        La foto se usa solo para esta demostración. El análisis puede tardar unos segundos.
+      <p id="scan-consent" className="mt-2.5 text-sm leading-6 text-ink-500">
+        Al tocar Analizar, tu foto se envía para analizarla y no se guarda.
       </p>
-    </div>
-  );
-}
-
-export function IdleOverview() {
-  const items = [
-    'Un resumen de los patrones visibles.',
-    'Sugerencias cosméticas simples y sus cuidados.',
-    'Una indicación clara si conviene consultar a un profesional.',
-  ];
-
-  return (
-    <div className="py-7 sm:py-9">
-      <h2 className="text-base font-semibold text-ink-900">Qué vas a recibir</h2>
-      <ul className="mt-4 space-y-3 text-sm leading-6 text-ink-700">
-        {items.map((item) => (
-          <li key={item} className="flex items-start gap-3">
-            <span className="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-bg-mint text-green-700">
-              <Check aria-hidden="true" className="size-3" strokeWidth={2.5} />
-            </span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
