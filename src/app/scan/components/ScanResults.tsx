@@ -1,13 +1,15 @@
-import { AlertTriangle, CircleCheck, LoaderCircle } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { AlertTriangle, ChevronRight, CircleCheck, LoaderCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useId, useRef } from 'react';
 
-import type { CosmeticSolution, ScanResult } from '../scan.schema';
+import type { CatalogProductLink } from '../scan-guide';
+import type { ScanResult, ScanSolution } from '../scan.schema';
 
 export type ScanItems = {
   summary: string | null;
   medicalCheck: ScanResult['medicalCheckFirst'] | null;
   patterns: string[];
-  solutions: CosmeticSolution[];
+  solutions: ScanSolution[];
 };
 
 export const EMPTY_SCAN_ITEMS: ScanItems = {
@@ -190,7 +192,7 @@ function PatternList({ patterns }: { patterns: string[] }) {
   );
 }
 
-function SolutionList({ solutions }: { solutions: CosmeticSolution[] }) {
+function SolutionList({ solutions }: { solutions: ScanSolution[] }) {
   if (solutions.length === 0) return null;
 
   return (
@@ -217,10 +219,50 @@ function SolutionList({ solutions }: { solutions: CosmeticSolution[] }) {
                 <span className="font-semibold text-ink-700">A tener en cuenta:</span>{' '}
                 {solution.precautions}
               </p>
+              <CatalogProductLinks products={solution.products} />
             </div>
           </li>
         ))}
       </ol>
     </section>
+  );
+}
+
+function CatalogProductLinks({ products }: { products: CatalogProductLink[] }) {
+  const labelId = useId();
+  if (products.length === 0) return null;
+
+  return (
+    <div className="mt-3">
+      <p id={labelId} className="text-xs font-semibold text-ink-700">
+        En nuestra farmacia
+      </p>
+      <ul aria-labelledby={labelId} className="mt-1.5 space-y-1.5">
+        {products.map((product) => (
+          <li key={product.id}>
+            <Link
+              href={product.href}
+              className="flex min-h-11 touch-manipulation items-center gap-3 rounded-[var(--radius-lg)] border border-line p-1.5 pr-2.5 transition-colors duration-[var(--motion-fast)] hover:border-blue-500/40 hover:bg-bg-blue focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none"
+            >
+              <img
+                src={product.image}
+                alt=""
+                width={84}
+                height={56}
+                loading="lazy"
+                className="aspect-3/2 w-14 shrink-0 rounded-[var(--radius-sm)] bg-bg-blue object-cover"
+              />
+              <span className="min-w-0 flex-1">
+                <span className="line-clamp-2 text-sm leading-5 font-semibold text-ink-900">
+                  {product.name}
+                </span>
+                <span className="block truncate text-xs text-ink-500">{product.brand}</span>
+              </span>
+              <ChevronRight aria-hidden="true" className="size-4 shrink-0 text-blue-700" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

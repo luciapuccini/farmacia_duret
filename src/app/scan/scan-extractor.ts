@@ -2,12 +2,26 @@
 // so that an SDK upgrade that moves the file breaks one module and its unit test.
 import { partialParse } from 'openai/_vendor/partial-json-parser/parser';
 
-import { SkinScanResultSchema, type ScanEvent, type ScanResult } from './scan.schema';
+import { catalogLinksForGuidePattern } from './scan-guide';
+import {
+  SkinScanResultSchema,
+  type CosmeticSolution,
+  type ScanEvent,
+  type ScanResult,
+  type ScanSolution,
+} from './scan.schema';
 
 const { summary, medicalCheckFirst, visiblePatterns, cosmeticSolutions } =
   SkinScanResultSchema.shape;
 
 type PartialScanResult = Partial<Record<keyof ScanResult, unknown>>;
+
+function toScanSolution({ guidePatternId, ...solution }: CosmeticSolution): ScanSolution {
+  return {
+    ...solution,
+    products: guidePatternId ? catalogLinksForGuidePattern(guidePatternId) : [],
+  };
+}
 
 /** Converts a complete scan result to its events, in schema order. */
 export function resultToEvents(result: ScanResult): ScanEvent[] {
@@ -15,7 +29,12 @@ export function resultToEvents(result: ScanResult): ScanEvent[] {
     { type: 'summary', text: result.summary },
     { type: 'medicalCheck', ...result.medicalCheckFirst },
     ...result.visiblePatterns.map((text): ScanEvent => ({ type: 'pattern', text })),
-    ...result.cosmeticSolutions.map((solution): ScanEvent => ({ type: 'solution', ...solution })),
+    ...result.cosmeticSolutions.map(
+      (solution): ScanEvent => ({
+        type: 'solution',
+        ...toScanSolution(solution),
+      }),
+    ),
   ];
 }
 
@@ -53,7 +72,10 @@ export function extractCompletedEvents(snapshot: string, emittedCount: number): 
 
   const completeSolutions = asArray(partial.cosmeticSolutions).slice(0, -1);
   for (const solution of completeSolutions) {
-    completed.push({ type: 'solution', ...cosmeticSolutions.element.parse(solution) });
+    completed.push({
+      type: 'solution',
+      ...toScanSolution(cosmeticSolutions.element.parse(solution)),
+    });
   }
 
   return completed.slice(emittedCount);

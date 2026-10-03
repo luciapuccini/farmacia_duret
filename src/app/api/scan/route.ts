@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { zodTextFormat } from 'openai/helpers/zod';
 
 import { extractCompletedEvents, resultToEvents } from '@/app/scan/scan-extractor';
+import { renderScanGuidePrompt } from '@/app/scan/scan-guide';
 import { SkinScanResultSchema, type ScanErrorCode, type ScanEvent } from '@/app/scan/scan.schema';
 import { validateUpload } from '@/app/scan/upload';
 
@@ -23,6 +24,15 @@ recomendación meramente cosmética, o si la imagen no permite evaluarlo con seg
 medicalCheckFirst.suggested como true y explicá el motivo sin nombrar un diagnóstico.
 
 Respondé en español de Argentina.
+
+Guía de la farmacia: es la lista de patrones frecuentes que la farmacia atiende con productos de su
+catálogo. Cada línea tiene un id, el patrón y los productos que lo acompañan. Cuando una opción
+cosmética apunte a un patrón de la guía que realmente se vea en la foto, poné ese id en
+guidePatternId y alineá la sugerencia con esos productos. Si no hay un patrón de la guía visible,
+poné guidePatternId en null. No fuerces una coincidencia, no inventes ids y no menciones precios ni
+enlaces. Las reglas de prudencia anteriores siguen valiendo.
+
+${renderScanGuidePrompt()}
 `.trim();
 
 function errorResponse(code: ScanErrorCode, status: number) {

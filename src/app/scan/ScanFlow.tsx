@@ -6,7 +6,7 @@ import { ScanDisclaimer } from './components/ScanDisclaimer';
 import { ScanError } from './components/ScanError';
 import { EMPTY_SCAN_ITEMS, ScanResults, type ScanItems } from './components/ScanResults';
 import { PhotoPicker, ScanAction, ScanIntro } from './components/ScanSetup';
-import type { ScanErrorCode, ScanEvent } from './scan.schema';
+import type { ScanErrorCode, ScanEvent, ScanSolution } from './scan.schema';
 import { validateUpload, type UploadRejection } from './upload';
 
 export type ScanStatus = 'idle' | 'selected' | 'streaming' | 'done' | 'error';
@@ -39,8 +39,9 @@ function appendEvent(items: ScanItems, event: ScanEvent): ScanItems {
     case 'pattern':
       return { ...items, patterns: [...items.patterns, event.text] };
     case 'solution': {
-      const { name, rationale, precautions } = event;
-      return { ...items, solutions: [...items.solutions, { name, rationale, precautions }] };
+      const { name, rationale, precautions, products } = event;
+      const solution: ScanSolution = { name, rationale, precautions, products };
+      return { ...items, solutions: [...items.solutions, solution] };
     }
     default:
       return items;

@@ -90,7 +90,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/app/(catalog)/**/*.tsx'],
+    files: ['src/app/(catalog)/**/*.tsx', 'src/app/scan/components/ScanResults.tsx'],
     rules: {
       '@next/next/no-img-element': 'off',
     },

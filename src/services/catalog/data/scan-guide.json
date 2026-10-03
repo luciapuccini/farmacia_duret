@@ -1,0 +1,27 @@
+[
+  {
+    "id": "brillo-y-sebo",
+    "pattern": "Brillo visible en frente, nariz o mentón, con aspecto graso.",
+    "productIds": ["15"]
+  },
+  {
+    "id": "sequedad-o-tirantez",
+    "pattern": "Zonas opacas, ásperas o con descamación fina que sugieren piel seca.",
+    "productIds": ["16"]
+  },
+  {
+    "id": "sensibilidad-o-rojez",
+    "pattern": "Rojez difusa y leve en mejillas o alrededor de la nariz.",
+    "productIds": ["16", "15"]
+  },
+  {
+    "id": "lineas-finas",
+    "pattern": "Líneas finas visibles alrededor de ojos, frente o boca.",
+    "productIds": ["14"]
+  },
+  {
+    "id": "tono-desparejo",
+    "pattern": "Tono de piel desparejo, con manchas o zonas más oscuras.",
+    "productIds": ["14"]
+  }
+]
