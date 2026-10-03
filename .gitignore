@@ -43,3 +43,6 @@ playwright-report
 ## misc
 *.tsbuildinfo
 **/tmp/**
+
+# Verify skill runs and evidence
+.verify
