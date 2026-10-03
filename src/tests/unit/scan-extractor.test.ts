@@ -1,17 +1,51 @@
 import { describe, expect, it } from 'vitest';
 
-import { extractCompletedEvents } from '@/app/scan/scan-extractor';
-import type { ScanEvent } from '@/app/scan/scan.schema';
+import { extractCompletedEvents, resultToEvents } from '@/app/scan/scan-extractor';
+import { SkinScanResultSchema, type ScanEvent } from '@/app/scan/scan.schema';
 
 const FULL_RESULT = JSON.stringify({
   summary: 'Piel con brillo leve.',
   medicalCheckFirst: { suggested: false, reason: null },
   visiblePatterns: ['Brillo en la zona T.', 'Poros visibles.'],
   cosmeticSolutions: [
-    { name: 'Limpiador suave', rationale: 'Retira el sebo.', precautions: 'No frotar.' },
-    { name: 'Protector solar', rationale: 'Protege la piel.', precautions: 'Renovar.' },
+    {
+      name: 'Limpiador suave',
+      rationale: 'Retira el sebo.',
+      precautions: 'No frotar.',
+      guidePatternId: 'brillo-y-sebo',
+    },
+    {
+      name: 'Protector solar',
+      rationale: 'Protege la piel.',
+      precautions: 'Renovar.',
+      guidePatternId: null,
+    },
   ],
 });
+
+const MICELLAR_WATER_LINK = {
+  id: '15',
+  name: 'Agua Micelar Sensibio H2O 500ml',
+  brand: 'Bioderma',
+  image: '/images/products/15-micellar-water.webp',
+  href: '/dermocosmetica?sc=rostro&f=limpieza',
+};
+
+const CLEANSER_EVENT = {
+  type: 'solution',
+  name: 'Limpiador suave',
+  rationale: 'Retira el sebo.',
+  precautions: 'No frotar.',
+  products: [MICELLAR_WATER_LINK],
+};
+
+const SUNSCREEN_EVENT = {
+  type: 'solution',
+  name: 'Protector solar',
+  rationale: 'Protege la piel.',
+  precautions: 'Renovar.',
+  products: [],
+};
 
 /** Cuts the full JSON text just after the first occurrence of `marker`. */
 function snapshotAfter(marker: string) {
@@ -52,14 +86,9 @@ describe('extractCompletedEvents', () => {
   it('does not emit the last field, because the final response completes it', () => {
     const events = extractCompletedEvents(FULL_RESULT, 0);
 
-    expect(events.filter((event) => event.type === 'solution')).toEqual([
-      {
-        type: 'solution',
-        name: 'Limpiador suave',
-        rationale: 'Retira el sebo.',
-        precautions: 'No frotar.',
-      },
-    ]);
+    const solutions = events.filter((event) => event.type === 'solution');
+    expect(solutions).toEqual([CLEANSER_EVENT]);
+    expect(solutions[0]).not.toHaveProperty('guidePatternId');
   });
 
   it('emits each item one time and in schema order across consecutive snapshots', () => {
@@ -79,9 +108,25 @@ describe('extractCompletedEvents', () => {
     expect(emitted[1]).toEqual({ type: 'medicalCheck', suggested: false, reason: null });
   });
 
+  it('rejects a guide pattern id that is not in the guide', () => {
+    const snapshot = FULL_RESULT.replace('brillo-y-sebo', 'no-existe');
+
+    expect(() => extractCompletedEvents(snapshot, 0)).toThrow();
+  });
+
   it('rejects a completed item that does not match its schema', () => {
     const snapshot = '{"summary":42,"medicalCheckFirst":{';
 
     expect(() => extractCompletedEvents(snapshot, 0)).toThrow();
+  });
+});
+
+describe('resultToEvents', () => {
+  it('resolves catalog products for each solution and drops the guide pattern id', () => {
+    const result = SkinScanResultSchema.parse(JSON.parse(FULL_RESULT));
+    const solutions = resultToEvents(result).filter((event) => event.type === 'solution');
+
+    expect(solutions).toEqual([CLEANSER_EVENT, SUNSCREEN_EVENT]);
+    for (const solution of solutions) expect(solution).not.toHaveProperty('guidePatternId');
   });
 });

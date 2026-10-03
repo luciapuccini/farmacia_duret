@@ -1,13 +1,13 @@
 import { AlertTriangle, CircleCheck, LoaderCircle } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
-import type { CosmeticSolution, ScanResult } from '../scan.schema';
+import type { ScanResult, ScanSolution } from '../scan.schema';
 
 export type ScanItems = {
   summary: string | null;
   medicalCheck: ScanResult['medicalCheckFirst'] | null;
   patterns: string[];
-  solutions: CosmeticSolution[];
+  solutions: ScanSolution[];
 };
 
 export const EMPTY_SCAN_ITEMS: ScanItems = {
@@ -190,7 +190,7 @@ function PatternList({ patterns }: { patterns: string[] }) {
   );
 }
 
-function SolutionList({ solutions }: { solutions: CosmeticSolution[] }) {
+function SolutionList({ solutions }: { solutions: ScanSolution[] }) {
   if (solutions.length === 0) return null;
 
   return (
