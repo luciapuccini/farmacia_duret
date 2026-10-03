@@ -28,6 +28,15 @@ const SCAN_EVENTS = [
     name: 'Limpiador suave',
     rationale: 'Ayuda a retirar el exceso de sebo sin resecar.',
     precautions: 'Evitá frotar la piel.',
+    products: [
+      {
+        id: '15',
+        name: 'Agua Micelar Sensibio H2O 500ml',
+        brand: 'Bioderma',
+        image: '/images/products/15-micellar-water.webp',
+        href: '/dermocosmetica?sc=rostro&f=limpieza',
+      },
+    ],
   },
   { type: 'done' },
 ];
@@ -82,9 +91,21 @@ test.describe('Skin scan', () => {
     // Auto-scroll: the page follows the results, so the last item is on the screen.
     await expect(page.getByRole('heading', { name: 'Limpiador suave' })).toBeInViewport();
     await expect(
+      page.getByRole('link', { name: 'Agua Micelar Sensibio H2O 500ml' }),
+    ).toHaveAttribute('href', '/dermocosmetica?sc=rostro&f=limpieza');
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+    await expect(
       page.getByText('No reemplaza una consulta profesional', { exact: false }),
     ).toBeVisible();
     expect(requestCount).toBe(1);
+
+    await page.getByRole('link', { name: 'Agua Micelar Sensibio H2O 500ml' }).tap();
+    await expect(page).toHaveURL('/dermocosmetica?sc=rostro&f=limpieza');
+    await expect(page.getByText('Agua Micelar Sensibio H2O 500ml').first()).toBeVisible();
   });
 
   test('stops following the results when the customer scrolls', async ({ page }) => {

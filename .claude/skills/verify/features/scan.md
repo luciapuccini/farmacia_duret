@@ -1,6 +1,6 @@
 # Skin scan
 
-A customer opens `/scan`, takes or picks a photo, and chooses `Analizar`. The page posts the photo to `/api/scan`, which calls OpenAI. The result streams back as NDJSON and renders progressively: a summary, a medical-check notice, visible patterns, and cosmetic suggestions.
+A customer opens `/scan`, takes or picks a photo, and chooses `Analizar`. The page posts the photo to `/api/scan`, which calls OpenAI. The result streams back as NDJSON and renders progressively: a summary, a medical-check notice, visible patterns, and cosmetic suggestions. A suggestion that matches a pattern in `src/services/catalog/data/scan-guide.json` shows links to its catalog products under `En nuestra farmacia`.
 
 ## Sub-features
 
@@ -25,7 +25,7 @@ Preconditions:
 
 - **Open.** Run `$B viewport 412 915` and `$B goto /scan`. `$B expect --text "Luz natural · de frente · sin maquillaje"` passes.
 - **Pick.** Run `$B upload --label "Elegir una foto" --file e2e/fixtures/skin-photo.jpg`. `$B expect --role img --name "Foto seleccionada"` passes, and `curl -s http://127.0.0.1:4311/health` still shows `openai: 0` for this attempt.
-- **Analyze.** Run `$B click --role button --name "Analizar"`, then `$B expect --text "Verify: protector solar FPS 50" --timeout 30000`, then `$B screenshot scan-result --full`.
+- **Analyze.** Run `$B click --role button --name "Analizar"`, then `$B expect --text "Verify: protector solar FPS 50" --timeout 30000`. The fixture maps `Verify: limpiador suave` to the guide id `brillo-y-sebo`, so `$B expect --role link --name "Agua Micelar Sensibio H2O 500ml"` passes and the link points to `/dermocosmetica?sc=rostro&f=limpieza`. `Verify: protector solar FPS 50` has a null id and shows no product link. Then run `$B screenshot scan-result --full`.
 - **Side effect.** The last line of `openai-requests.ndjson` shows:
   - model `gpt-5.6-luna`
   - `store: false`
