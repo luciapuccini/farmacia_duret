@@ -2,3 +2,4 @@
 package-lock.json
 .claude/settings.local.json
 *.md
+.claude/skills/verify/

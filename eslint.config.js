@@ -43,6 +43,7 @@ export default defineConfig([
     'coverage/**',
     'playwright-report/**',
     'dist/**',
+    '.claude/skills/verify/**',
   ]),
   ...nextCoreWebVitals,
   ...nextTypescript,
